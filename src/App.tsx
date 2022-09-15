@@ -297,7 +297,7 @@ const App: FC = () => {
                                         ? item.x
                                         : item.status === 1
                                         ? sortedQueue[item.id]
-                                        : -1000
+                                        : -2000
                                 }
                                 y={item.status === 0 ? item.y : 815}
                                 onClick={() => clickSymbol(idx)}

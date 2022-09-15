@@ -1,11 +1,12 @@
 #root {
     text-align: center;
     width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .app {
     width: 100%;
-    max-width: 768px;
     margin: 0 auto;
 }
 
@@ -13,6 +14,7 @@
     width: 100%;
     padding-bottom: 100%;
     position: relative;
+    cursor: pointer;
 }
 
 .scene-inner {
