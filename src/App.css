@@ -1,44 +1,90 @@
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
     text-align: center;
+    width: 100%;
 }
 
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
+.app {
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
 }
 
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+.scene-container {
+    width: 100%;
+    padding-bottom: 100%;
+    position: relative;
 }
 
-.logo.react:hover {
-    filter: drop-shadow(0 0 2em #61dafbaa);
+.scene-inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    overflow: visible;
+    font-size: 30px;
 }
 
-@keyframes logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+.symbol {
+    width: 12.5%;
+    padding-bottom: 12.5%;
+    position: absolute;
+    transition: 0.3s;
+    left: 0;
+    top: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    a:nth-of-type(2) .logo {
-        animation: logo-spin infinite 20s linear;
-    }
+.symbol-inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid #444;
+    background-color: #eee;
 }
 
-.card {
-    padding: 2em;
+.queue-container {
+    border-radius: 8px;
+    width: 100%;
+    padding-bottom: 15%;
+    border: 2px solid gray;
+    margin-bottom: 16px;
 }
 
-.read-the-docs {
-    color: #888;
+.flex-container {
+    display: flex;
+    gap: 8px;
+}
+
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background-color: rgb(0 0 0 / 10%);
+    top: 0;
+    left: 0;
 }
