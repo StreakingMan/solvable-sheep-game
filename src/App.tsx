@@ -106,7 +106,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
         >
             <div
                 className="symbol-inner"
-                style={{ backgroundColor: isCover ? 'gray' : 'white' }}
+                style={{ backgroundColor: isCover ? '#999' : 'white' }}
             >
                 <i>{icon}</i>
             </div>

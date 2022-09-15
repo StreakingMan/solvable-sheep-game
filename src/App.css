@@ -14,7 +14,6 @@
     width: 100%;
     padding-bottom: 100%;
     position: relative;
-    cursor: pointer;
 }
 
 .scene-inner {
@@ -24,7 +23,7 @@
     bottom: 0;
     top: 0;
     overflow: visible;
-    font-size: 30px;
+    font-size: 8vw;
 }
 
 .symbol {
@@ -47,7 +46,6 @@
     align-items: center;
     border-radius: 8px;
     border: 2px solid #444;
-    background-color: #eee;
 }
 
 .queue-container {
