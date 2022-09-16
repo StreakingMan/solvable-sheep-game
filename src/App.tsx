@@ -142,6 +142,7 @@ const App: FC = () => {
     >({});
     const [finished, setFinished] = useState<boolean>(false);
     const [tipText, setTipText] = useState<string>('');
+    const [animating, setAnimating] = useState<boolean>(false);
 
     // 队列区排序
     useEffect(() => {
@@ -262,7 +263,7 @@ const App: FC = () => {
 
     // 点击item
     const clickSymbol = async (idx: number) => {
-        if (finished) return;
+        if (finished || animating) return;
         const updateScene = scene.slice();
         const symbol = updateScene[idx];
         if (symbol.isCover || symbol.status !== 0) return;
@@ -274,6 +275,7 @@ const App: FC = () => {
         setQueue(updateQueue);
         checkCover(updateScene);
 
+        setAnimating(true);
         await waitTimeout(300);
 
         const filterSame = updateQueue.filter((sb) => sb.icon === symbol.icon);
@@ -308,6 +310,8 @@ const App: FC = () => {
             setQueue(updateQueue);
             checkCover(updateScene);
         }
+
+        setAnimating(false);
     };
 
     return (
