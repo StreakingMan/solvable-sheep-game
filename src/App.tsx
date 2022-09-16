@@ -320,6 +320,12 @@ const App: FC = () => {
                 {/*<button onClick={test}>测试</button>*/}
             </div>
 
+            <p>
+                <span id="busuanzi_container_site_pv">
+                    累计访问：<span id="busuanzi_value_site_pv"></span>次
+                </span>
+            </p>
+
             {finished && (
                 <div className="modal">
                     <h1>{tipText}</h1>
