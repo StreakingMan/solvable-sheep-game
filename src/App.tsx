@@ -6,6 +6,9 @@ import { randomString } from './utils';
 
 const icons = [`🎨`, `🌈`, `⚙️`, `💻`, `📚`, `🐯`, `🐤`, `🐼`, `🐏`, `🍀`];
 
+// 最大关卡
+const maxLevel = 50;
+
 interface MySymbol {
     id: string;
     status: number; // 0->1->2
@@ -17,9 +20,9 @@ interface MySymbol {
 
 type Scene = MySymbol[];
 
-// 8*8网格 5级别level  4*4->8*8
+// 8*8网格  4*4->8*8
 const makeScene: (level: number) => Scene = (level) => {
-    const curLevel = Math.min(5, level);
+    const curLevel = Math.min(maxLevel, level);
     const iconPool = icons.slice(0, 2 * curLevel);
     const offsetPool = [0, 25, -25, 50, -50].slice(0, 1 + curLevel);
 
@@ -31,7 +34,7 @@ const makeScene: (level: number) => Scene = (level) => {
         [1, 7],
         [0, 7],
         [0, 8],
-    ][curLevel - 1];
+    ][Math.min(4, curLevel - 1)];
 
     const randomSet = (icon: string) => {
         const offset =
@@ -49,6 +52,16 @@ const makeScene: (level: number) => Scene = (level) => {
             status: 0,
         });
     };
+
+    // 大于5级别增加icon池
+    let compareLevel = curLevel;
+    while (compareLevel > 0) {
+        iconPool.push(
+            ...iconPool.slice(0, Math.min(10, 2 * (compareLevel - 5)))
+        );
+        compareLevel -= 5;
+    }
+    console.log(iconPool);
 
     for (const icon of iconPool) {
         for (let i = 0; i < 6; i++) {
@@ -69,7 +82,7 @@ const washScene: (level: number, scene: Scene) => Scene = (level, scene) => {
         [1, 7],
         [0, 7],
         [0, 8],
-    ][level - 1];
+    ][Math.min(4, level - 1)];
 
     const randomSet = (symbol: MySymbol) => {
         const offset =
@@ -126,7 +139,6 @@ const App: FC = () => {
 
     // 队列区排序
     useEffect(() => {
-        console.log('fuck');
         const cache: Record<string, MySymbol[]> = {};
         for (const symbol of queue) {
             if (cache[symbol.icon]) {
@@ -149,7 +161,7 @@ const App: FC = () => {
     }, [queue]);
 
     const test = () => {
-        const level = Math.ceil(5 * Math.random());
+        const level = Math.ceil(maxLevel * Math.random());
         setLevel(level);
         checkCover(makeScene(level));
     };
@@ -223,6 +235,17 @@ const App: FC = () => {
         checkCover(washScene(level, scene));
     };
 
+    // 加大难度
+    const levelUp = () => {
+        if (level >= maxLevel) {
+            return;
+        }
+        setFinished(false);
+        setLevel(level + 1);
+        setQueue([]);
+        checkCover(makeScene(level + 1));
+    };
+
     // 重开
     const restart = () => {
         setFinished(false);
@@ -263,7 +286,7 @@ const App: FC = () => {
 
         if (!updateScene.find((s) => s.status !== 2)) {
             // 胜利
-            if (level === 5) {
+            if (level === maxLevel) {
                 setTipText('完成挑战');
                 setFinished(true);
                 return;
@@ -299,7 +322,7 @@ const App: FC = () => {
                                         ? sortedQueue[item.id]
                                         : -2000
                                 }
-                                y={item.status === 0 ? item.y : 815}
+                                y={item.status === 0 ? item.y : 895}
                                 onClick={() => clickSymbol(idx)}
                             />
                         ))}
@@ -316,6 +339,9 @@ const App: FC = () => {
                 </button>
                 <button className="flex-grow" onClick={wash}>
                     洗牌
+                </button>
+                <button className="flex-grow" onClick={levelUp}>
+                    下一关
                 </button>
                 {/*<button onClick={test}>测试</button>*/}
             </div>
