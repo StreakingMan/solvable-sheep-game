@@ -47,6 +47,7 @@
     align-items: center;
     border-radius: 8px;
     border: 2px solid #444;
+    transition: 0.3s;
 }
 
 .queue-container {

@@ -7,3 +7,11 @@ export const randomString: (len: number) => string = (len) => {
     }
     return res;
 };
+
+export const waitTimeout: (timeout: number) => Promise<void> = (timeout) => {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, timeout);
+    });
+};

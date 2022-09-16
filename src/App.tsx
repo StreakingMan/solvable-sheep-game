@@ -1,8 +1,14 @@
-import React, { FC, MouseEventHandler, useEffect, useState } from 'react';
+import React, {
+    FC,
+    MouseEventHandler,
+    startTransition,
+    useEffect,
+    useState,
+} from 'react';
 
 import './App.css';
 import { GithubIcon } from './GithubIcon';
-import { randomString } from './utils';
+import { randomString, waitTimeout } from './utils';
 
 const icons = [`🎨`, `🌈`, `⚙️`, `💻`, `📚`, `🐯`, `🐤`, `🐼`, `🐏`, `🍀`];
 
@@ -45,11 +51,11 @@ const makeScene: (level: number) => Scene = (level) => {
             range[0] + Math.floor((range[1] - range[0]) * Math.random());
         scene.push({
             isCover: false,
-            x: column * 100 + offset,
-            y: row * 100 + offset,
+            status: 0,
             icon,
             id: randomString(4),
-            status: 0,
+            x: column * 100 + offset,
+            y: row * 100 + offset,
         });
     };
 
@@ -61,7 +67,6 @@ const makeScene: (level: number) => Scene = (level) => {
         );
         compareLevel -= 5;
     }
-    console.log(iconPool);
 
     for (const icon of iconPool) {
         for (let i = 0; i < 6; i++) {
@@ -114,6 +119,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
             className="symbol"
             style={{
                 transform: `translateX(${x}%) translateY(${y}%)`,
+                opacity: status < 2 ? 1 : 0,
             }}
             onClick={onClick}
         >
@@ -255,27 +261,30 @@ const App: FC = () => {
     };
 
     // 点击item
-    const clickSymbol = (idx: number) => {
+    const clickSymbol = async (idx: number) => {
         if (finished) return;
         const updateScene = scene.slice();
         const symbol = updateScene[idx];
         if (symbol.isCover || symbol.status !== 0) return;
-        symbol.status++;
+        symbol.status = 1;
 
         let updateQueue = queue.slice();
+        updateQueue.push(symbol);
+
+        setQueue(updateQueue);
+        checkCover(updateScene);
+
+        await waitTimeout(300);
 
         const filterSame = updateQueue.filter((sb) => sb.icon === symbol.icon);
 
-        if (filterSame.length === 2) {
-            // 三连了
-            symbol.status++;
+        // 三连了
+        if (filterSame.length === 3) {
             updateQueue = updateQueue.filter((sb) => sb.icon !== symbol.icon);
             for (const sb of filterSame) {
                 const find = updateScene.find((i) => i.id === sb.id);
-                if (find) find.status++;
+                if (find) find.status = 2;
             }
-        } else {
-            updateQueue.push(symbol);
         }
 
         // 输了
@@ -320,7 +329,7 @@ const App: FC = () => {
                                         ? item.x
                                         : item.status === 1
                                         ? sortedQueue[item.id]
-                                        : -2000
+                                        : -1000
                                 }
                                 y={item.status === 0 ? item.y : 895}
                                 onClick={() => clickSymbol(idx)}
