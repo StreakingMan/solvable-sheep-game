@@ -7,6 +7,7 @@ export const GithubIcon: FC = () => {
             target="_blank"
             rel="noreferrer"
         >
+            点个✨不迷路 @StreakingMan
             <svg
                 height="24"
                 aria-hidden="true"
@@ -15,6 +16,7 @@ export const GithubIcon: FC = () => {
                 width="24"
                 data-view-component="true"
                 className="octicon octicon-mark-github v-align-middle"
+                fill="currentColor"
             >
                 <path
                     fillRule="evenodd"

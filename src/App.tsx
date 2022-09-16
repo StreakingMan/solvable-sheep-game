@@ -316,9 +316,10 @@ const App: FC = () => {
 
     return (
         <>
-            <h2>
-                有解的羊了个羊(DEMO) <GithubIcon />
-            </h2>
+            <h2>有解的羊了个羊(DEMO)</h2>
+            <h6>
+                <GithubIcon />
+            </h6>
             <h3>Level: {level} </h3>
 
             <div className="app">
