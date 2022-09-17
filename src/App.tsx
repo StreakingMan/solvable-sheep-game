@@ -276,7 +276,7 @@ const App: FC = () => {
         checkCover(updateScene);
 
         setAnimating(true);
-        await waitTimeout(300);
+        await waitTimeout(150);
 
         const filterSame = updateQueue.filter((sb) => sb.icon === symbol.icon);
 
