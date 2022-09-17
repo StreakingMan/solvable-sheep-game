@@ -1,8 +1,8 @@
 import React, {
     FC,
     MouseEventHandler,
-    startTransition,
     useEffect,
+    useRef,
     useState,
 } from 'react';
 
@@ -143,6 +143,20 @@ const App: FC = () => {
     const [finished, setFinished] = useState<boolean>(false);
     const [tipText, setTipText] = useState<string>('');
     const [animating, setAnimating] = useState<boolean>(false);
+    const bgmRef = useRef<HTMLAudioElement>(null);
+    const [bgmOn, setBgmOn] = useState<boolean>(false);
+    const [once, setOnce] = useState<boolean>(false);
+    const tapSoundRef = useRef<HTMLAudioElement>(null);
+    const tripleSoundRef = useRef<HTMLAudioElement>(null);
+    const levelUpSoundRef = useRef<HTMLAudioElement>(null);
+
+    useEffect(() => {
+        if (bgmOn) {
+            bgmRef.current?.play();
+        } else {
+            bgmRef.current?.pause();
+        }
+    }, [bgmOn]);
 
     // 队列区排序
     useEffect(() => {
@@ -264,10 +278,21 @@ const App: FC = () => {
     // 点击item
     const clickSymbol = async (idx: number) => {
         if (finished || animating) return;
+
+        if (!once) {
+            setBgmOn(true);
+            setOnce(true);
+        }
+
         const updateScene = scene.slice();
         const symbol = updateScene[idx];
         if (symbol.isCover || symbol.status !== 0) return;
         symbol.status = 1;
+
+        if (tapSoundRef.current) {
+            tapSoundRef.current.currentTime = 0;
+            tapSoundRef.current.play();
+        }
 
         let updateQueue = queue.slice();
         updateQueue.push(symbol);
@@ -285,7 +310,13 @@ const App: FC = () => {
             updateQueue = updateQueue.filter((sb) => sb.icon !== symbol.icon);
             for (const sb of filterSame) {
                 const find = updateScene.find((i) => i.id === sb.id);
-                if (find) find.status = 2;
+                if (find) {
+                    find.status = 2;
+                    if (tripleSoundRef.current) {
+                        tripleSoundRef.current.currentTime = 0.55;
+                        tripleSoundRef.current.play();
+                    }
+                }
             }
         }
 
@@ -372,6 +403,14 @@ const App: FC = () => {
                     <button onClick={restart}>再来一次</button>
                 </div>
             )}
+
+            <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>
+                {bgmOn ? '🔊' : '🔈'}
+                <audio ref={bgmRef} loop src="/sound-disco.mp3" />
+            </button>
+
+            <audio ref={tapSoundRef} src="/sound-button-click.mp3" />
+            <audio ref={tripleSoundRef} src="/sound-triple.mp3" />
         </>
     );
 };

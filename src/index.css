@@ -44,6 +44,7 @@ button {
     cursor: pointer;
     transition: border-color 0.25s;
     word-break: keep-all;
+    outline: none;
 }
 
 button:hover {

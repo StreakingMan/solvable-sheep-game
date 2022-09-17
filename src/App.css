@@ -90,3 +90,12 @@
     top: 0;
     left: 0;
 }
+
+.bgm-button {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 4px;
+    width: 36px;
+    height: 36px;
+}
