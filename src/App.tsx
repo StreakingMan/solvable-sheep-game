@@ -1,5 +1,4 @@
 import React, {
-    ChangeEventHandler,
     FC,
     MouseEventHandler,
     useEffect,
@@ -10,11 +9,13 @@ import React, {
 import './App.css';
 import { GithubIcon } from './GithubIcon';
 import { randomString, waitTimeout } from './utils';
-import { DefaultSoundNames, defaultTheme } from './themes/default';
+import { defaultTheme } from './themes/default';
 import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
+import { jinlunTheme } from './themes/jinlun';
 
-const themes = [defaultTheme, fishermanTheme];
+// 主题
+const themes = [defaultTheme, fishermanTheme, jinlunTheme];
 
 // 最大关卡
 const maxLevel = 50;
@@ -123,13 +124,14 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
             className="symbol"
             style={{
                 transform: `translateX(${x}%) translateY(${y}%)`,
+                backgroundColor: isCover ? '#999' : 'white',
                 opacity: status < 2 ? 1 : 0,
             }}
             onClick={onClick}
         >
             <div
                 className="symbol-inner"
-                style={{ backgroundColor: isCover ? '#999' : 'white' }}
+                style={{ opacity: isCover ? 0.5 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
                     <i>{icon.content}</i>
@@ -142,8 +144,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 };
 
 const App: FC = () => {
-    const [curTheme, setCurTheme] =
-        useState<Theme<DefaultSoundNames>>(defaultTheme);
+    const [curTheme, setCurTheme] = useState<Theme<any>>(defaultTheme);
     const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
     const [level, setLevel] = useState<number>(1);
     const [queue, setQueue] = useState<MySymbol[]>([]);
@@ -162,8 +163,10 @@ const App: FC = () => {
     const [bgmOn, setBgmOn] = useState<boolean>(false);
     const [once, setOnce] = useState<boolean>(false);
     useEffect(() => {
+        if (!bgmRef.current) return;
         if (bgmOn) {
-            bgmRef.current?.play();
+            bgmRef.current.volume = 0.15;
+            bgmRef.current.play();
         } else {
             bgmRef.current?.pause();
         }
@@ -301,6 +304,7 @@ const App: FC = () => {
 
         // 点击音效
         if (soundRefMap.current) {
+            console.log(soundRefMap.current, symbol.icon);
             soundRefMap.current[symbol.icon.clickSound].currentTime = 0;
             soundRefMap.current[symbol.icon.clickSound].play();
         }
