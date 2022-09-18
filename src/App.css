@@ -50,6 +50,12 @@
     transition: 0.3s;
 }
 
+.symbol-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .queue-container {
     border-radius: 8px;
     width: 100%;

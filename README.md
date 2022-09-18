@@ -1,6 +1,6 @@
 # 能够解出来的 "羊了个羊" 小游戏 Demo
 
-![qrcode.png](public/qrcode.png)
+![qrcode.png](qrcode.png)
 
 坑爹的小游戏（本来玩法挺有意思的，非得恶心人），根本无解（99.99%无解），气的我自己写了个 demo，
 扫码或：<a href="https://solvable-sheep-game.streakingman.com/" target="_blank">pc 浏览器体验</a>
@@ -14,22 +14,24 @@
 
 开心就好 😄
 
-![preview.png](public/preview.png)
+![preview.png](preview.png)
 
 ## Contribution
 
 vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地址）
+
+切换主题参考 `src/themes` 下的代码，欢迎整活
 
 ## Todo List
 
 -   [x] 基础操作
 -   [x] 关卡生成
 -   [ ] UI/UX 优化
--   [ ] 多主题
+-   [x] 多主题
 -   [ ] 计时
 -   [ ] 性能优化
--   [ ] BGM/音效
--   [ ] 点击时的缓冲队列，优化交互动画效果
+-   [x] BGM/音效
+-   [ ] ~~点击时的缓冲队列，优化交互动画效果~~
 -   [ ] 该游戏似乎涉嫌抄袭，考证后补充来源说明
 
 ## License

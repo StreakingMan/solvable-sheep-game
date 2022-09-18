@@ -1,4 +1,5 @@
 import React, {
+    ChangeEventHandler,
     FC,
     MouseEventHandler,
     useEffect,
@@ -9,8 +10,11 @@ import React, {
 import './App.css';
 import { GithubIcon } from './GithubIcon';
 import { randomString, waitTimeout } from './utils';
+import { DefaultSoundNames, defaultTheme } from './themes/default';
+import { Icon, Theme } from './themes/interface';
+import { fishermanTheme } from './themes/fisherman';
 
-const icons = [`🎨`, `🌈`, `⚙️`, `💻`, `📚`, `🐯`, `🐤`, `🐼`, `🐏`, `🍀`];
+const themes = [defaultTheme, fishermanTheme];
 
 // 最大关卡
 const maxLevel = 50;
@@ -21,13 +25,13 @@ interface MySymbol {
     isCover: boolean;
     x: number;
     y: number;
-    icon: string;
+    icon: Icon;
 }
 
 type Scene = MySymbol[];
 
 // 8*8网格  4*4->8*8
-const makeScene: (level: number) => Scene = (level) => {
+const makeScene: (level: number, icons: Icon[]) => Scene = (level, icons) => {
     const curLevel = Math.min(maxLevel, level);
     const iconPool = icons.slice(0, 2 * curLevel);
     const offsetPool = [0, 25, -25, 50, -50].slice(0, 1 + curLevel);
@@ -42,7 +46,7 @@ const makeScene: (level: number) => Scene = (level) => {
         [0, 8],
     ][Math.min(4, curLevel - 1)];
 
-    const randomSet = (icon: string) => {
+    const randomSet = (icon: Icon) => {
         const offset =
             offsetPool[Math.floor(offsetPool.length * Math.random())];
         const row =
@@ -127,14 +131,20 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
                 className="symbol-inner"
                 style={{ backgroundColor: isCover ? '#999' : 'white' }}
             >
-                <i>{icon}</i>
+                {typeof icon.content === 'string' ? (
+                    <i>{icon.content}</i>
+                ) : (
+                    icon.content
+                )}
             </div>
         </div>
     );
 };
 
 const App: FC = () => {
-    const [scene, setScene] = useState<Scene>(makeScene(1));
+    const [curTheme, setCurTheme] =
+        useState<Theme<DefaultSoundNames>>(defaultTheme);
+    const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
     const [level, setLevel] = useState<number>(1);
     const [queue, setQueue] = useState<MySymbol[]>([]);
     const [sortedQueue, setSortedQueue] = useState<
@@ -143,13 +153,14 @@ const App: FC = () => {
     const [finished, setFinished] = useState<boolean>(false);
     const [tipText, setTipText] = useState<string>('');
     const [animating, setAnimating] = useState<boolean>(false);
+
+    // 音效
+    const soundRefMap = useRef<Record<string, HTMLAudioElement>>({});
+
+    // 第一次点击时播放bgm
     const bgmRef = useRef<HTMLAudioElement>(null);
     const [bgmOn, setBgmOn] = useState<boolean>(false);
     const [once, setOnce] = useState<boolean>(false);
-    const tapSoundRef = useRef<HTMLAudioElement>(null);
-    const tripleSoundRef = useRef<HTMLAudioElement>(null);
-    const levelUpSoundRef = useRef<HTMLAudioElement>(null);
-
     useEffect(() => {
         if (bgmOn) {
             bgmRef.current?.play();
@@ -158,14 +169,19 @@ const App: FC = () => {
         }
     }, [bgmOn]);
 
+    // 主题切换
+    useEffect(() => {
+        restart();
+    }, [curTheme]);
+
     // 队列区排序
     useEffect(() => {
         const cache: Record<string, MySymbol[]> = {};
         for (const symbol of queue) {
-            if (cache[symbol.icon]) {
-                cache[symbol.icon].push(symbol);
+            if (cache[symbol.icon.name]) {
+                cache[symbol.icon.name].push(symbol);
             } else {
-                cache[symbol.icon] = [symbol];
+                cache[symbol.icon.name] = [symbol];
             }
         }
         const temp = [];
@@ -180,12 +196,6 @@ const App: FC = () => {
         }
         setSortedQueue(updateSortedQueue);
     }, [queue]);
-
-    const test = () => {
-        const level = Math.ceil(maxLevel * Math.random());
-        setLevel(level);
-        checkCover(makeScene(level));
-    };
 
     // 初始化覆盖状态
     useEffect(() => {
@@ -264,7 +274,7 @@ const App: FC = () => {
         setFinished(false);
         setLevel(level + 1);
         setQueue([]);
-        checkCover(makeScene(level + 1));
+        checkCover(makeScene(level + 1, curTheme.icons));
     };
 
     // 重开
@@ -272,7 +282,7 @@ const App: FC = () => {
         setFinished(false);
         setLevel(1);
         setQueue([]);
-        checkCover(makeScene(1));
+        checkCover(makeScene(1, curTheme.icons));
     };
 
     // 点击item
@@ -289,9 +299,10 @@ const App: FC = () => {
         if (symbol.isCover || symbol.status !== 0) return;
         symbol.status = 1;
 
-        if (tapSoundRef.current) {
-            tapSoundRef.current.currentTime = 0;
-            tapSoundRef.current.play();
+        // 点击音效
+        if (soundRefMap.current) {
+            soundRefMap.current[symbol.icon.clickSound].currentTime = 0;
+            soundRefMap.current[symbol.icon.clickSound].play();
         }
 
         let updateQueue = queue.slice();
@@ -312,9 +323,12 @@ const App: FC = () => {
                 const find = updateScene.find((i) => i.id === sb.id);
                 if (find) {
                     find.status = 2;
-                    if (tripleSoundRef.current) {
-                        tripleSoundRef.current.currentTime = 0.55;
-                        tripleSoundRef.current.play();
+                    // 三连音效
+                    if (soundRefMap.current) {
+                        soundRefMap.current[
+                            symbol.icon.tripleSound
+                        ].currentTime = 0;
+                        soundRefMap.current[symbol.icon.tripleSound].play();
                     }
                 }
             }
@@ -336,7 +350,7 @@ const App: FC = () => {
             // 升级
             setLevel(level + 1);
             setQueue([]);
-            checkCover(makeScene(level + 1));
+            checkCover(makeScene(level + 1, curTheme.icons));
         } else {
             setQueue(updateQueue);
             checkCover(updateScene);
@@ -351,7 +365,21 @@ const App: FC = () => {
             <h6>
                 <GithubIcon />
             </h6>
-            <h3>Level: {level} </h3>
+            <h3 className="flex-container flex-center">
+                主题:
+                <select
+                    onChange={(e) =>
+                        setCurTheme(themes[Number(e.target.value)])
+                    }
+                >
+                    {themes.map((t, idx) => (
+                        <option key={t.name} value={idx}>
+                            {t.name}
+                        </option>
+                    ))}
+                </select>
+                Level: {level}
+            </h3>
 
             <div className="app">
                 <div className="scene-container">
@@ -404,13 +432,22 @@ const App: FC = () => {
                 </div>
             )}
 
+            {/*bgm*/}
             <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>
                 {bgmOn ? '🔊' : '🔈'}
                 <audio ref={bgmRef} loop src="/sound-disco.mp3" />
             </button>
 
-            <audio ref={tapSoundRef} src="/sound-button-click.mp3" />
-            <audio ref={tripleSoundRef} src="/sound-triple.mp3" />
+            {/*音效*/}
+            {curTheme.sounds.map((sound) => (
+                <audio
+                    key={sound.name}
+                    ref={(ref) => {
+                        if (ref) soundRefMap.current[sound.name] = ref;
+                    }}
+                    src={sound.src}
+                />
+            ))}
         </>
     );
 };
