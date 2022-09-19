@@ -49,6 +49,8 @@
     border-radius: 8px;
     border: 2px solid #444;
     transition: 0.3s;
+    overflow: hidden;
+    user-select: none;
 }
 
 .symbol-inner img {

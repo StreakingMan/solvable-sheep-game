@@ -5,15 +5,7 @@
  */
 
 module.exports = {
-    '*.{[tj]s,[tj]sx,[cm]js}': [
-        'eslint --fix'
-    ],
-    '*.json': [
-        'prettier --write'
-    ],
-
-    '*.{css,scss}': [
-        'stylelint --fix'
-    ]
-
+    '*.{[tj]s,[tj]sx,[cm]js}': ['eslint --fix'],
+    '*.json': ['prettier --write'],
+    '*.{css,scss}': ['stylelint --fix'],
 };
