@@ -9,7 +9,7 @@
         "preview": "vite preview",
         "prepare": "husky install",
         "release:first": "standard-version -- --first-release",
-        "release": "standard-version"
+        "release": "standard-version --commit-all"
     },
     "dependencies": {
         "react": "^18.2.0",
