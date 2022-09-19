@@ -165,7 +165,7 @@ const App: FC = () => {
     useEffect(() => {
         if (!bgmRef.current) return;
         if (bgmOn) {
-            bgmRef.current.volume = 0.15;
+            bgmRef.current.volume = 0.5;
             bgmRef.current.play();
         } else {
             bgmRef.current?.pause();
