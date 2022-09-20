@@ -13,9 +13,10 @@ import { defaultTheme } from './themes/default';
 import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
+import { ikunTheme } from './themes/ikun';
 
 // 主题
-const themes = [defaultTheme, fishermanTheme, jinlunTheme];
+const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme];
 
 // 最大关卡
 const maxLevel = 50;
@@ -174,7 +175,11 @@ const App: FC = () => {
 
     // 主题切换
     useEffect(() => {
+        setBgmOn(false);
         restart();
+        setTimeout(() => {
+            setBgmOn(true);
+        }, 300);
     }, [curTheme]);
 
     // 队列区排序
@@ -439,7 +444,11 @@ const App: FC = () => {
             {/*bgm*/}
             <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>
                 {bgmOn ? '🔊' : '🔈'}
-                <audio ref={bgmRef} loop src="/sound-disco.mp3" />
+                <audio
+                    ref={bgmRef}
+                    loop
+                    src={curTheme?.bgm || '/sound-disco.mp3'}
+                />
             </button>
 
             {/*音效*/}
