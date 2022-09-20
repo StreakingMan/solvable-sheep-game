@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.1...v0.0.2) (2022-09-20)
+
+
+### Features
+
+* **themes:** ikun主题 ([8562ea4](https://github.com/StreakingMan/solvable-sheep-game/commit/8562ea4761e5d0d66c69de060d15664e1a582b99))
+
 ### 0.0.1 (2022-09-19)
 
 
