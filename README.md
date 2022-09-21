@@ -17,7 +17,7 @@
 扫二维码或<a href="https://solvable-sheep-game.streakingman.com/" target="_blank">pc 浏览器体验</a>
 
 **声明：本项目仅供交流，禁止商用！否则后果自负。基于此项目的二创都是欢迎的，但非二创请不要删除原仓库地址
-（啥都不改唯独删除来源我真的会谢🙄️，请尊重他人劳动成果）**
+（啥都不改唯独删除来源我真的会谢 🙄️，请尊重他人劳动成果）**
 
 ![qrcode.png](qrcode.png)
 
@@ -51,6 +51,37 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [ ] ~~点击时的缓冲队列，优化交互动画效果~~
 -   [ ] 该游戏似乎涉嫌抄袭，考证后补充来源说明
 -   [ ] 桌面应用
+
+## 二次开发
+
+### 环境准备
+
+安装以下内容
+
+-   [git](https://git-scm.com/)
+-   [node](https://nodejs.org/en/)
+
+### 克隆仓库
+
+直接克隆本仓库或者 fork
+
+```shell
+git clone https://github.com/StreakingMan/solvable-sheep-game.git
+```
+
+### 依赖安装
+
+克隆到本地后，在项目内敲命令
+
+```shell
+yarn install
+```
+
+### 调试运行
+
+```shell
+yarn dev
+```
 
 ## License
 
