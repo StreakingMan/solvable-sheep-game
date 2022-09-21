@@ -74,6 +74,8 @@ git clone https://github.com/StreakingMan/solvable-sheep-game.git
 克隆到本地后，在项目内敲命令
 
 ```shell
+npm install -g yarn
+
 yarn install
 ```
 
