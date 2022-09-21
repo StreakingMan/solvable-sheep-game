@@ -19,7 +19,7 @@ const images = Object.entries(imagesUrls).map(([key, value]) => ({
 export const pddTheme: Theme<DefaultSoundNames> = {
     title: '🐷猪了个猪🐷',
     name: '骚猪',
-    bgm,
+    bgm: 'https://m10.music.126.net/20220922020823/e92de2ba173e404bab61a4719b8d624b/ymusic/0759/010e/0e5d/03e18aa0e96daf33193797e61f6a314d.mp3',
     icons: images.map(({ name, content }) => ({
         name,
         content,
