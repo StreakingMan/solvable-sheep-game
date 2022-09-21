@@ -13,6 +13,7 @@ interface Sound<T = string> {
 }
 
 export interface Theme<SoundNames> {
+    title: string;
     name: string;
     bgm?: string;
     icons: Icon<SoundNames>[];

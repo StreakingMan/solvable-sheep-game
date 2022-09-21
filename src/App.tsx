@@ -14,9 +14,10 @@ import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
 import { ikunTheme } from './themes/ikun';
+import { pddTheme } from './themes/pdd';
 
 // 主题
-const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme];
+const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme, pddTheme];
 
 // 最大关卡
 const maxLevel = 50;
@@ -370,7 +371,7 @@ const App: FC = () => {
 
     return (
         <>
-            <h2>有解的羊了个羊(DEMO)</h2>
+            <h2>{curTheme.title}</h2>
             <h6>
                 <GithubIcon />
             </h6>
