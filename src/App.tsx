@@ -84,9 +84,19 @@ const makeScene: (level: number, icons: Icon[]) => Scene = (level, icons) => {
     return scene;
 };
 
+// o(n) 时间复杂度的洗牌算法
+const fastShuffle: <T = any>(arr: T[]) => T[] = (arr) => {
+    const res = arr.slice();
+    for (let i = 0; i < res.length; i++) {
+        const idx = (Math.random() * res.length) >> 0;
+        [res[i], res[idx]] = [res[idx], res[i]];
+    }
+    return res;
+};
+
 // 洗牌
 const washScene: (level: number, scene: Scene) => Scene = (level, scene) => {
-    const updateScene = scene.slice().sort(() => Math.random() - 0.5);
+    const updateScene = fastShuffle(scene);
     const offsetPool = [0, 25, -25, 50, -50].slice(0, 1 + level);
     const range = [
         [2, 6],
