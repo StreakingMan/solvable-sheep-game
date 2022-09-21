@@ -14,6 +14,7 @@ import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
 import { ikunTheme } from './themes/ikun';
+import { BeiAn } from './themes/BeiAn';
 
 // 主题
 const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme];
@@ -443,6 +444,8 @@ const App: FC = () => {
                     累计访问：<span id="busuanzi_value_site_pv"></span>次
                 </span>
             </p>
+
+            <BeiAn />
 
             {finished && (
                 <div className="modal">
