@@ -16,6 +16,9 @@
 坑爹的小游戏（本来玩法挺有意思的，非得恶心人），根本无解（99.99%无解），气的我自己写了个 demo，
 扫二维码或<a href="https://solvable-sheep-game.streakingman.com/" target="_blank">pc 浏览器体验</a>
 
+**声明：本项目仅供交流，禁止商用！否则后果自负。基于此项目的二创都是欢迎的，但非二创请不要删除原仓库地址
+（啥都不改唯独删除来源我真的会谢🙄️，请尊重他人劳动成果）**
+
 ![qrcode.png](qrcode.png)
 
 ## Feature

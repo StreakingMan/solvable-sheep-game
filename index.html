@@ -27,5 +27,22 @@
             async
             src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
         ></script>
+        <script async>
+            // 如果您基于此项目二创，可以删除以下代码
+            // 否则请标明原仓库地址
+            setTimeout(()=>{
+                const {host} = location
+                if(host!=='localhost'||!host.endsWith('streakingman.com')){
+                    const a = document.createElement('a')
+                    a.setAttribute('href','https://github.com/StreakingMan/solvable-sheep-game')
+                    a.setAttribute('target','_blank')
+                    a.innerText='本项目仅供交流，禁止商业用途，点击查看原github仓库'
+                    const p = document.createElement('p')
+                    p.style.textAlign = 'center'
+                    p.append(a)
+                    document.body.prepend(p)
+                }
+            },5000)
+        </script>
     </body>
 </html>
