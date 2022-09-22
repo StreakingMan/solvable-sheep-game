@@ -27,7 +27,10 @@
 -   撤销：撤销上一次操作，无限次数
 -   洗牌：哗啦哗啦，无限次数
 -   关卡：50 关玩到爽，可直接跳
--   主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" /> 主题等（露出黑脚）
+-   主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
+    骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、
+    ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />、
+    OW<img style="width:36px" src="src/themes/ow/images/ow.png" />主题等（露出黑脚）
 
 开心就好 😄
 

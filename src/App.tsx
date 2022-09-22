@@ -17,9 +17,17 @@ import { ikunTheme } from './themes/ikun';
 import { pddTheme } from './themes/pdd';
 import { BeiAn } from './BeiAn';
 import { Info } from './Info';
+import { owTheme } from './themes/ow';
 
 // 主题
-const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme, pddTheme];
+const themes = [
+    defaultTheme,
+    fishermanTheme,
+    jinlunTheme,
+    ikunTheme,
+    pddTheme,
+    owTheme,
+];
 
 // 最大关卡
 const maxLevel = 50;
