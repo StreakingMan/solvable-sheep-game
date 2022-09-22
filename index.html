@@ -31,8 +31,8 @@
             // 如果您基于此项目二创，可以删除以下代码
             // 否则请标明原仓库地址
             setTimeout(()=>{
-                const {host} = location
-                if(host!=='localhost'&&!host.endsWith('streakingman.com')){
+                const {hostname} = location
+                if(hostname!=='localhost'&&!hostname.endsWith('streakingman.com')){
                     const a = document.createElement('a')
                     a.setAttribute('href','https://github.com/StreakingMan/solvable-sheep-game')
                     a.setAttribute('target','_blank')

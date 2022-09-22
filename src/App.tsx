@@ -186,11 +186,14 @@ const App: FC = () => {
 
     // 主题切换
     useEffect(() => {
-        setBgmOn(false);
+        // 初始化时不加载bgm
+        if (once) {
+            setBgmOn(false);
+            setTimeout(() => {
+                setBgmOn(true);
+            }, 300);
+        }
         restart();
-        setTimeout(() => {
-            setBgmOn(true);
-        }, 300);
     }, [curTheme]);
 
     // 队列区排序
