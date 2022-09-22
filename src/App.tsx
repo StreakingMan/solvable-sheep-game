@@ -267,6 +267,11 @@ const App: FC = () => {
             find.x = 100 * Math.floor(8 * Math.random());
             find.y = 700;
             checkCover(scene);
+            // 音效
+            if (soundRefMap.current?.['sound-shift']) {
+                soundRefMap.current['sound-shift'].currentTime = 0;
+                soundRefMap.current['sound-shift'].play();
+            }
         }
     };
 
@@ -281,12 +286,22 @@ const App: FC = () => {
             setQueue(updateQueue);
             find.status = 0;
             checkCover(scene);
+            // 音效
+            if (soundRefMap.current?.['sound-undo']) {
+                soundRefMap.current['sound-undo'].currentTime = 0;
+                soundRefMap.current['sound-undo'].play();
+            }
         }
     };
 
     // 洗牌
     const wash = () => {
         checkCover(washScene(level, scene));
+        // 音效
+        if (soundRefMap.current?.['sound-wash']) {
+            soundRefMap.current['sound-wash'].currentTime = 0;
+            soundRefMap.current['sound-wash'].play();
+        }
     };
 
     // 加大难度
@@ -324,7 +339,6 @@ const App: FC = () => {
 
         // 点击音效
         if (soundRefMap.current) {
-            console.log(soundRefMap.current, symbol.icon);
             soundRefMap.current[symbol.icon.clickSound].currentTime = 0;
             soundRefMap.current[symbol.icon.clickSound].play();
         }
@@ -404,6 +418,8 @@ const App: FC = () => {
                 </select>
                 Level: {level}
             </h3>
+
+            {curTheme.desc}
 
             <div className="app">
                 <div className="scene-container">
