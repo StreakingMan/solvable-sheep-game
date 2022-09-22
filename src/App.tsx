@@ -460,10 +460,7 @@ const App: FC = () => {
                 <audio
                     ref={bgmRef}
                     loop
-                    src={
-                        curTheme?.bgm ||
-                        'https://m801.music.126.net/20220922030546/df0846137367467abe2db289039f8366/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/19067363628/3d46/09ce/8ab2/a148d8475eb9d4020b6f154f062bd629.mp3'
-                    }
+                    src={curTheme?.bgm || '/sound-disco.mp3'}
                 />
             </button>
 
