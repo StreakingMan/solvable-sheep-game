@@ -15,7 +15,8 @@ import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
 import { ikunTheme } from './themes/ikun';
 import { pddTheme } from './themes/pdd';
-import { BeiAn } from './themes/BeiAn';
+import { BeiAn } from './BeiAn';
+import { Info } from './Info';
 
 // 主题
 const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme, pddTheme];
@@ -459,11 +460,7 @@ const App: FC = () => {
                 {/*<button onClick={test}>测试</button>*/}
             </div>
 
-            <p>
-                <span id="busuanzi_container_site_pv">
-                    累计访问：<span id="busuanzi_value_site_pv"></span>次
-                </span>
-            </p>
+            <Info />
 
             <BeiAn />
 
