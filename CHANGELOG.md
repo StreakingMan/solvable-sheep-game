@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.2...v0.0.3) (2022-09-22)
+
+
+### Features
+
+* 优化洗牌算法为O(n)的洗牌算法 ([8b3960e](https://github.com/StreakingMan/solvable-sheep-game/commit/8b3960e9762441246de2320252aceca505076e2c))
+
+
+### Bug Fixes
+
+* bgm加载时机调整 ([f0e2caf](https://github.com/StreakingMan/solvable-sheep-game/commit/f0e2caf7a7124981eef6bc4ff9ed7b459893c102))
+* host判断 ([d1d7c6b](https://github.com/StreakingMan/solvable-sheep-game/commit/d1d7c6b2f06e3d67a4edf6cabc14a3fa419d5d93))
+
 ### [0.0.2](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.1...v0.0.2) (2022-09-20)
 
 
