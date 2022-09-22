@@ -14,10 +14,11 @@ import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
 import { ikunTheme } from './themes/ikun';
+import { pddTheme } from './themes/pdd';
 import { BeiAn } from './themes/BeiAn';
 
 // 主题
-const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme];
+const themes = [defaultTheme, fishermanTheme, jinlunTheme, ikunTheme, pddTheme];
 
 // 最大关卡
 const maxLevel = 50;
@@ -266,6 +267,11 @@ const App: FC = () => {
             find.x = 100 * Math.floor(8 * Math.random());
             find.y = 700;
             checkCover(scene);
+            // 音效
+            if (soundRefMap.current?.['sound-shift']) {
+                soundRefMap.current['sound-shift'].currentTime = 0;
+                soundRefMap.current['sound-shift'].play();
+            }
         }
     };
 
@@ -280,12 +286,22 @@ const App: FC = () => {
             setQueue(updateQueue);
             find.status = 0;
             checkCover(scene);
+            // 音效
+            if (soundRefMap.current?.['sound-undo']) {
+                soundRefMap.current['sound-undo'].currentTime = 0;
+                soundRefMap.current['sound-undo'].play();
+            }
         }
     };
 
     // 洗牌
     const wash = () => {
         checkCover(washScene(level, scene));
+        // 音效
+        if (soundRefMap.current?.['sound-wash']) {
+            soundRefMap.current['sound-wash'].currentTime = 0;
+            soundRefMap.current['sound-wash'].play();
+        }
     };
 
     // 加大难度
@@ -323,7 +339,6 @@ const App: FC = () => {
 
         // 点击音效
         if (soundRefMap.current) {
-            console.log(soundRefMap.current, symbol.icon);
             soundRefMap.current[symbol.icon.clickSound].currentTime = 0;
             soundRefMap.current[symbol.icon.clickSound].play();
         }
@@ -384,7 +399,7 @@ const App: FC = () => {
 
     return (
         <>
-            <h2>有解的羊了个羊(DEMO)</h2>
+            <h2>{curTheme.title}</h2>
             <h6>
                 <GithubIcon />
             </h6>
@@ -403,6 +418,8 @@ const App: FC = () => {
                 </select>
                 Level: {level}
             </h3>
+
+            {curTheme.desc}
 
             <div className="app">
                 <div className="scene-container">

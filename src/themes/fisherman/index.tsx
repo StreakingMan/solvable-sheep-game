@@ -16,6 +16,7 @@ const fishes = Object.entries(imagesUrls).map(([key, value]) => ({
 }));
 
 export const fishermanTheme: Theme<DefaultSoundNames> = {
+    title: '🐟鱼了个鱼🐟',
     name: '钓鱼佬',
     icons: fishes.map(({ name, content }) => ({
         name,
