@@ -62,7 +62,7 @@ const makeScene: (level: number, icons: Icon[]) => Scene = (level, icons) => {
             isCover: false,
             status: 0,
             icon,
-            id: randomString(4),
+            id: randomString(6),
             x: column * 100 + offset,
             y: row * 100 + offset,
         });
@@ -201,11 +201,13 @@ const App: FC = () => {
     // 队列区排序
     useEffect(() => {
         const cache: Record<string, MySymbol[]> = {};
+        // 加上索引，避免以id字典序来排
+        const idx = 0;
         for (const symbol of queue) {
-            if (cache[symbol.icon.name]) {
-                cache[symbol.icon.name].push(symbol);
+            if (cache[idx + symbol.icon.name]) {
+                cache[idx + symbol.icon.name].push(symbol);
             } else {
-                cache[symbol.icon.name] = [symbol];
+                cache[idx + symbol.icon.name] = [symbol];
             }
         }
         const temp = [];
