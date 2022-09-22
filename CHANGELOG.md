@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.3...v0.0.4) (2022-09-22)
+
+
+### Features
+
+* **themes:** 骚猪主题 ([30bb7a0](https://github.com/StreakingMan/solvable-sheep-game/commit/30bb7a0277bfe83b9c6493b4fa98fa7baabcf06a))
+* **themes:** 骚猪主题图片补充 ([d2be6ca](https://github.com/StreakingMan/solvable-sheep-game/commit/d2be6ca8a5223745029bcfccf54109056a007844))
+* **themes:** 骚猪主题音效 ([c578b89](https://github.com/StreakingMan/solvable-sheep-game/commit/c578b897031b2b5dbcbda0fb5c2c38804636b50c))
+
+
+### Bug Fixes
+
+* **themes:** pdd主题图片压缩，bgm使用外链 ([7368725](https://github.com/StreakingMan/solvable-sheep-game/commit/7368725b5217705a780461d79e3eaf5340e9ebba))
+
 ### [0.0.3](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.2...v0.0.3) (2022-09-22)
 
 
