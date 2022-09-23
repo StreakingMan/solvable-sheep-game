@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.5...v0.0.6) (2022-09-23)
+
+
+### Features
+
+* 根据路径区分主题 ([b687d53](https://github.com/StreakingMan/solvable-sheep-game/commit/b687d537332b1b51a7c40bf286d8858ed68f3c58))
+
 ### [0.0.5](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.4...v0.0.5) (2022-09-22)
 
 
