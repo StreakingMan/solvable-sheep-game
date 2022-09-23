@@ -15,3 +15,9 @@ export const waitTimeout: (timeout: number) => Promise<void> = (timeout) => {
         }, timeout);
     });
 };
+
+export const parseThemePath: (url: string) => string = (url) => {
+    const urlObj = new URL(url);
+    const params = urlObj.searchParams;
+    return decodeURIComponent(params.get('theme') || '默认');
+};

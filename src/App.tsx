@@ -7,20 +7,20 @@ import React, {
 } from 'react';
 
 import './App.css';
-import { GithubIcon } from './GithubIcon';
-import { randomString, waitTimeout } from './utils';
+import { GithubIcon } from './components/GithubIcon';
+import { parseThemePath, randomString, waitTimeout } from './utils';
 import { defaultTheme } from './themes/default';
 import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
 import { jinlunTheme } from './themes/jinlun';
 import { ikunTheme } from './themes/ikun';
 import { pddTheme } from './themes/pdd';
-import { BeiAn } from './BeiAn';
-import { Info } from './Info';
+import { BeiAn } from './components/BeiAn';
+import { Info } from './components/Info';
 import { owTheme } from './themes/ow';
 
 // 主题
-const themes = [
+const themes: Theme<any>[] = [
     defaultTheme,
     fishermanTheme,
     jinlunTheme,
@@ -165,8 +165,14 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
     );
 };
 
+// 从url初始化主题
+const themeFromPath: string = parseThemePath(location.href);
+
 const App: FC = () => {
-    const [curTheme, setCurTheme] = useState<Theme<any>>(defaultTheme);
+    const [curTheme, setCurTheme] = useState<Theme<any>>(
+        themes.find((theme) => theme.name === themeFromPath) ?? defaultTheme
+    );
+
     const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
     const [level, setLevel] = useState<number>(1);
     const [queue, setQueue] = useState<MySymbol[]>([]);
@@ -204,6 +210,12 @@ const App: FC = () => {
             }, 300);
         }
         restart();
+        // 更改路径
+        history.pushState(
+            {},
+            curTheme.title,
+            `/?theme=${encodeURIComponent(curTheme.name)}`
+        );
     }, [curTheme]);
 
     // 队列区排序
@@ -416,7 +428,11 @@ const App: FC = () => {
             </h6>
             <h3 className="flex-container flex-center">
                 主题:
+                {/*TODO themes维护方式调整*/}
                 <select
+                    value={themes.findIndex(
+                        (theme) => theme.name === curTheme.name
+                    )}
                     onChange={(e) =>
                         setCurTheme(themes[Number(e.target.value)])
                     }
