@@ -29,8 +29,8 @@
 -   关卡：50 关玩到爽，可直接跳
 -   主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
     骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、
-    ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />、
-    OW<img style="width:36px" src="src/themes/ow/images/ow.png" />主题等（露出黑脚）
+    ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />（露出黑脚）、
+    OW<img style="width:36px" src="src/themes/ow/images/ow.png" />主题等
 
 开心就好 😄
 
@@ -54,6 +54,8 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [ ] ~~点击时的缓冲队列，优化交互动画效果~~
 -   [x] 该游戏似乎涉嫌抄袭，考证后补充来源说明
 -   [ ] 桌面应用
+-   [ ] 路径区分主题
+-   [ ] 主题自定义
 
 ## 二次开发
 
