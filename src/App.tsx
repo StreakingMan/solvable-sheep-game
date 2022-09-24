@@ -6,9 +6,14 @@ import React, {
     useState,
 } from 'react';
 
-import './App.css';
+import './App.scss';
 import { GithubIcon } from './components/GithubIcon';
-import { parseThemePath, randomString, waitTimeout } from './utils';
+import {
+    parsePathCustomTheme,
+    parsePathThemeName,
+    randomString,
+    waitTimeout,
+} from './utils';
 import { defaultTheme } from './themes/default';
 import { Icon, Theme } from './themes/interface';
 import { fishermanTheme } from './themes/fisherman';
@@ -18,9 +23,10 @@ import { pddTheme } from './themes/pdd';
 import { BeiAn } from './components/BeiAn';
 import { Info } from './components/Info';
 import { owTheme } from './themes/ow';
+import { ConfigDialog } from './components/ConfigDialog';
 
-// 主题
-const themes: Theme<any>[] = [
+// 内置主题
+const builtInThemes: Theme<any>[] = [
     defaultTheme,
     fishermanTheme,
     jinlunTheme,
@@ -156,8 +162,15 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
                 style={{ opacity: isCover ? 0.5 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
-                    <i>{icon.content}</i>
+                    icon.content.startsWith('http') ? (
+                        /*图片外链*/
+                        <img src={icon.content} alt="" />
+                    ) : (
+                        /*字符表情*/
+                        <i>{icon.content}</i>
+                    )
                 ) : (
+                    /*ReactNode*/
                     icon.content
                 )}
             </div>
@@ -166,12 +179,12 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 };
 
 // 从url初始化主题
-const themeFromPath: string = parseThemePath(location.href);
+const themeFromPath: string = parsePathThemeName(location.href);
+const customThemeFromPath = parsePathCustomTheme(location.href);
 
 const App: FC = () => {
-    const [curTheme, setCurTheme] = useState<Theme<any>>(
-        themes.find((theme) => theme.name === themeFromPath) ?? defaultTheme
-    );
+    const [curTheme, setCurTheme] = useState<Theme<any>>(defaultTheme);
+    const [themes, setThemes] = useState<Theme<any>[]>(builtInThemes);
 
     const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
     const [level, setLevel] = useState<number>(1);
@@ -182,6 +195,7 @@ const App: FC = () => {
     const [finished, setFinished] = useState<boolean>(false);
     const [tipText, setTipText] = useState<string>('');
     const [animating, setAnimating] = useState<boolean>(false);
+    const [configDialogShow, setConfigDialogShow] = useState<boolean>(false);
 
     // 音效
     const soundRefMap = useRef<Record<string, HTMLAudioElement>>({});
@@ -200,6 +214,21 @@ const App: FC = () => {
         }
     }, [bgmOn]);
 
+    // 初始化主题
+    useEffect(() => {
+        if (customThemeFromPath) {
+            // 自定义主题
+            setThemes([...themes, customThemeFromPath]);
+            setCurTheme(customThemeFromPath);
+        } else if (themeFromPath) {
+            // 内置主题
+            setCurTheme(
+                themes.find((theme) => theme.name === themeFromPath) ??
+                    defaultTheme
+            );
+        }
+    }, []);
+
     // 主题切换
     useEffect(() => {
         // 初始化时不加载bgm
@@ -210,7 +239,8 @@ const App: FC = () => {
             }, 300);
         }
         restart();
-        // 更改路径
+        // 更改路径query
+        if (customThemeFromPath) return;
         history.pushState(
             {},
             curTheme.title,
@@ -420,12 +450,17 @@ const App: FC = () => {
         setAnimating(false);
     };
 
+    // 自定义整活
+    const customZhenghuo = (theme: Theme<string>) => {
+        setCurTheme(theme);
+    };
+
     return (
         <>
             <h2>{curTheme.title}</h2>
-            <h6>
+            <p>
                 <GithubIcon />
-            </h6>
+            </p>
             <h3 className="flex-container flex-center">
                 主题:
                 {/*TODO themes维护方式调整*/}
@@ -486,16 +521,31 @@ const App: FC = () => {
                 {/*<button onClick={test}>测试</button>*/}
             </div>
 
+            <button
+                onClick={() => setConfigDialogShow(true)}
+                className="zhenghuo-button primary"
+            >
+                我要整活
+            </button>
+
             <Info />
 
             <BeiAn />
 
+            {/*提示弹窗*/}
             {finished && (
                 <div className="modal">
                     <h1>{tipText}</h1>
                     <button onClick={restart}>再来一次</button>
                 </div>
             )}
+
+            {/*自定义主题弹窗*/}
+            <ConfigDialog
+                show={configDialogShow}
+                closeMethod={() => setConfigDialogShow(false)}
+                previewMethod={customZhenghuo}
+            />
 
             {/*bgm*/}
             <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>

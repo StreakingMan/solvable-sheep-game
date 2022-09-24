@@ -12,6 +12,8 @@
         "release": "standard-version --commit-all"
     },
     "dependencies": {
+        "classnames": "^2.3.2",
+        "qrcode.react": "^3.1.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
@@ -30,6 +32,7 @@
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1",
+        "sass": "^1.55.0",
         "standard-version": "^9.5.0",
         "stylelint": "^14.11.0",
         "stylelint-config-prettier-scss": "^0.0.1",

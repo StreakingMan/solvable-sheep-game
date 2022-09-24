@@ -34,9 +34,15 @@ h1 {
 }
 
 select {
-    border: 2px solid gray;
+    border: 1px solid gray;
     border-radius: 4px;
     padding: 4px 8px;
+}
+
+input {
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 8px 12px;
 }
 
 button {
@@ -51,15 +57,15 @@ button {
     transition: border-color 0.25s;
     word-break: keep-all;
     outline: none;
-}
 
-button:hover {
-    border-color: #646cff;
-}
+    &.primary {
+        background-color: #646cff;
+        color: white;
+    }
 
-button:focus,
-button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+    &:hover:not(.primary) {
+        border-color: #646cff;
+    }
 }
 
 @media (prefers-color-scheme: light) {
