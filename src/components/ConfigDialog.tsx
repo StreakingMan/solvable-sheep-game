@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Icon, Sound, Theme } from '../themes/interface';
 import { defaultSounds } from '../themes/default';
 import { QRCodeSVG } from 'qrcode.react';
+import Bmob from 'hydrogen-js-sdk';
 
 const STORAGEKEY = 'customTheme';
 let storageTheme: Theme<any>;
@@ -78,7 +79,7 @@ export const ConfigDialog: FC<{
 
     // 音效保存
     const saveSound = (sound: Sound, idx?: number) => {
-        if (!sound.src.startsWith('http')) return '请输入http/https链接';
+        if (!sound.src.startsWith('https')) return '请输入https链接';
         const newSounds = sounds.slice();
         const newIcons = icons.slice();
         if (idx != null) {
@@ -123,9 +124,9 @@ export const ConfigDialog: FC<{
     const saveIcon = (icon: Icon, idx?: number) => {
         if (
             typeof icon.content !== 'string' ||
-            !icon.content?.startsWith('http')
+            !icon.content?.startsWith('https')
         )
-            return '请输入http/https链接';
+            return '请输入https链接';
         const newIcons = icons.slice();
         if (idx != null) {
             // 编辑
@@ -202,8 +203,8 @@ export const ConfigDialog: FC<{
     // 生成主题
     const generateTheme: () => Promise<Theme<any>> = async () => {
         const { title, desc, bgm } = customThemeInfo;
-        if (bgm && bgm.startsWith('http'))
-            return Promise.reject('bgm请输入http/https链接');
+        if (bgm && bgm.startsWith('https'))
+            return Promise.reject('bgm请输入https链接');
         if (!title) return Promise.reject('请填写标题');
         if (icons.length !== 10) return Promise.reject('图片素材需要提供10张');
 
@@ -258,10 +259,18 @@ export const ConfigDialog: FC<{
             .then((theme) => {
                 const stringify = JSON.stringify(theme);
                 localStorage.setItem(STORAGEKEY, stringify);
-                const link = `${
-                    location.origin
-                }?customTheme=${encodeURIComponent(stringify)}`;
-                setGenLink(link);
+                const query = Bmob.Query('config');
+                query.set('content', stringify);
+                query
+                    .save()
+                    .then((res) => {
+                        //@ts-ignore
+                        const link = `${location.origin}?customTheme=${res.objectId}`;
+                        setGenLink(link);
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                    });
             })
             .catch((e) => {
                 setConfigError(e);
@@ -302,8 +311,8 @@ export const ConfigDialog: FC<{
             )}
         >
             <p>
-                目前自定义仅支持配置链接，可网上自行搜索素材，或者将自己处理好的素材上传第三方存储服务上再复制外链，安利一波七牛云（七牛云打钱）对象存储，
-                白嫖额度基本够用（<strong>但还是需要注意压缩素材</strong>）
+                目前自定义仅支持配置https链接，可网上自行搜索素材复制链接，或者将自己处理好的素材上传第三方存储服务/图床上再复制外链
+                （想白嫖的话自行搜索【免费图床】【免费对象存储】【免费mp3外链】等）
             </p>
 
             {/*基本配置*/}
@@ -339,7 +348,7 @@ export const ConfigDialog: FC<{
                 背景音乐：
                 <input
                     value={customThemeInfo.bgm}
-                    placeholder="可选 http(s)://example.com/src.audioOrImage"
+                    placeholder="可选 https://example.com/src.audioOrImage"
                     className="flex-grow"
                     onChange={(e) =>
                         setCustomThemeInfo({
@@ -373,7 +382,7 @@ export const ConfigDialog: FC<{
                     />
                 )}
             </div>
-            <h4>图片素材 {icons.length}/10</h4>
+            <h4>图片素材 {icons.length}/10 </h4>
             <div className="flex-container">
                 {icons.map((icon, idx) => (
                     <div className="flex-container flex-column" key={icon.name}>
@@ -440,7 +449,7 @@ export const ConfigDialog: FC<{
                     <input
                         ref={(ref) => ref && (inputRefMap.current.link = ref)}
                         className="flex-grow"
-                        placeholder="http(s)://example.com/src.audioOrImage"
+                        placeholder="https://example.com/src.audioOrImage"
                         onChange={(e) =>
                             setAddDialog({
                                 ...addDialog,

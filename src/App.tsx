@@ -9,7 +9,7 @@ import React, {
 import './App.scss';
 import { GithubIcon } from './components/GithubIcon';
 import {
-    parsePathCustomTheme,
+    parsePathCustomThemeId,
     parsePathThemeName,
     randomString,
     waitTimeout,
@@ -24,6 +24,7 @@ import { BeiAn } from './components/BeiAn';
 import { Info } from './components/Info';
 import { owTheme } from './themes/ow';
 import { ConfigDialog } from './components/ConfigDialog';
+import Bmob from 'hydrogen-js-sdk';
 
 // 内置主题
 const builtInThemes: Theme<any>[] = [
@@ -159,7 +160,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
         >
             <div
                 className="symbol-inner"
-                style={{ opacity: isCover ? 0.5 : 1 }}
+                style={{ opacity: isCover ? 0.4 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
                     icon.content.startsWith('http') ? (
@@ -180,7 +181,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 
 // 从url初始化主题
 const themeFromPath: string = parsePathThemeName(location.href);
-const customThemeFromPath = parsePathCustomTheme(location.href);
+const customThemeIdFromPath = parsePathCustomThemeId(location.href);
 
 const App: FC = () => {
     const [curTheme, setCurTheme] = useState<Theme<any>>(defaultTheme);
@@ -216,10 +217,25 @@ const App: FC = () => {
 
     // 初始化主题
     useEffect(() => {
-        if (customThemeFromPath) {
+        if (customThemeIdFromPath) {
             // 自定义主题
-            setThemes([...themes, customThemeFromPath]);
-            setCurTheme(customThemeFromPath);
+            Bmob.Query('config')
+                .get(customThemeIdFromPath)
+                .then((res) => {
+                    // @ts-ignore
+                    const { content } = res;
+
+                    try {
+                        const customTheme = JSON.parse(content);
+                        setThemes([...themes, customTheme]);
+                        setCurTheme(customTheme);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
         } else if (themeFromPath) {
             // 内置主题
             setCurTheme(
@@ -240,7 +256,7 @@ const App: FC = () => {
         }
         restart();
         // 更改路径query
-        if (customThemeFromPath) return;
+        if (customThemeIdFromPath) return;
         history.pushState(
             {},
             curTheme.title,

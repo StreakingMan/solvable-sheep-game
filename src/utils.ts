@@ -26,22 +26,8 @@ export const parsePathThemeName: (url: string) => string = (url) => {
 };
 
 // 从url解析自定义主题JSON
-export const parsePathCustomTheme: (url: string) => Theme<string> | null = (
-    url
-) => {
+export const parsePathCustomThemeId: (url: string) => string = (url) => {
     const urlObj = new URL(url);
     const params = urlObj.searchParams;
-    const customThemeJsonString = params.get('customTheme');
-    if (!customThemeJsonString) return null;
-    try {
-        const parseTheme = JSON.parse(
-            decodeURIComponent(customThemeJsonString)
-        );
-        // TODO 解析内容校验
-        console.log(parseTheme);
-        return parseTheme;
-    } catch (e) {
-        console.log(e);
-        return null;
-    }
+    return params.get('customTheme') || '';
 };
