@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.6...v0.0.7) (2022-09-24)
+
+
+### Features
+
+* 接入Bmob储存自定义配置 ([f6681ca](https://github.com/StreakingMan/solvable-sheep-game/commit/f6681cabb0a6090848456352facd2f36772e506e))
+* 生成二维码 ([f36c99b](https://github.com/StreakingMan/solvable-sheep-game/commit/f36c99b3858a2913b4383ba4dd58d144405f79ac))
+* 自定义主题 ([e35ddfa](https://github.com/StreakingMan/solvable-sheep-game/commit/e35ddfa44e0e7ef87f5cec48b9c1404109c14584))
+
 ### [0.0.6](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.5...v0.0.6) (2022-09-23)
 
 
