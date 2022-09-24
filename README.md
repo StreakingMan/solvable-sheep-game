@@ -27,14 +27,16 @@
 -   撤销：撤销上一次操作，无限次数
 -   洗牌：哗啦哗啦，无限次数
 -   关卡：50 关玩到爽，可直接跳
--   主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
+-   内置主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
     骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、
     ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />（露出黑脚）、
     OW<img style="width:36px" src="src/themes/ow/images/ow.png" />主题等
+-   自定义主题：自定义图片和音效，快速整活
 
 开心就好 😄
 
 ![preview.png](preview.png)
+![preview2.png](preview2.png)
 
 ## Contribution
 
@@ -55,7 +57,7 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [x] 该游戏似乎涉嫌抄袭，考证后补充来源说明
 -   [ ] 桌面应用
 -   [x] 路径区分主题
--   [ ] 主题自定义
+-   [x] 主题自定义
 
 ## 二次开发
 
