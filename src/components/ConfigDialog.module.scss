@@ -1,5 +1,6 @@
 .dialog {
     text-align: left;
+    overflow-y: auto;
 
     &Wrapper {
         z-index: 10;
@@ -15,7 +16,7 @@
         transition: 0.3s;
         padding: 16px;
         display: flex;
-        flex-direction: column;
+        flex-flow: column nowrap !important;
 
         @media screen and (min-width: 1024px) {
             margin: 36px 0;
@@ -49,9 +50,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         &Empty::before {
             content: '+';
+            color: #999;
             font-size: 2em;
         }
 
@@ -92,6 +95,7 @@
         background-color: #f9f9f9;
         font-size: 1.5em;
         color: #999;
+        cursor: pointer;
 
         span {
             transform: rotate(45deg);

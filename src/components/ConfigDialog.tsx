@@ -3,8 +3,10 @@ import style from './ConfigDialog.module.scss';
 import classNames from 'classnames';
 import { Icon, Sound, Theme } from '../themes/interface';
 import { defaultSounds } from '../themes/default';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 import Bmob from 'hydrogen-js-sdk';
+import { captureElement } from '../utils';
+import { copy } from 'clipboard';
 
 const STORAGEKEY = 'customTheme';
 let storageTheme: Theme<any>;
@@ -254,7 +256,6 @@ export const ConfigDialog: FC<{
     // 生成二维码和链接
     const onGenQrLinkClick = () => {
         setConfigError('');
-        setGenLink('');
         generateTheme()
             .then((theme) => {
                 const stringify = JSON.stringify(theme);
@@ -274,6 +275,7 @@ export const ConfigDialog: FC<{
             })
             .catch((e) => {
                 setConfigError(e);
+                setGenLink('');
             });
     };
 
@@ -405,7 +407,23 @@ export const ConfigDialog: FC<{
             </div>
 
             <div className="flex-spacer" />
-            {genLink && <textarea value={genLink} />}
+            {genLink && (
+                <div className="flex-container flex-column">
+                    <QRCodeCanvas id="qrCode" value={genLink} size={300} />
+                    <button
+                        onClick={() =>
+                            captureElement('qrCode', customThemeInfo.title)
+                        }
+                        className="primary"
+                    >
+                        下载二维码
+                    </button>
+                    <div>{genLink}</div>
+                    <button onClick={() => copy(genLink)} className="primary">
+                        复制链接
+                    </button>
+                </div>
+            )}
             {configError && <div className={style.error}>{configError}</div>}
             <div className="flex-container">
                 <button className="flex-grow" onClick={onPreviewClick}>

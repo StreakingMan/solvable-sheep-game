@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import './App.scss';
-import { GithubIcon } from './components/GithubIcon';
+import { PersonalInfo } from './components/PersonalInfo';
 import {
     parsePathCustomThemeId,
     parsePathThemeName,
@@ -475,7 +475,7 @@ const App: FC = () => {
         <>
             <h2>{curTheme.title}</h2>
             <p>
-                <GithubIcon />
+                <PersonalInfo />
             </p>
             <h3 className="flex-container flex-center">
                 主题:
