@@ -205,7 +205,7 @@ export const ConfigDialog: FC<{
     // 生成主题
     const generateTheme: () => Promise<Theme<any>> = async () => {
         const { title, desc, bgm } = customThemeInfo;
-        if (bgm && bgm.startsWith('https'))
+        if (bgm && !bgm.startsWith('https'))
             return Promise.reject('bgm请输入https链接');
         if (!title) return Promise.reject('请填写标题');
         if (icons.length !== 10) return Promise.reject('图片素材需要提供10张');
