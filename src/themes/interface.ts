@@ -20,6 +20,8 @@ export interface Theme<SoundNames> {
     desc?: ReactNode;
     name: string;
     bgm?: string;
+    background?: string;
+    backgroundBlur?: boolean;
     pure?: boolean;
     icons: Icon<SoundNames>[];
     sounds: Sound<SoundNames>[];

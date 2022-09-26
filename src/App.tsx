@@ -230,7 +230,6 @@ const App: FC = () => {
                 .then((res) => {
                     // @ts-ignore
                     const { content } = res;
-
                     try {
                         const customTheme = JSON.parse(content);
                         if (!customTheme.pure) {
@@ -483,6 +482,16 @@ const App: FC = () => {
 
     return (
         <>
+            {curTheme.background && (
+                <img
+                    alt="background"
+                    src={curTheme.background}
+                    className="background"
+                    style={{
+                        filter: curTheme.backgroundBlur ? 'blur(8px)' : 'none',
+                    }}
+                />
+            )}
             <h2>
                 {curTheme.title}{' '}
                 {curTheme.title === CUSTOM_THEME_FAIL_TIP && (

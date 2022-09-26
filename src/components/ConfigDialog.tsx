@@ -38,7 +38,9 @@ export const ConfigDialog: FC<{
         title: string;
         desc?: string;
         bgm?: string;
-    }>({ title: '', desc: '', bgm: '' });
+        background?: string;
+        backgroundBlur?: boolean;
+    }>({ title: '', desc: '', bgm: '', background: '', backgroundBlur: false });
     const [addDialog, setAddDialog] = useState<{
         show: boolean;
         type: 'sound' | 'icon';
@@ -57,7 +59,15 @@ export const ConfigDialog: FC<{
     // 初始化
     useEffect(() => {
         if (storageTheme) {
-            const { title, desc, bgm, sounds, icons } = storageTheme;
+            const {
+                title,
+                desc = '',
+                bgm = '',
+                sounds,
+                icons,
+                background = '',
+                backgroundBlur = false,
+            } = storageTheme;
             setSounds(
                 sounds.filter(
                     (s) => !['triple', 'button-click'].includes(s.name)
@@ -76,6 +86,8 @@ export const ConfigDialog: FC<{
                 // @ts-ignore
                 desc,
                 bgm,
+                background,
+                backgroundBlur,
             });
         }
     }, []);
@@ -205,9 +217,12 @@ export const ConfigDialog: FC<{
 
     // 生成主题
     const generateTheme: () => Promise<Theme<any>> = async () => {
-        const { title, desc, bgm } = customThemeInfo;
+        const { title, desc, bgm, background, backgroundBlur } =
+            customThemeInfo;
         if (bgm && !bgm.startsWith('https'))
-            return Promise.reject('bgm请输入https链接');
+            return Promise.reject('背景音乐请输入https链接');
+        if (background && !background.startsWith('https'))
+            return Promise.reject('背景图片请输入https链接');
         if (!title) return Promise.reject('请填写标题');
         if (icons.length !== 10) return Promise.reject('图片素材需要提供10张');
 
@@ -235,6 +250,8 @@ export const ConfigDialog: FC<{
             title,
             desc,
             bgm,
+            background,
+            backgroundBlur,
             icons: customIcons,
             sounds: customSounds,
         };
@@ -305,6 +322,7 @@ export const ConfigDialog: FC<{
         );
     };
 
+    // TODO HTML有点臭长了，待优化
     // @ts-ignore
     return (
         <div
@@ -356,7 +374,7 @@ export const ConfigDialog: FC<{
                 背景音乐：
                 <input
                     value={customThemeInfo.bgm}
-                    placeholder="可选 https://example.com/src.audioOrImage"
+                    placeholder="可选 https://example.com/src.audio"
                     className="flex-grow"
                     onChange={(e) =>
                         setCustomThemeInfo({
@@ -365,6 +383,35 @@ export const ConfigDialog: FC<{
                         })
                     }
                 />
+            </h4>
+            <h4 className="flex-container flex-center">
+                背景图片：
+                <input
+                    value={customThemeInfo.background}
+                    placeholder="可选 https://example.com/src.image"
+                    className="flex-grow"
+                    onChange={(e) =>
+                        setCustomThemeInfo({
+                            ...customThemeInfo,
+                            background: e.target.value,
+                        })
+                    }
+                />
+                {customThemeInfo?.background?.startsWith('https') && (
+                    <>
+                        毛玻璃效果：
+                        <input
+                            checked={customThemeInfo.backgroundBlur}
+                            onChange={(e) =>
+                                setCustomThemeInfo({
+                                    ...customThemeInfo,
+                                    backgroundBlur: e.target.checked,
+                                })
+                            }
+                            type="checkbox"
+                        />
+                    </>
+                )}
             </h4>
 
             <h4>音效素材</h4>
