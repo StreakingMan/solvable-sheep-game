@@ -399,7 +399,7 @@ export const ConfigDialog: FC<{
                 />
                 {customThemeInfo?.background?.startsWith('https') && (
                     <>
-                        毛玻璃效果：
+                        毛玻璃：
                         <input
                             checked={customThemeInfo.backgroundBlur}
                             onChange={(e) =>

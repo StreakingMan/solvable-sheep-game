@@ -215,9 +215,9 @@ const App: FC = () => {
         if (!bgmRef.current) return;
         if (bgmOn) {
             bgmRef.current.volume = 0.5;
-            bgmRef.current.play();
+            bgmRef.current.play().then();
         } else {
-            bgmRef.current?.pause();
+            bgmRef.current.pause();
         }
     }, [bgmOn]);
 
@@ -416,9 +416,13 @@ const App: FC = () => {
         symbol.status = 1;
 
         // 点击音效
-        if (soundRefMap.current) {
+        // 不知道为啥敲可选链会提示错误。。。
+        if (
+            soundRefMap.current &&
+            soundRefMap.current[symbol.icon.clickSound]
+        ) {
             soundRefMap.current[symbol.icon.clickSound].currentTime = 0;
-            soundRefMap.current[symbol.icon.clickSound].play();
+            soundRefMap.current[symbol.icon.clickSound].play().then();
         }
 
         let updateQueue = queue.slice();
@@ -440,11 +444,16 @@ const App: FC = () => {
                 if (find) {
                     find.status = 2;
                     // 三连音效
-                    if (soundRefMap.current) {
+                    if (
+                        soundRefMap.current &&
+                        soundRefMap.current[symbol.icon.tripleSound]
+                    ) {
                         soundRefMap.current[
                             symbol.icon.tripleSound
                         ].currentTime = 0;
-                        soundRefMap.current[symbol.icon.tripleSound].play();
+                        soundRefMap.current[symbol.icon.tripleSound]
+                            .play()
+                            .then();
                     }
                 }
             }
