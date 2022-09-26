@@ -52,6 +52,7 @@ export const ConfigDialog: FC<{
         error: '',
     });
     const [genLink, setGenLink] = useState<string>('');
+    const [pureCount, setPureCount] = useState<number>(0);
 
     // 初始化
     useEffect(() => {
@@ -63,7 +64,7 @@ export const ConfigDialog: FC<{
                 )
             );
             setIcons(
-                storageTheme.icons.map((icon) => {
+                icons.map((icon) => {
                     if (icon.clickSound === 'button-click')
                         icon.clickSound = '';
                     if (icon.tripleSound === 'triple') icon.tripleSound = '';
@@ -229,6 +230,8 @@ export const ConfigDialog: FC<{
 
         const customTheme: Theme<any> = {
             name: `自定义-${title}`,
+            // 恭喜你发现纯净模式彩蛋🎉，点击文字十次可以开启纯净模式
+            pure: pureCount !== 0 && pureCount % 10 === 0,
             title,
             desc,
             bgm,
@@ -312,9 +315,12 @@ export const ConfigDialog: FC<{
                 'flex-container flex-container'
             )}
         >
-            <p>
+            <p onClick={() => setPureCount(pureCount + 1)}>
                 目前自定义仅支持配置https链接，可网上自行搜索素材复制链接，或者将自己处理好的素材上传第三方存储服务/图床上再复制外链
                 （想白嫖的话自行搜索【免费图床】【免费对象存储】【免费mp3外链】等）
+                {pureCount != 0 &&
+                    pureCount % 10 === 0 &&
+                    '🎉🎉🎉恭喜发现彩蛋！主题分享后将开启纯净模式～'}
             </p>
 
             {/*基本配置*/}

@@ -20,6 +20,7 @@ export interface Theme<SoundNames> {
     desc?: ReactNode;
     name: string;
     bgm?: string;
+    pure?: boolean;
     icons: Icon<SoundNames>[];
     sounds: Sound<SoundNames>[];
     operateSoundMap?: Record<Operation, SoundNames>;

@@ -1,6 +1,13 @@
 .dialog {
     text-align: left;
     overflow-y: auto;
+    color: rgb(255 255 255 / 87%);
+    background-color: #242424;
+
+    @media (prefers-color-scheme: light) {
+        color: #213547;
+        background-color: #fff;
+    }
 
     &Wrapper {
         z-index: 10;
@@ -12,7 +19,6 @@
         bottom: 0;
         transform: translateX(-50%) translateY(-100%);
         opacity: 0;
-        background-color: white;
         transition: 0.3s;
         padding: 16px;
         display: flex;
@@ -74,9 +80,16 @@
         transform: translateX(-50%) translateY(-60vh);
         opacity: 0;
         transition: 0.3s;
-        background-color: white;
         border-radius: 8px;
         border: 2px solid #535bf2;
+        color: rgb(255 255 255 / 87%);
+        background-color: #242424;
+
+        // 写冗余了，待优化
+        @media (prefers-color-scheme: light) {
+            color: #213547;
+            background-color: #fff;
+        }
 
         &Show {
             transform: translateX(-50%) translateY(-50%);

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import './App.scss';
-import { PersonalInfo } from './components/PersonalInfo';
+import { BilibiliLink, PersonalInfo } from './components/PersonalInfo';
 import {
     parsePathCustomThemeId,
     parsePathThemeName,
@@ -182,10 +182,16 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 // 从url初始化主题
 const themeFromPath: string = parsePathThemeName(location.href);
 const customThemeIdFromPath = parsePathCustomThemeId(location.href);
+const CUSTOM_THEME_FAIL_TIP = '查询配置失败';
 
 const App: FC = () => {
-    const [curTheme, setCurTheme] = useState<Theme<any>>(defaultTheme);
+    const [curTheme, setCurTheme] = useState<Theme<any>>(
+        customThemeIdFromPath
+            ? { title: '', icons: [], sounds: [], name: '' }
+            : defaultTheme
+    );
     const [themes, setThemes] = useState<Theme<any>[]>(builtInThemes);
+    const [pureMode, setPureMode] = useState<boolean>(!!customThemeIdFromPath);
 
     const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
     const [level, setLevel] = useState<number>(1);
@@ -227,13 +233,17 @@ const App: FC = () => {
 
                     try {
                         const customTheme = JSON.parse(content);
-                        setThemes([...themes, customTheme]);
+                        if (!customTheme.pure) {
+                            setPureMode(false);
+                            setThemes([...themes, customTheme]);
+                        }
                         setCurTheme(customTheme);
                     } catch (e) {
                         console.log(e);
                     }
                 })
                 .catch((e) => {
+                    setCurTheme({ ...curTheme, title: CUSTOM_THEME_FAIL_TIP });
                     console.log(e);
                 });
         } else if (themeFromPath) {
@@ -473,31 +483,39 @@ const App: FC = () => {
 
     return (
         <>
-            <h2>{curTheme.title}</h2>
-            <p>
-                <PersonalInfo />
-            </p>
-            <h3 className="flex-container flex-center">
-                主题:
-                {/*TODO themes维护方式调整*/}
-                <select
-                    value={themes.findIndex(
-                        (theme) => theme.name === curTheme.name
-                    )}
-                    onChange={(e) =>
-                        setCurTheme(themes[Number(e.target.value)])
-                    }
-                >
-                    {themes.map((t, idx) => (
-                        <option key={t.name} value={idx}>
-                            {t.name}
-                        </option>
-                    ))}
-                </select>
-                Level: {level}
-            </h3>
+            <h2>
+                {curTheme.title}{' '}
+                {curTheme.title === CUSTOM_THEME_FAIL_TIP && (
+                    <a href="/">返回首页</a>
+                )}
+            </h2>
 
             {curTheme.desc}
+
+            {!pureMode && <PersonalInfo />}
+            <h3 className="flex-container flex-center">
+                {!pureMode && (
+                    <>
+                        主题:
+                        {/*TODO themes维护方式调整*/}
+                        <select
+                            value={themes.findIndex(
+                                (theme) => theme.name === curTheme.name
+                            )}
+                            onChange={(e) =>
+                                setCurTheme(themes[Number(e.target.value)])
+                            }
+                        >
+                            {themes.map((t, idx) => (
+                                <option key={t.name} value={idx}>
+                                    {t.name}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                )}
+                Level: {level}
+            </h3>
 
             <div className="app">
                 <div className="scene-container">
@@ -534,19 +552,22 @@ const App: FC = () => {
                 <button className="flex-grow" onClick={levelUp}>
                     下一关
                 </button>
-                {/*<button onClick={test}>测试</button>*/}
             </div>
 
-            <button
-                onClick={() => setConfigDialogShow(true)}
-                className="zhenghuo-button primary"
-            >
-                我要整活
-            </button>
+            {!pureMode && (
+                <button
+                    onClick={() => setConfigDialogShow(true)}
+                    className="zhenghuo-button primary"
+                >
+                    我要整活
+                </button>
+            )}
 
-            <Info />
+            <Info style={{ display: pureMode ? 'none' : 'block' }} />
 
             <BeiAn />
+
+            {pureMode && <BilibiliLink />}
 
             {/*提示弹窗*/}
             {finished && (

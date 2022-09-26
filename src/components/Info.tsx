@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 
-export const Info: FC = () => {
+export const Info: FC<{ style?: CSSProperties }> = ({ style }) => {
     return (
-        <>
+        <div style={style}>
             <p>
                 <span id="busuanzi_container_site_pv">
                     累计访问：<span id="busuanzi_value_site_pv"></span>次
@@ -44,6 +44,6 @@ export const Info: FC = () => {
                     3 Tiles
                 </a>
             </p>
-        </>
+        </div>
     );
 };
