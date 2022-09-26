@@ -46,10 +46,9 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 
 ## Related Repo
 
-[opendilab](https://github.com/opendilab) 的AI整活！移步[DI-sheep：深度强化学习 + 羊了个羊](https://github.com/opendilab/DI-sheep)
+[opendilab](https://github.com/opendilab) 的 AI 整活！移步[DI-sheep：深度强化学习 + 羊了个羊](https://github.com/opendilab/DI-sheep)
 
-![](https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif)
-
+<img style="width:360px" src="https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif" alt="" />
 
 ## Todo List
 
