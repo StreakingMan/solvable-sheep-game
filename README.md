@@ -44,6 +44,13 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 
 切换主题参考 `src/themes` 下的代码，欢迎整活
 
+## Related Repo
+
+[opendilab](https://github.com/opendilab) 的AI整活！移步[DI-sheep：深度强化学习 + 羊了个羊](https://github.com/opendilab/DI-sheep)
+
+![](https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif)
+
+
 ## Todo List
 
 -   [x] 基础操作
