@@ -46,7 +46,8 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 
 ## Related Repo
 
-[opendilab](https://github.com/opendilab) 的 AI 整活！移步[DI-sheep：深度强化学习 + 羊了个羊](https://github.com/opendilab/DI-sheep)
+<a href="https://github.com/opendilab" target="_blank">opendilab</a> 的 AI 整活！移步
+<a href="https://github.com/opendilab/DI-sheep" target="_blank">DI-sheep：深度强化学习 + 羊了个羊</a>
 
 <img style="width:360px" src="https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif" alt="" />
 
@@ -56,7 +57,7 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [x] 关卡生成
 -   [ ] UI/UX 优化
 -   [x] 多主题
--   [ ] 计时
+-   [ ] 计时、得分、保存进度机制
 -   [ ] 性能优化
 -   [x] BGM/音效
 -   [ ] ~~点击时的缓冲队列，优化交互动画效果~~
@@ -64,6 +65,7 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [ ] 桌面应用
 -   [x] 路径区分主题
 -   [x] 主题自定义
+-   [ ] 本地图片、音频配置
 
 ## 二次开发
 
