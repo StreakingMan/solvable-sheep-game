@@ -183,18 +183,26 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 const themeFromPath: string = parsePathThemeName(location.href);
 const customThemeIdFromPath = parsePathCustomThemeId(location.href);
 const CUSTOM_THEME_FAIL_TIP = '查询配置失败';
+const initTheme = customThemeIdFromPath
+    ? { title: '', icons: [], sounds: [], name: '' }
+    : themeFromPath
+    ? builtInThemes.find((theme) => theme.name === themeFromPath) ??
+      defaultTheme
+    : defaultTheme;
+
+// 读取缓存关卡数
+const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
+const initLevel = Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1');
 
 const App: FC = () => {
-    const [curTheme, setCurTheme] = useState<Theme<any>>(
-        customThemeIdFromPath
-            ? { title: '', icons: [], sounds: [], name: '' }
-            : defaultTheme
-    );
+    const [curTheme, setCurTheme] = useState<Theme<any>>(initTheme);
     const [themes, setThemes] = useState<Theme<any>[]>(builtInThemes);
     const [pureMode, setPureMode] = useState<boolean>(!!customThemeIdFromPath);
 
-    const [scene, setScene] = useState<Scene>(makeScene(1, curTheme.icons));
-    const [level, setLevel] = useState<number>(1);
+    const [scene, setScene] = useState<Scene>(
+        makeScene(initLevel, curTheme.icons)
+    );
+    const [level, setLevel] = useState<number>(initLevel);
     const [queue, setQueue] = useState<MySymbol[]>([]);
     const [sortedQueue, setSortedQueue] = useState<
         Record<MySymbol['id'], number>
@@ -221,6 +229,11 @@ const App: FC = () => {
         }
     }, [bgmOn]);
 
+    // 关卡缓存
+    useEffect(() => {
+        localStorage.setItem(LAST_LEVEL_STORAGE_KEY, level.toString());
+    }, [level]);
+
     // 初始化主题
     useEffect(() => {
         if (customThemeIdFromPath) {
@@ -245,12 +258,6 @@ const App: FC = () => {
                     setCurTheme({ ...curTheme, title: CUSTOM_THEME_FAIL_TIP });
                     console.log(e);
                 });
-        } else if (themeFromPath) {
-            // 内置主题
-            setCurTheme(
-                themes.find((theme) => theme.name === themeFromPath) ??
-                    defaultTheme
-            );
         }
     }, []);
 
