@@ -1,5 +1,3 @@
-import { Theme } from './themes/interface';
-
 export const randomString: (len: number) => string = (len) => {
     const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let res = '';
@@ -63,3 +61,5 @@ export const captureElement = (id: string, filename: string) => {
         1
     );
 };
+
+export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
