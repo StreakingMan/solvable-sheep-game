@@ -225,26 +225,45 @@ const App: FC = () => {
     useEffect(() => {
         if (customThemeIdFromPath) {
             // 自定义主题
-            Bmob.Query('config')
-                .get(customThemeIdFromPath)
-                .then((res) => {
-                    // @ts-ignore
-                    const { content } = res;
-                    try {
-                        const customTheme = JSON.parse(content);
-                        if (!customTheme.pure) {
-                            setPureMode(false);
-                            setThemes([...themes, customTheme]);
-                        }
-                        setCurTheme(customTheme);
-                    } catch (e) {
-                        console.log(e);
+            const storageTheme = localStorage.getItem(customThemeIdFromPath);
+            if (storageTheme) {
+                // 节省请求
+                try {
+                    const customTheme = JSON.parse(storageTheme);
+                    if (!customTheme.pure) {
+                        setPureMode(false);
+                        setThemes([...themes, customTheme]);
                     }
-                })
-                .catch((e) => {
-                    setCurTheme({ ...curTheme, title: CUSTOM_THEME_FAIL_TIP });
+                    setCurTheme(customTheme);
+                } catch (e) {
                     console.log(e);
-                });
+                }
+            } else {
+                Bmob.Query('config')
+                    .get(customThemeIdFromPath)
+                    .then((res) => {
+                        // @ts-ignore
+                        const { content } = res;
+                        localStorage.setItem(customThemeIdFromPath, content);
+                        try {
+                            const customTheme = JSON.parse(content);
+                            if (!customTheme.pure) {
+                                setPureMode(false);
+                                setThemes([...themes, customTheme]);
+                            }
+                            setCurTheme(customTheme);
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    })
+                    .catch((e) => {
+                        setCurTheme({
+                            ...curTheme,
+                            title: CUSTOM_THEME_FAIL_TIP,
+                        });
+                        console.log(e);
+                    });
+            }
         } else if (themeFromPath) {
             // 内置主题
             setCurTheme(
