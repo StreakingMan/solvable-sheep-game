@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Sound, Theme } from '../themes/interface';
 import { QRCodeCanvas } from 'qrcode.react';
 import Bmob from 'hydrogen-js-sdk';
-import { captureElement } from '../utils';
+import { captureElement, LAST_UPLOAD_TIME_STORAGE_KEY } from '../utils';
 import { copy } from 'clipboard';
 
 const STORAGEKEY = 'customTheme';
@@ -261,6 +261,21 @@ export const ConfigDialog: FC<{
         setConfigError('');
         generateTheme()
             .then((theme) => {
+                // 五分钟能只能上传一次
+                const lastUploadTime = localStorage.getItem(
+                    LAST_UPLOAD_TIME_STORAGE_KEY
+                );
+                if (
+                    lastUploadTime &&
+                    new Date().getTime() - Number(lastUploadTime) <
+                        1000 * 60 * 5
+                ) {
+                    setConfigError(
+                        '五分钟内只能上传一次（用的人有点多十分抱歉😭），先保存预览看看效果把~'
+                    );
+                    return;
+                }
+
                 const stringify = JSON.stringify(theme);
                 localStorage.setItem(STORAGEKEY, stringify);
                 const query = Bmob.Query('config');
@@ -271,9 +286,14 @@ export const ConfigDialog: FC<{
                         //@ts-ignore
                         const link = `${location.origin}?customTheme=${res.objectId}`;
                         setGenLink(link);
+                        localStorage.setItem(
+                            LAST_UPLOAD_TIME_STORAGE_KEY,
+                            new Date().getTime().toString()
+                        );
                     })
-                    .catch((e) => {
-                        console.log(e);
+                    .catch(({ error }) => {
+                        setConfigError(error);
+                        setGenLink('');
                     });
             })
             .catch((e) => {

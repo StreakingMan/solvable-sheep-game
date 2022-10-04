@@ -3,6 +3,7 @@ import { getDefaultTheme } from './themes/default';
 
 export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
 export const LAST_SCORE_STORAGE_KEY = 'lastScore';
+export const LAST_UPLOAD_TIME_STORAGE_KEY = 'lastUploadTime';
 export const DEFAULT_BGM_STORAGE_KEY = 'defaultBgm';
 export const DEFAULT_TRIPLE_SOUND_STORAGE_KEY = 'defaultTripleSound';
 export const DEFAULT_CLICK_SOUND_STORAGE_KEY = 'defaultClickSound';
