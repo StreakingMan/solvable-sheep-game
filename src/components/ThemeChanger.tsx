@@ -59,11 +59,12 @@ export const ThemeChanger: FC<{
                     onDiyClick();
                 }}
                 style={{
-                    opacity: open ? 1 : 0.3,
-                    transform: open ? `translateY(-${110 * 6}%)` : '',
+                    transform: open
+                        ? `translateY(-${110 * 6}%)`
+                        : 'translateY(-110%)',
                 }}
             >
-                DIY!
+                {open ? '点我整活' : 'DIY!'}
             </div>
             <div
                 onClick={() => setOpen(!open)}

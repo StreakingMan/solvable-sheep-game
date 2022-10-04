@@ -256,8 +256,11 @@ export const ConfigDialog: FC<{
             });
     };
 
+    const [uploading, setUploading] = useState<boolean>(false);
     // 生成二维码和链接
     const onGenQrLinkClick = () => {
+        if (uploading) return;
+        setUploading(true);
         setConfigError('');
         generateTheme()
             .then((theme) => {
@@ -273,6 +276,7 @@ export const ConfigDialog: FC<{
                     setConfigError(
                         '五分钟内只能上传一次（用的人有点多十分抱歉😭），先保存预览看看效果把~'
                     );
+                    setUploading(false);
                     return;
                 }
 
@@ -294,11 +298,15 @@ export const ConfigDialog: FC<{
                     .catch(({ error }) => {
                         setConfigError(error);
                         setGenLink('');
+                    })
+                    .finally(() => {
+                        setUploading(false);
                     });
             })
             .catch((e) => {
                 setConfigError(e);
                 setGenLink('');
+                setUploading(false);
             });
     };
 
@@ -499,7 +507,7 @@ export const ConfigDialog: FC<{
                     保存并预览
                 </button>
                 <button className="flex-grow" onClick={onGenQrLinkClick}>
-                    生成二维码&链接
+                    生成二维码&链接{uploading && '...'}
                 </button>
                 <button className="flex-grow" onClick={closeMethod}>
                     关闭
