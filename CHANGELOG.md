@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.8...v0.0.9) (2022-10-04)
+
+
+### Features
+
+* 关卡进度缓存 ([0afeac0](https://github.com/StreakingMan/solvable-sheep-game/commit/0afeac0f8716bef43d67dfb999de31ac4fed8f01))
+* 缓存自定义主题 ([c0de917](https://github.com/StreakingMan/solvable-sheep-game/commit/c0de917641bd8ed08a5a4f1fda9c774770d879ec))
+
+
+### Bug Fixes
+
+* 防止音频配置错误时阻塞主流程 ([ad01eb2](https://github.com/StreakingMan/solvable-sheep-game/commit/ad01eb2dbb3519388c64ffe0cda8dddc457f0ce7))
+* 禁止图片拖动 ([e7ae319](https://github.com/StreakingMan/solvable-sheep-game/commit/e7ae319ecfddb4f0726355e9003d9f9f5e0c304a))
+* 默认音效填充 ([e4c6a2d](https://github.com/StreakingMan/solvable-sheep-game/commit/e4c6a2d584648b35735ede614a6f8683521e012e))
+* 项目链接 ([e867a92](https://github.com/StreakingMan/solvable-sheep-game/commit/e867a927b3e2faa831f8c462af059874bb59db5b))
+
 ### [0.0.8](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.7...v0.0.8) (2022-09-26)
 
 
