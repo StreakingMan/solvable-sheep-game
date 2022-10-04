@@ -102,8 +102,8 @@ if (!localStorage.getItem(DEFAULT_BGM_STORAGE_KEY)) {
             }
             loadTheme();
         })
-        .catch((e) => {
-            errorTip(e);
+        .catch(({ error }) => {
+            errorTip(error);
         });
 } else {
     loadTheme();
