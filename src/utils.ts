@@ -1,3 +1,12 @@
+import { Theme } from './themes/interface';
+import { getDefaultTheme } from './themes/default';
+
+export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
+export const LAST_SCORE_STORAGE_KEY = 'lastScore';
+export const DEFAULT_BGM_STORAGE_KEY = 'defaultBgm';
+export const DEFAULT_TRIPLE_SOUND_STORAGE_KEY = 'defaultTripleSound';
+export const DEFAULT_CLICK_SOUND_STORAGE_KEY = 'defaultClickSound';
+
 export const randomString: (len: number) => string = (len) => {
     const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let res = '';
@@ -16,14 +25,7 @@ export const waitTimeout: (timeout: number) => Promise<void> = (timeout) => {
     });
 };
 
-// 从url获取内置主题name
-export const parsePathThemeName: (url: string) => string = (url) => {
-    const urlObj = new URL(url);
-    const params = urlObj.searchParams;
-    return decodeURIComponent(params.get('theme') || '默认');
-};
-
-// 从url解析自定义主题JSON
+// 从url获取自定义主题Id
 export const parsePathCustomThemeId: (url: string) => string = (url) => {
     const urlObj = new URL(url);
     const params = urlObj.searchParams;
@@ -62,4 +64,46 @@ export const captureElement = (id: string, filename: string) => {
     );
 };
 
-export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
+export const wrapThemeDefaultSounds: (theme: Theme<any>) => void = (theme) => {
+    const defaultTheme = getDefaultTheme();
+    // 默认音频资源补充
+    if (!theme.bgm) {
+        theme.bgm = defaultTheme.bgm;
+    }
+    let hasUseDefaultTriple, hasUseDefaultClick;
+    for (const icon of theme.icons) {
+        if (!icon.clickSound) icon.clickSound = 'button-click';
+        if (!icon.tripleSound) icon.tripleSound = 'triple';
+        if (icon.clickSound === 'button-click') hasUseDefaultTriple = true;
+        if (icon.tripleSound === 'triple') hasUseDefaultClick = true;
+    }
+    if (
+        hasUseDefaultClick &&
+        !theme.sounds.find((s) => s.name === 'button-click')
+    ) {
+        const defaultClick = defaultTheme.sounds.find(
+            (s) => s.name === 'button-click'
+        );
+        defaultClick && theme.sounds.push(defaultClick);
+    }
+    if (hasUseDefaultTriple && !theme.sounds.find((s) => s.name === 'triple')) {
+        const defaultTripleSound = defaultTheme.sounds.find(
+            (s) => s.name === 'triple'
+        );
+        defaultTripleSound && theme.sounds.push(defaultTripleSound);
+    }
+
+    // 兼容旧数据
+    for (const sound of theme.sounds) {
+        if (['triple', 'button-click'].includes(sound.name))
+            // @ts-ignore
+            sound.src = defaultTheme.sounds.find(
+                (s) => s.name === sound.name
+            ).src;
+    }
+};
+
+export const domRelatedOptForTheme = (theme: Theme<any>) => {
+    document.body.style.backgroundColor = theme.backgroundColor || 'white';
+    document.body.style.color = theme.dark ? 'white' : 'rgb(0 0 0 / 60%)';
+};

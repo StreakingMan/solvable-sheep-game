@@ -1,0 +1,63 @@
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+    }
+
+    10% {
+        transform: translateY(-50%);
+    }
+
+    20% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+
+.title {
+    margin: 0;
+    line-height: 1.15;
+    font-size: 2rem;
+    padding-top: 1rem;
+    animation: scale 0.27s infinite alternate;
+    z-index: 1;
+
+    * {
+        transition: 0.3s;
+    }
+
+    .item {
+        display: inline-block;
+        animation-name: jump;
+        animation-iteration-count: infinite;
+        animation-duration: 3s;
+        animation-play-state: running;
+        text-shadow: 4px 6px 2px rgb(0 0 0 / 20%);
+    }
+}
+
+.title,
+.description {
+    text-align: center;
+}
+
+.description {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 400;
+    padding-top: 0.5rem;
+}

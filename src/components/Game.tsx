@@ -7,8 +7,13 @@ import React, {
 } from 'react';
 
 import './Game.scss';
-import { LAST_LEVEL_STORAGE_KEY, randomString, waitTimeout } from './utils';
-import { Icon, Theme } from './themes/interface';
+import {
+    LAST_LEVEL_STORAGE_KEY,
+    LAST_SCORE_STORAGE_KEY,
+    randomString,
+    waitTimeout,
+} from '../utils';
+import { Icon, Theme } from '../themes/interface';
 
 // 最大关卡
 const maxLevel = 50;
@@ -156,12 +161,14 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
 const Game: FC<{
     theme: Theme<any>;
     initLevel: number;
-    pureMode?: boolean;
-}> = ({ theme, initLevel, pureMode = false }) => {
+    initScore: number;
+}> = ({ theme, initLevel, initScore }) => {
+    console.log('Game FC');
     const [scene, setScene] = useState<Scene>(
         makeScene(initLevel, theme.icons)
     );
     const [level, setLevel] = useState<number>(initLevel);
+    const [score, setScore] = useState<number>(initScore);
     const [queue, setQueue] = useState<MySymbol[]>([]);
     const [sortedQueue, setSortedQueue] = useState<
         Record<MySymbol['id'], number>
@@ -169,7 +176,6 @@ const Game: FC<{
     const [finished, setFinished] = useState<boolean>(false);
     const [tipText, setTipText] = useState<string>('');
     const [animating, setAnimating] = useState<boolean>(false);
-    const [configDialogShow, setConfigDialogShow] = useState<boolean>(false);
 
     // 音效
     const soundRefMap = useRef<Record<string, HTMLAudioElement>>({});
@@ -191,6 +197,7 @@ const Game: FC<{
     // 关卡缓存
     useEffect(() => {
         localStorage.setItem(LAST_LEVEL_STORAGE_KEY, level.toString());
+        localStorage.setItem(LAST_SCORE_STORAGE_KEY, score.toString());
     }, [level]);
 
     // 队列区排序
@@ -253,17 +260,20 @@ const Game: FC<{
     };
 
     // 弹出
+    const popTime = useRef(0);
     const pop = () => {
         if (!queue.length) return;
         const updateQueue = queue.slice();
         const symbol = updateQueue.shift();
+        setScore(score - 1);
         if (!symbol) return;
         const find = scene.find((s) => s.id === symbol.id);
         if (find) {
             setQueue(updateQueue);
             find.status = 0;
-            find.x = 100 * Math.floor(8 * Math.random());
-            find.y = 700;
+            find.x = 100 * (popTime.current % 7);
+            popTime.current++;
+            find.y = 800;
             checkCover(scene);
             // 音效
             if (soundRefMap.current?.['sound-shift']) {
@@ -276,6 +286,7 @@ const Game: FC<{
     // 撤销
     const undo = () => {
         if (!queue.length) return;
+        setScore(score - 1);
         const updateQueue = queue.slice();
         const symbol = updateQueue.pop();
         if (!symbol) return;
@@ -294,6 +305,7 @@ const Game: FC<{
 
     // 洗牌
     const wash = () => {
+        setScore(score - 1);
         checkCover(washScene(level, scene));
         // 音效
         if (soundRefMap.current?.['sound-wash']) {
@@ -316,6 +328,7 @@ const Game: FC<{
     // 重开
     const restart = () => {
         setFinished(false);
+        setScore(0);
         setLevel(1);
         setQueue([]);
         checkCover(makeScene(1, theme.icons));
@@ -358,6 +371,8 @@ const Game: FC<{
 
         // 三连了
         if (filterSame.length === 3) {
+            // 三连一次+3分
+            setScore(score + 3);
             updateQueue = updateQueue.filter((sb) => sb.icon !== symbol.icon);
             for (const sb of filterSame) {
                 const find = updateScene.find((i) => i.id === sb.id);
@@ -393,6 +408,8 @@ const Game: FC<{
                 return;
             }
             // 升级
+            // 通关奖励关卡对应数值分数
+            setScore(score + level);
             setLevel(level + 1);
             setQueue([]);
             checkCover(makeScene(level + 1, theme.icons));
@@ -406,20 +423,7 @@ const Game: FC<{
 
     return (
         <>
-            {theme.background && (
-                <img
-                    alt="background"
-                    src={theme.background}
-                    className="background"
-                    style={{
-                        filter: theme.backgroundBlur ? 'blur(8px)' : 'none',
-                    }}
-                />
-            )}
-
-            <h3 className="flex-container flex-center">Level: {level}</h3>
-
-            <div className="app">
+            <div className="game">
                 <div className="scene-container">
                     <div className="scene-inner">
                         {scene.map((item, idx) => (
@@ -433,14 +437,14 @@ const Game: FC<{
                                         ? sortedQueue[item.id]
                                         : -1000
                                 }
-                                y={item.status === 0 ? item.y : 895}
+                                y={item.status === 0 ? item.y : 945}
                                 onClick={() => clickSymbol(idx)}
                             />
                         ))}
                     </div>
                 </div>
             </div>
-            <div className="queue-container flex-container flex-center" />
+            <div className="queue-container" />
             <div className="flex-container flex-between">
                 <button className="flex-grow" onClick={pop}>
                     弹出
@@ -451,9 +455,20 @@ const Game: FC<{
                 <button className="flex-grow" onClick={wash}>
                     洗牌
                 </button>
-                <button className="flex-grow" onClick={levelUp}>
+                <button
+                    className="flex-grow"
+                    onClick={() => {
+                        // 跳关扣关卡对应数值的分
+                        setScore(score - level);
+                        levelUp();
+                    }}
+                >
                     下一关
                 </button>
+            </div>
+            <div className="level">
+                关卡{level}|剩余{scene.filter((i) => i.status === 0).length}
+                |得分{score}
             </div>
 
             {/*提示弹窗*/}
@@ -465,14 +480,12 @@ const Game: FC<{
             )}
 
             {/*bgm*/}
-            <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>
-                {bgmOn ? '🔊' : '🔈'}
-                <audio
-                    ref={bgmRef}
-                    loop
-                    src={theme?.bgm || '/sound-disco.mp3'}
-                />
-            </button>
+            {theme.bgm && (
+                <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>
+                    {bgmOn ? '🔊' : '🔈'}
+                    <audio ref={bgmRef} loop src={theme.bgm} />
+                </button>
+            )}
 
             {/*音效*/}
             {theme.sounds.map((sound) => (

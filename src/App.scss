@@ -3,4 +3,19 @@
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
+    position: relative;
+
+    >:not(.background) {
+        z-index: 1;
+    }
+}
+
+.background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 0;
 }

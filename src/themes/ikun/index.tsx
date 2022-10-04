@@ -53,7 +53,6 @@ const icons = Object.entries(imagesUrls).map(([key, value]) => ({
 
 export const ikunTheme: Theme<SoundNames> = {
     title: '🐔鸡了个鸡🐔',
-    name: 'iKun',
     bgm,
     icons: icons.map(({ name, content }) => ({
         name,

@@ -1,21 +1,15 @@
-#root {
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.app {
+.game {
     width: 100%;
     margin: 0 auto;
+    padding-top: 10%;
+    padding-bottom: 2.5%;
 }
 
 .scene {
     &-container {
         width: 100%;
-        padding-bottom: 100%;
+        padding-bottom: 112.5%;
         position: relative;
-        margin: 10% 0;
     }
 
     &-inner {
@@ -63,11 +57,21 @@
 }
 
 .queue-container {
-    border-radius: 8px;
-    width: 100%;
-    padding-bottom: 15%;
-    border: 2px solid gray;
+    padding-bottom: 18.75%;
     margin-bottom: 16px;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 3.125%;
+        right: 3.125%;
+        top: 0;
+        bottom: 0;
+        border-radius: 12px;
+        background-color: rgb(0 0 0 / 16%);
+        border: 8px solid rgb(0 0 0 / 8%);
+    }
 }
 
 .modal {
@@ -82,15 +86,17 @@
     background-color: rgb(0 0 0 / 10%);
     top: 0;
     left: 0;
+    z-index: 10 !important;
 }
 
 .bgm-button {
     position: fixed;
-    left: 0;
-    top: 0;
+    left: 8px;
+    top: 8px;
     padding: 4px;
     width: 36px;
     height: 36px;
+    cursor: pointer;
 }
 
 .zhenghuo-button {
@@ -98,12 +104,9 @@
     margin-top: 8px;
 }
 
-.background {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
+.level {
+    font-size: 1.8em;
+    font-weight: 900;
+    line-height: 2;
+    text-shadow: 4px 6px 2px rgb(0 0 0 / 20%);
 }

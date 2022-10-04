@@ -2,7 +2,6 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import style from './ConfigDialog.module.scss';
 import classNames from 'classnames';
 import { Icon, Sound, Theme } from '../themes/interface';
-import { defaultSounds } from '../themes/default';
 import { QRCodeCanvas } from 'qrcode.react';
 import Bmob from 'hydrogen-js-sdk';
 import { captureElement } from '../utils';
@@ -226,25 +225,7 @@ export const ConfigDialog: FC<{
         if (!title) return Promise.reject('请填写标题');
         if (icons.length !== 10) return Promise.reject('图片素材需要提供10张');
 
-        let hasDefaultMaterial = false;
-        const customIcons = icons.map((icon) => {
-            if (!icon.clickSound) {
-                hasDefaultMaterial = true;
-                icon.clickSound = 'button-click';
-            }
-            if (!icon.tripleSound) {
-                hasDefaultMaterial = true;
-                icon.tripleSound = 'triple';
-            }
-            return { ...icon };
-        });
-        const customSounds = sounds.map((sounds) => ({ ...sounds }));
-        if (hasDefaultMaterial) {
-            customSounds.push(...defaultSounds);
-        }
-
         const customTheme: Theme<any> = {
-            name: `自定义-${title}`,
             // 恭喜你发现纯净模式彩蛋🎉，点击文字十次可以开启纯净模式
             pure: pureCount !== 0 && pureCount % 10 === 0,
             title,
@@ -252,11 +233,13 @@ export const ConfigDialog: FC<{
             bgm,
             background,
             backgroundBlur,
-            icons: customIcons,
-            sounds: customSounds,
+            icons,
+            sounds,
         };
 
-        return Promise.resolve(customTheme);
+        console.log(customTheme);
+
+        return Promise.resolve(JSON.parse(JSON.stringify(customTheme)));
     };
 
     // 预览
@@ -335,11 +318,24 @@ export const ConfigDialog: FC<{
         >
             <p onClick={() => setPureCount(pureCount + 1)}>
                 目前自定义仅支持配置https链接，可网上自行搜索素材复制链接，或者将自己处理好的素材上传第三方存储服务/图床上再复制外链
-                （想白嫖的话自行搜索【免费图床】【免费对象存储】【免费mp3外链】等）
+                （想白嫖的话自行搜索【免费图床】【免费对象存储】【免费mp3外链】等）。
                 {pureCount != 0 &&
                     pureCount % 10 === 0 &&
                     '🎉🎉🎉恭喜发现彩蛋！主题分享后将开启纯净模式～'}
             </p>
+            <div className="flex-container flex-no-wrap">
+                <img
+                    style={{ width: 120, objectFit: 'contain' }}
+                    src="/wxqrcode.png"
+                    alt=""
+                />
+                <p style={{ margin: 0 }}>
+                    <strong>
+                        开发不易，如果您喜欢这个项目的话可酌情扫左侧二维码
+                        请我喝杯咖啡（后台相关费用用爱发电中，感谢支持）
+                    </strong>
+                </p>
+            </div>
 
             {/*基本配置*/}
             <h4 className="flex-container flex-center">

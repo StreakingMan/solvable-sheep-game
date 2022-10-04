@@ -1,4 +1,9 @@
 import { Theme } from '../interface';
+import {
+    DEFAULT_BGM_STORAGE_KEY,
+    DEFAULT_CLICK_SOUND_STORAGE_KEY,
+    DEFAULT_TRIPLE_SOUND_STORAGE_KEY,
+} from '../../utils';
 
 const icons = <const>[
     `🎨`,
@@ -15,27 +20,31 @@ const icons = <const>[
 
 export type DefaultSoundNames = 'button-click' | 'triple';
 
-import soundButtonClickUrl from './sounds/sound-button-click.mp3';
-import soundTripleUrl from './sounds/sound-triple.mp3';
-export const defaultSounds: Theme<DefaultSoundNames>['sounds'] = [
-    {
-        name: 'button-click',
-        src: soundButtonClickUrl,
-    },
-    {
-        name: 'triple',
-        src: soundTripleUrl,
-    },
-];
-
-export const defaultTheme: Theme<DefaultSoundNames> = {
-    title: '有解的羊了个羊(DEMO)',
-    name: '默认',
-    icons: icons.map((icon) => ({
-        name: icon,
-        content: icon,
-        clickSound: 'button-click',
-        tripleSound: 'triple',
-    })),
-    sounds: defaultSounds,
+export const getDefaultTheme: () => Theme<DefaultSoundNames> = () => {
+    return {
+        title: '有解的羊了个羊',
+        desc: '真的可以通关~',
+        dark: true,
+        backgroundColor: '#8dac85',
+        icons: icons.map((icon) => ({
+            name: icon,
+            content: icon,
+            clickSound: 'button-click',
+            tripleSound: 'triple',
+        })),
+        sounds: [
+            {
+                name: 'button-click',
+                src:
+                    localStorage.getItem(DEFAULT_CLICK_SOUND_STORAGE_KEY) || '',
+            },
+            {
+                name: 'triple',
+                src:
+                    localStorage.getItem(DEFAULT_TRIPLE_SOUND_STORAGE_KEY) ||
+                    '',
+            },
+        ],
+        bgm: localStorage.getItem(DEFAULT_BGM_STORAGE_KEY) || '',
+    };
 };
