@@ -74,8 +74,8 @@ export const wrapThemeDefaultSounds: (theme: Theme<any>) => void = (theme) => {
     for (const icon of theme.icons) {
         if (!icon.clickSound) icon.clickSound = 'button-click';
         if (!icon.tripleSound) icon.tripleSound = 'triple';
-        if (icon.clickSound === 'button-click') hasUseDefaultTriple = true;
-        if (icon.tripleSound === 'triple') hasUseDefaultClick = true;
+        if (icon.clickSound === 'button-click') hasUseDefaultClick = true;
+        if (icon.tripleSound === 'triple') hasUseDefaultTriple = true;
     }
     if (
         hasUseDefaultClick &&
