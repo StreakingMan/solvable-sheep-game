@@ -1,13 +1,14 @@
-import React, { CSSProperties, FC } from 'react';
-
-export const Info: FC<{ style?: CSSProperties }> = ({ style }) => {
+import React, { CSSProperties, FC, useState } from 'react';
+import style from './Info.module.scss';
+import classNames from 'classnames';
+export const Info: FC = () => {
+    const [open, setOpen] = useState(false);
     return (
-        <div style={style}>
-            <p>
-                <span id="busuanzi_container_site_pv">
-                    累计访问：<span id="busuanzi_value_site_pv"></span>次
-                </span>
-            </p>
+        <div
+            onClick={() => !open && setOpen(true)}
+            className={classNames(style.info, open && style.open)}
+        >
+            <div className={style.icon}>i</div>
             <p>
                 bgm素材：
                 <a
@@ -16,22 +17,6 @@ export const Info: FC<{ style?: CSSProperties }> = ({ style }) => {
                     rel="noreferrer"
                 >
                     洛天依，言和原创《普通DISCO》
-                </a>
-                、
-                <a
-                    href="https://music.163.com/#/song?id=135022"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    贫民百万歌星
-                </a>
-                、
-                <a
-                    href="https://y.qq.com/n/ryqq/songDetail/0020Nusb3QJGn9"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    只因你太美
                 </a>
             </p>
             <p>
@@ -44,6 +29,10 @@ export const Info: FC<{ style?: CSSProperties }> = ({ style }) => {
                     3 Tiles
                 </a>
             </p>
+            <p>仅供交流，禁止商用</p>
+            <div className={style.close} onClick={() => setOpen(false)}>
+                X
+            </div>
         </div>
     );
 };

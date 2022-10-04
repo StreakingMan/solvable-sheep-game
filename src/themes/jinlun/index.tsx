@@ -25,7 +25,6 @@ const icons = Object.entries(imagesUrls).map(([key, value]) => ({
 
 export const jinlunTheme: Theme<string> = {
     title: '🐎马了个马🐎',
-    name: '金轮',
     icons: icons.map(({ name, content }) => ({
         name,
         content,

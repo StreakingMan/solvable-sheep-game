@@ -4,6 +4,10 @@
     flex-wrap: wrap;
 }
 
+.flex-no-wrap {
+    flex-wrap: nowrap;
+}
+
 .flex-center {
     justify-content: center;
     align-items: center;

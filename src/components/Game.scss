@@ -1,0 +1,112 @@
+.game {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 10%;
+    padding-bottom: 2.5%;
+}
+
+.scene {
+    &-container {
+        width: 100%;
+        padding-bottom: 112.5%;
+        position: relative;
+    }
+
+    &-inner {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        overflow: visible;
+        font-size: 28px;
+    }
+}
+
+.symbol {
+    width: 12.5%;
+    padding-bottom: 12.5%;
+    position: absolute;
+    transition: 150ms;
+    left: 0;
+    top: 0;
+    border-radius: 8px;
+
+    &-inner {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        border: 2px solid #444;
+        transition: 0.3s;
+        overflow: hidden;
+        user-select: none;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            -webkit-user-drag: none;
+        }
+    }
+}
+
+.queue-container {
+    padding-bottom: 18.75%;
+    margin-bottom: 16px;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 3.125%;
+        right: 3.125%;
+        top: 0;
+        bottom: 0;
+        border-radius: 12px;
+        background-color: rgb(0 0 0 / 16%);
+        border: 8px solid rgb(0 0 0 / 8%);
+    }
+}
+
+.modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background-color: rgb(0 0 0 / 10%);
+    top: 0;
+    left: 0;
+    z-index: 10 !important;
+}
+
+.bgm-button {
+    position: fixed;
+    left: 8px;
+    top: 8px;
+    padding: 4px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+}
+
+.zhenghuo-button {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.level {
+    font-size: 1.8em;
+    font-weight: 900;
+    line-height: 2;
+    text-shadow: 4px 6px 2px rgb(0 0 0 / 20%);
+}
