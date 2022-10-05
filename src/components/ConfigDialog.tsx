@@ -502,13 +502,25 @@ export const ConfigDialog: FC<{
                 </div>
             )}
             {configError && <div className={style.error}>{configError}</div>}
+            <div className={style.error}>
+                由于访问量过大，生成二维码码和链接功能暂时关闭（个人项目经费有限且本项目没有接任何广告，感谢理解😭，但仍然可以本地整活，之前生成的二维码和链接依然有效），
+                本项目开源，有需求可以自行fork进行部署：
+                <a
+                    href="https://github.com/StreakingMan/solvable-sheep-game"
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ textDecoration: 'underline' }}
+                >
+                    github仓库地址
+                </a>
+            </div>
             <div className="flex-container">
                 <button className="flex-grow" onClick={onPreviewClick}>
                     保存并预览
                 </button>
-                <button className="flex-grow" onClick={onGenQrLinkClick}>
+                {/*<button className="flex-grow" onClick={onGenQrLinkClick}>
                     生成二维码&链接{uploading && '...'}
-                </button>
+                </button>*/}
                 <button className="flex-grow" onClick={closeMethod}>
                     关闭
                 </button>
