@@ -61,7 +61,7 @@ export const ThemeChanger: FC<{
                 style={{
                     transform: open
                         ? `translateY(-${110 * 6}%)`
-                        : 'translateY(-110%)',
+                        : 'translateX(-110%)',
                 }}
             >
                 {open ? '点我整活' : 'DIY!'}
