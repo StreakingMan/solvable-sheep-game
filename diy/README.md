@@ -1,7 +1,6 @@
 # DIY 指南
 
-游戏的核心逻辑已经封装到了 [`src/components/Game.tsx`](src/components/Game.tsx) ，方便大家魔改，
-主题配置的类型声明见 [`src/themes/interface.ts`](src/themes/interface.ts)
+游戏的核心逻辑已经封装到了 `src/components/Game.tsx` ，方便大家魔改， 主题配置的类型声明见 `src/themes/interface.ts`
 
 ## 准备工作
 
@@ -25,8 +24,10 @@ yarn install
 
 ## 素材配置
 
-原项目的自定义后台使用了 Bmob 后台，DIY 时并不需要相关的逻辑，您只需要改动 `diy` 文件下的文件即可： 图片以及音频素材复制到 `diy/public` 下，并配置 `diy/diy.theme.json`
-文件即可，配置格式见[`src/themes/interface.ts`](src/themes/interface.ts)，以下是配置字段的说明：
+原项目的自定义后台使用了 Bmob 后台，DIY 时并不需要相关的逻辑，您只需要改动 `diy` 文件下的文件即可： 图片以及音频素材复制到 `diy/public` 下， 并配置 `diy/diy.theme.json`
+文件即可，配置格式见 `src/themes/interface.ts` ，
+
+以下是配置字段的说明：
 
 -   title 标题
 -   desc 描述
@@ -65,23 +66,23 @@ yarn dev:diy
 yarn build:diy
 ```
 
-会在 `diy/diy-dist` 下，生成静态资源，直接将这些文件复制服务器上代理即可。如果嫌麻烦，推荐使用 [vercel](https://vercel.com/) 一键部署（每月免费 100G 流量），
-将更改后的项目推到自己的 github（gitlab，bitbucket 同样支持）仓库， 使用 github 账号登录 vercel 后导入该项目，构建模版选择 vite，
-构建命令更改为 `yarn build:diy` 即可 。
+会在 `diy/diy-dist` 下，生成静态资源，直接将这些文件复制服务器上代理即可。如果嫌麻烦，推荐使用 [vercel](https://vercel.com/) 一键部署（每月免费 100G 流量）， 将更改后的项目推到自己的
+github（gitlab，bitbucket 同样支持）仓库， 使用 github 账号登录 vercel 后导入该项目，构建模版选择 vite， 构建命令更改为 `yarn build:diy` 即可 。
 
 <img src="./vercel.png" alt="" style="width: 400px"/>
 
-导入后项目有更新会自动构建，并且会生成vercel的二级链接（也可以自定义域名）。
+导入后项目有更新会自动构建，并且会生成 vercel 的二级链接（也可以自定义域名）。
 
 ## 其他
 
-如果您想体验项目的完整功能，只需要注册一个 [Bmob](https://www.bmobapp.com/) 账号即可，
-注册后新建应用（有一年的白嫖版，免费请求数虽然很客观，但并发数有限制，请根据自己的实际流量
+如果您想体验项目的完整功能，只需要注册一个 [Bmob](https://www.bmobapp.com/) 账号即可， 注册后新建应用（有一年的白嫖版，免费请求数虽然很客观，但并发数有限制，请根据自己的实际流量
 选择升级套餐，或者其他存储方案）
 
 新建应用后，去到设置页面拷贝密钥和安全码到项目的 `.env` 文件中
 
-- VITE_BMOB_SECRETKEY=设置->应用密钥->SecretKey
-- VITE_BMOB_SECCODE=设置->安全验证->Api安全码
+-   VITE_BMOB_SECRETKEY=设置->应用密钥->SecretKey
+-   VITE_BMOB_SECCODE=设置->安全验证->Api 安全码
 
 ps: 如果您的项目托管在公共仓库中，请注意保护密钥，本地使用 `.env.local` 进行配置
+
+最后，开发和打包命令分别使用 `yarn dev` 和 `yarn build` 即可
