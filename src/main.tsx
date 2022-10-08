@@ -57,8 +57,6 @@ Bmob.initialize(
     import.meta.env.VITE_BMOB_SECCODE
 );
 
-console.log(import.meta.env);
-
 const loadTheme = () => {
     // 请求主题
     if (customThemeIdFromPath) {

@@ -29,8 +29,7 @@
 -   关卡：50 关玩到爽，可直接跳
 -   内置主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
     骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、
-    ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />（露出黑脚）、
-    OW<img style="width:36px" src="src/themes/ow/images/ow.png" />主题等
+    ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />（露出黑脚）等
 -   自定义主题：自定义图片和音效，快速整活
 
 开心就好 😄
@@ -69,36 +68,8 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 
 ## 二次开发
 
-### 环境准备
-
-安装以下内容
-
--   [git](https://git-scm.com/)
--   [node](https://nodejs.org/en/)
-
-### 克隆仓库
-
-直接克隆本仓库或者 fork
-
-```shell
-git clone https://github.com/StreakingMan/solvable-sheep-game.git
-```
-
-### 依赖安装
-
-克隆到本地后，在项目内敲命令
-
-```shell
-npm install -g yarn
-
-yarn install
-```
-
-### 调试运行
-
-```shell
-yarn dev
-```
+项目的自定义主题功能设计到后台存储（Bmob 懒人数据库），如果您只是简单的整活，可能并不需要相关的逻辑。
+详细的二次开发说面移步这里[DIY 指南](/diy/README.md)
 
 ## License
 

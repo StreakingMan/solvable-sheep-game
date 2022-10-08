@@ -3,9 +3,10 @@
     "desc": "描述",
     "bgm": "/sound-disco.mp3",
     "dark": true,
+    "background": "",
+    "backgroundBlur": false,
     "backgroundColor": "#8dac85",
     "pure": true,
-    "backgroundBlur": false,
     "icons": [
         {
             "name": "1",
