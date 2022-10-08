@@ -8,22 +8,11 @@ import { captureElement, LAST_UPLOAD_TIME_STORAGE_KEY } from '../utils';
 import { copy } from 'clipboard';
 
 const STORAGEKEY = 'customTheme';
-let storageTheme: Theme<any>;
-try {
-    const configString = localStorage.getItem(STORAGEKEY);
-    if (configString) {
-        const parseRes = JSON.parse(configString);
-        if (typeof parseRes === 'object') storageTheme = parseRes;
-    }
-} catch (e) {
-    //
-}
 
-export const ConfigDialog: FC<{
-    show: boolean;
+const ConfigDialog: FC<{
     closeMethod: () => void;
     previewMethod: (theme: Theme<string>) => void;
-}> = ({ show, closeMethod, previewMethod }) => {
+}> = ({ closeMethod, previewMethod }) => {
     const [sounds, setSounds] = useState<Sound[]>([]);
     const [icons, setIcons] = useState<Icon[]>([]);
     const inputRefMap = useRef<
@@ -57,38 +46,44 @@ export const ConfigDialog: FC<{
 
     // 初始化
     useEffect(() => {
-        if (storageTheme) {
-            const {
-                title,
-                desc = '',
-                bgm = '',
-                sounds,
-                icons,
-                background = '',
-                backgroundBlur = false,
-            } = storageTheme;
-            setSounds(
-                sounds.filter(
-                    (s) => !['triple', 'button-click'].includes(s.name)
-                )
-            );
-            setIcons(
-                icons.map((icon) => {
-                    if (icon.clickSound === 'button-click')
-                        icon.clickSound = '';
-                    if (icon.tripleSound === 'triple') icon.tripleSound = '';
-                    return icon;
-                })
-            );
-            setCustomThemeInfo({
-                title,
-                // @ts-ignore
-                desc,
-                bgm,
-                background,
-                backgroundBlur,
-            });
+        let storageTheme: Theme<any> | undefined = undefined;
+        try {
+            const configString = localStorage.getItem(STORAGEKEY);
+            if (configString) {
+                const parseRes = JSON.parse(configString);
+                if (typeof parseRes === 'object') storageTheme = parseRes;
+            }
+        } catch (e) {
+            //
         }
+        if (!storageTheme) return;
+        const {
+            title,
+            desc = '',
+            bgm = '',
+            sounds,
+            icons,
+            background = '',
+            backgroundBlur = false,
+        } = storageTheme;
+        setSounds(
+            sounds.filter((s) => !['triple', 'button-click'].includes(s.name))
+        );
+        setIcons(
+            icons.map((icon) => {
+                if (icon.clickSound === 'button-click') icon.clickSound = '';
+                if (icon.tripleSound === 'triple') icon.tripleSound = '';
+                return icon;
+            })
+        );
+        setCustomThemeInfo({
+            title,
+            // @ts-ignore
+            desc,
+            bgm,
+            background,
+            backgroundBlur,
+        });
     }, []);
 
     // 音效保存
@@ -340,7 +335,6 @@ export const ConfigDialog: FC<{
             className={classNames(
                 style.dialog,
                 style.dialogWrapper,
-                show && style.dialogShow,
                 'flex-container flex-container'
             )}
         >
@@ -646,3 +640,5 @@ export const ConfigDialog: FC<{
         </div>
     );
 };
+
+export default ConfigDialog;

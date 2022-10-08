@@ -16,7 +16,7 @@ const BuiltinThemes = [
     pddTheme,
 ];
 
-export const ThemeChanger: FC<{
+const ThemeChanger: FC<{
     changeTheme: (theme: Theme<any>) => void;
     onDiyClick: () => void;
 }> = ({ changeTheme, onDiyClick }) => {
@@ -75,3 +75,5 @@ export const ThemeChanger: FC<{
         </div>
     );
 };
+
+export default ThemeChanger;

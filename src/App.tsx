@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, Suspense } from 'react';
 import './App.scss';
 import {
     domRelatedOptForTheme,
@@ -12,8 +12,8 @@ import { BeiAn } from './components/BeiAn';
 import { Title } from './components/Title';
 import { PersonalInfo } from './components/PersonalInfo';
 import { Info } from './components/Info';
-import { ThemeChanger } from './components/ThemeChanger';
-import { ConfigDialog } from './components/ConfigDialog';
+const ThemeChanger = React.lazy(() => import('./components/ThemeChanger'));
+const ConfigDialog = React.lazy(() => import('./components/ConfigDialog'));
 
 // 读取缓存关卡得分
 const initLevel = Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1');
@@ -63,37 +63,39 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
                 />
             )}
             <Title title={theme.title} desc={theme.desc} />
-            <PersonalInfo />
             <Game
                 key={theme.title}
                 theme={theme}
                 initLevel={initLevel}
                 initScore={initScore}
             />
+            <PersonalInfo />
             <div className={'flex-spacer'} />
             <p style={{ textAlign: 'center', fontSize: 10, opacity: 0.5 }}>
                 <span id="busuanzi_container_site_pv">
-                    {' '}
                     累计访问：
                     <span id="busuanzi_value_site_pv" />次
                 </span>
                 <br />
                 <BeiAn />
             </p>
-            <Info />
-            {!theme.pure && (
-                <>
-                    <ThemeChanger
-                        changeTheme={changeTheme}
-                        onDiyClick={() => setDiyDialogShow(true)}
-                    />
-                    <ConfigDialog
-                        show={diyDialogShow}
-                        closeMethod={() => setDiyDialogShow(false)}
-                        previewMethod={previewTheme}
-                    />
-                </>
-            )}
+            <Suspense fallback={<span>Loading</span>}>
+                {!theme.pure && (
+                    <>
+                        <Info />
+                        <ThemeChanger
+                            changeTheme={changeTheme}
+                            onDiyClick={() => setDiyDialogShow(true)}
+                        />
+                        {diyDialogShow && (
+                            <ConfigDialog
+                                closeMethod={() => setDiyDialogShow(false)}
+                                previewMethod={previewTheme}
+                            />
+                        )}
+                    </>
+                )}
+            </Suspense>
         </>
     );
 };

@@ -1,3 +1,15 @@
+@keyframes show {
+    0% {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
 .dialog {
     text-align: left;
     overflow-y: auto;
@@ -17,8 +29,7 @@
         width: calc(100% - 32px);
         max-width: 500px;
         bottom: 0;
-        transform: translateX(-50%) translateY(-100%);
-        opacity: 0;
+        animation: ease-in-out show 0.3s both;
         transition: 0.3s;
         padding: 16px;
         display: flex;
@@ -30,11 +41,6 @@
             box-shadow: 0 19px 38px rgb(0 0 0 / 30%),
                 0 15px 12px rgb(0 0 0 / 22%);
         }
-    }
-
-    &Show {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
     }
 
     .error {
