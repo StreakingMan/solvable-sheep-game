@@ -1,0 +1,98 @@
+{
+    "title": "标题",
+    "desc": "描述",
+    "bgm": "/sound-disco.mp3",
+    "dark": true,
+    "backgroundColor": "#8dac85",
+    "pure": true,
+    "backgroundBlur": false,
+    "icons": [
+        {
+            "name": "1",
+            "content": "/1.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "2",
+            "content": "/2.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "3",
+            "content": "/3.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "4",
+            "content": "/4.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "5",
+            "content": "/5.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "6",
+            "content": "/6.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "7",
+            "content": "/7.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "8",
+            "content": "/8.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "9",
+            "content": "/9.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        },
+        {
+            "name": "10",
+            "content": "/10.png",
+            "clickSound": "button-click",
+            "tripleSound": "triple"
+        }
+    ],
+    "sounds": [
+        {
+            "name": "sound-undo",
+            "src": "/sound-undo.mp3"
+        },
+        {
+            "name": "sound-shift",
+            "src": "/sound-shift.mp3"
+        },
+        {
+            "name": "sound-wash",
+            "src": "/sound-wash.mp3"
+        },
+        {
+            "name": "button-click",
+            "src": "/sound-button-click.mp3"
+        },
+        {
+            "name": "triple",
+            "src": "/sound-triple.mp3"
+        }
+    ],
+    "operateSoundMap": {
+        "shift": "sound-shift",
+        "undo": "sound-undo",
+        "wash": "sound-wash"
+    }
+}

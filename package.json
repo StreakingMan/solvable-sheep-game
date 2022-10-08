@@ -5,7 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "dev:diy": "vite --config diy/diy.vite.config.ts",
         "build": "tsc && vite build",
+        "build:diy": "tsc && vite build --config diy/diy.vite.config.ts",
         "preview": "vite preview",
         "prepare": "husky install",
         "release:first": "standard-version -- --first-release",

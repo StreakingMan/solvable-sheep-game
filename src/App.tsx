@@ -41,6 +41,7 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
 
     // 生产环境才统计
     useEffect(() => {
+        if (__DIY__) return;
         console.log(import.meta.env.MODE);
         if (import.meta.env.PROD) {
             const busuanziScript = document.createElement('script');
@@ -71,31 +72,39 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
             />
             <PersonalInfo />
             <div className={'flex-spacer'} />
-            <p style={{ textAlign: 'center', fontSize: 10, opacity: 0.5 }}>
-                <span id="busuanzi_container_site_pv">
-                    累计访问：
-                    <span id="busuanzi_value_site_pv" />次
-                </span>
-                <br />
-                <BeiAn />
-            </p>
-            <Suspense fallback={<span>Loading</span>}>
-                {!theme.pure && (
-                    <>
-                        <Info />
-                        <ThemeChanger
-                            changeTheme={changeTheme}
-                            onDiyClick={() => setDiyDialogShow(true)}
-                        />
+            {!__DIY__ && (
+                <p
+                    style={{
+                        textAlign: 'center',
+                        fontSize: 10,
+                        opacity: 0.5,
+                    }}
+                >
+                    <span id="busuanzi_container_site_pv">
+                        累计访问：
+                        <span id="busuanzi_value_site_pv" />次
+                    </span>
+                    <br />
+                    <BeiAn />
+                </p>
+            )}
+            {!__DIY__ && !theme.pure && (
+                <>
+                    <Info />
+                    <ThemeChanger
+                        changeTheme={changeTheme}
+                        onDiyClick={() => setDiyDialogShow(true)}
+                    />
+                    <Suspense fallback={<span>Loading</span>}>
                         {diyDialogShow && (
                             <ConfigDialog
                                 closeMethod={() => setDiyDialogShow(false)}
                                 previewMethod={previewTheme}
                             />
                         )}
-                    </>
-                )}
-            </Suspense>
+                    </Suspense>
+                </>
+            )}
         </>
     );
 };

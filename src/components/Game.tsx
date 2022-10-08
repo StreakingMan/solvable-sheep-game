@@ -142,8 +142,9 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
                 style={{ opacity: isCover ? 0.4 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
-                    icon.content.startsWith('http') ? (
-                        /*图片外链*/
+                    icon.content.startsWith('http') ||
+                    icon.content.startsWith('/') ? (
+                        /*图片地址*/
                         <img src={icon.content} alt="" />
                     ) : (
                         /*字符表情*/

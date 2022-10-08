@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="./public/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="无限道具版羊了个羊、可以通关的羊了个羊"
+        />
+        <title>有解的羊了个羊</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: white;
+                transition: background-color 0.3s 0.4s;
+                color: rgb(0 0 0 / 60%);
+            }
+            a {
+                color: currentColor;
+                text-decoration: inherit;
+            }
+            #root {
+                transition: opacity 0.5s;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            // vite没有global，手动声明
+            var global = global || window;
+        </script>
+        <script type="module" src="./main.tsx"></script>
+    </body>
+</html>
