@@ -67,7 +67,8 @@ yarn build:diy
 ```
 
 会在 `diy/diy-dist` 下，生成静态资源，直接将这些文件复制服务器上代理即可。如果嫌麻烦，推荐使用 [vercel](https://vercel.com/) 一键部署（每月免费 100G 流量）， 将更改后的项目推到自己的
-github（gitlab，bitbucket 同样支持）仓库， 使用 github 账号登录 vercel 后导入该项目，构建模版选择 vite， 构建命令更改为 `yarn build:diy` 即可 。
+github（gitlab，bitbucket 同样支持）仓库， 使用 github 账号登录 vercel 后导入该项目，构建模版选择 vite， 构建命令更改为 `yarn build:diy`
+输出地址改为 `diy/diy-dist` 即可 。
 
 <img src="./vercel.png" alt="" style="width: 400px"/>
 
