@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import style from './PersonalInfo.module.scss';
 import classNames from 'classnames';
+import { FixedAnimateScalePanel } from './FixedAnimateScalePanel';
 
 const GithubIcon: FC = () => {
     return (
@@ -63,19 +64,15 @@ export const BiliBiliLink: FC = () => {
 };
 
 export const PersonalInfo: FC = () => {
-    const [open, setOpen] = useState(false);
     return (
-        <div
-            onClick={() => !open && setOpen(true)}
-            className={classNames(style.info, open && style.open)}
+        <FixedAnimateScalePanel
+            className={style.personalInfo}
+            openClassName={style.open}
         >
             <GithubIcon />
             <GithubLink />
             <BiliBiliIcon />
             <BiliBiliLink />
-            <div className={style.close} onClick={() => setOpen(false)}>
-                X
-            </div>
-        </div>
+        </FixedAnimateScalePanel>
     );
 };

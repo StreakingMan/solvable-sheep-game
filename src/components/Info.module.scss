@@ -1,24 +1,9 @@
-/* 可封装 */
 .info {
-    position: fixed;
     left: 8px;
     bottom: 8px;
-    transition: 0.3s;
-    padding: 16px;
-    width: 36px;
-    height: 36px;
-    border-radius: 18px;
-    background: rgb(0 0 0/ 50%);
-    color: white;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-    box-sizing: border-box;
-    cursor: pointer;
-    font-size: 14px;
 
     p {
         margin: 0;
-        opacity: 0;
         transition: 0.6s;
     }
 
@@ -33,41 +18,12 @@
         font-size: 24px;
         font-weight: 900;
         transition: 0.2s;
-    }
-
-    .close {
-        position: absolute;
-        border-radius: 8px;
-        background-color: rgb(0 0 0/20%);
-        width: 36px;
-        height: 36px;
-        right: 0;
-        top: 0;
-        line-height: 36px;
-        text-align: center;
-        transform: scale(0);
-        color: white;
-        cursor: pointer;
-        user-select: none;
+        opacity: 1;
     }
 
     &.open {
-        height: 100px;
-        border-radius: 8px;
-
         @media screen and (max-width: 500px) {
             width: calc(100% - 70px);
-        }
-        @media screen and (min-width: 501px) {
-            width: 500px;
-        }
-
-        p {
-            opacity: 1;
-        }
-
-        .close {
-            transform: scale(1);
         }
 
         .icon {
