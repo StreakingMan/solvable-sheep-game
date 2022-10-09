@@ -37,6 +37,7 @@ yarn install
 -   backgroundBlur 背景图片是否添加毛玻璃效果
 -   backgroundColor 背景颜色 CSS 色值
 -   pure 纯净模式，DIY 时已开启
+-   maxLevel 最大关卡数，默认 50
 -   sounds 音效数组
     -   name 名称
     -   src 音效文件相对于 `diy/public` 的路径
@@ -88,9 +89,9 @@ ps: 如果您的项目托管在公共仓库中，请注意保护密钥，本地�
 
 应用创建后，点击【云数据库】，创建两个表 `config` 和 `file`
 
-`config` 表用来存储自定义配置的json字符串，需要新增 `content` 列
+`config` 表用来存储自定义配置的 json 字符串，需要新增 `content` 列
 
-`file` 表则是为了vercel流量，将一些默认文件转为base64编码存到了数据库中，需要添加三列
+`file` 表则是为了 vercel 流量，将一些默认文件转为 base64 编码存到了数据库中，需要添加三列
 ![img.png](database-file.png)
 
 最后，开发和打包命令分别使用 `yarn dev` 和 `yarn build` 即可

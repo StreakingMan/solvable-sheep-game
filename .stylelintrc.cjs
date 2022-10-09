@@ -10,6 +10,7 @@ module.exports = {
         'stylelint-config-prettier-scss',
     ],
     rules: {
-        'selector-class-pattern': '^[a-z][a-zA-Z0-9]+$',
+        // 后续统一
+        'selector-class-pattern': '^[a-zA-Z0-9-_]+$',
     },
 };

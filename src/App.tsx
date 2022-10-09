@@ -4,6 +4,7 @@ import {
     domRelatedOptForTheme,
     LAST_LEVEL_STORAGE_KEY,
     LAST_SCORE_STORAGE_KEY,
+    LAST_TIME_STORAGE_KEY,
     wrapThemeDefaultSounds,
 } from './utils';
 import { Theme } from './themes/interface';
@@ -18,6 +19,7 @@ const ConfigDialog = React.lazy(() => import('./components/ConfigDialog'));
 // 读取缓存关卡得分
 const initLevel = Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1');
 const initScore = Number(localStorage.getItem(LAST_SCORE_STORAGE_KEY) || '0');
+const initTime = Number(localStorage.getItem(LAST_TIME_STORAGE_KEY) || '0');
 
 const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
     console.log('initTheme', initTheme);
@@ -69,6 +71,7 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
                 theme={theme}
                 initLevel={initLevel}
                 initScore={initScore}
+                initTime={initTime}
             />
             <PersonalInfo />
             <div className={'flex-spacer'} />

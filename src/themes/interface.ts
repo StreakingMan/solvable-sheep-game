@@ -23,6 +23,7 @@ export interface Theme<SoundNames> {
     backgroundBlur?: boolean;
     dark?: boolean;
     pure?: boolean;
+    maxLevel?: number;
     icons: Icon<SoundNames>[];
     sounds: Sound<SoundNames>[];
     operateSoundMap?: Record<Operation, SoundNames>;
