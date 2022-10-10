@@ -37,6 +37,16 @@
         color: white;
         cursor: pointer;
         user-select: none;
+
+        svg {
+            transition: 0.3s;
+        }
+
+        &:hover {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
     }
 
     &.open {

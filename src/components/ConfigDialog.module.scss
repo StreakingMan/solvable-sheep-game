@@ -15,109 +15,146 @@
     overflow-y: auto;
     color: rgb(255 255 255 / 87%);
     background-color: #242424;
+    z-index: 20 !important;
+    position: fixed;
+    left: 50%;
+    top: 0;
+    width: calc(100% - 32px);
+    max-width: 500px;
+    bottom: 0;
+    animation: ease-in-out show 0.3s both;
+    transition: 0.3s;
+    padding: 16px;
+    display: flex;
+    flex-flow: column nowrap !important;
+    gap: 8px;
+
+    h2 {
+        text-align: center;
+        margin-top: -36px;
+    }
+
+    @media screen and (min-width: 1024px) {
+        margin: 36px 0;
+        border-radius: 16px;
+        box-shadow: 0 19px 38px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
+    }
 
     @media (prefers-color-scheme: light) {
         color: #213547;
         background-color: #fff;
     }
 
-    &Wrapper {
-        z-index: 10;
-        position: fixed;
-        left: 50%;
-        top: 0;
-        width: calc(100% - 32px);
-        max-width: 500px;
-        bottom: 0;
-        animation: ease-in-out show 0.3s both;
-        transition: 0.3s;
-        padding: 16px;
-        display: flex;
-        flex-flow: column nowrap !important;
-
-        @media screen and (min-width: 1024px) {
-            margin: 36px 0;
-            border-radius: 16px;
-            box-shadow: 0 19px 38px rgb(0 0 0 / 30%),
-                0 15px 12px rgb(0 0 0 / 22%);
-        }
-    }
-
-    .error {
+    .errorTip {
         color: crimson;
     }
 
-    h4 {
-        margin: 8px 0;
-    }
-}
-
-.add {
-    &Btn {
-        border-radius: 8px;
-        width: 50px;
-        height: 50px;
-        border: 1px solid gray;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-
-        &Empty::before {
-            content: '+';
-            color: #999;
-            font-size: 2em;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
-    &Dialog {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 90%;
-        padding: 12px;
-        transform: translateX(-50%) translateY(-60vh);
-        opacity: 0;
-        transition: 0.3s;
-        border-radius: 8px;
-        border: 2px solid #535bf2;
-        color: rgb(255 255 255 / 87%);
-        background-color: #242424;
-
-        // 写冗余了，待优化
-        @media (prefers-color-scheme: light) {
-            color: #213547;
-            background-color: #fff;
-        }
-
-        &Show {
-            transform: translateX(-50%) translateY(-50%);
-            opacity: 1;
-        }
-    }
-}
-
-.delete {
-    &Btn {
-        flex-grow: 1;
+    .closeBtn {
+        position: sticky;
+        background-color: rgb(0 0 0 / 30%);
         border-radius: 4px;
+        left: calc(100% - 36px);
+        top: 0;
+        width: 36px;
+        height: 36px;
+        min-height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f9f9f9;
-        font-size: 1.5em;
-        color: #999;
+        backdrop-filter: blur(5px);
         cursor: pointer;
 
-        span {
-            transform: rotate(45deg);
+        svg {
+            transition: 0.3s;
         }
+
+        &:hover {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.inputContainer {
+    word-break: keep-all;
+
+    input,
+    select {
+        flex-grow: 1;
+    }
+
+    input[type='file'] {
+        padding: 4px 12px;
+    }
+
+    input[type='checkbox'] {
+        flex-grow: 0;
+        width: 24px;
+        height: 24px;
+    }
+
+    input[type='color'] {
+        padding: 0 2px;
+        flex-grow: 0;
+        width: 30px;
+        height: 30px;
+    }
+
+    .label {
+        min-width: 74px;
+        opacity: 0.7;
+        font-weight: 600;
+    }
+
+    .tip {
+        font-size: 14px;
+        opacity: 0.6;
+        word-break: break-all;
+    }
+
+    &.required .label {
+        &::after {
+            content: '*';
+            color: red;
+        }
+    }
+}
+
+.divider {
+    width: 100%;
+    height: 0;
+    border-bottom: 1px solid rgb(0 0 0 / 8%);
+}
+
+.soundItem {
+    height: 30px;
+    position: relative;
+
+    .inner {
+        height: 30px;
+        min-width: 48px;
+        margin-left: 42px;
+        background-color: #888;
+        line-height: 30px;
+        padding: 0 12px;
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px;
+        font-size: 14px;
+        color: white;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    audio {
+        height: 30px;
+        width: 100px;
+        position: absolute;
+        left: 0;
+        z-index: 1;
     }
 }
