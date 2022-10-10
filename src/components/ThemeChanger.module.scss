@@ -45,16 +45,16 @@
         }
     }
 
-    .diy{
+    .diy {
         width: 52px;
         font-weight: 900;
         font-size: 18px;
         background-image: linear-gradient(
-                45deg,
-                #ee7752,
-                #e73c7e,
-                #23a6d5,
-                #23d5ab
+            45deg,
+            #ee7752,
+            #e73c7e,
+            #23a6d5,
+            #23d5ab
         );
         background-size: 400% 400%;
         background-position: 0 0;
@@ -66,5 +66,28 @@
             width: 86px;
             animation: gradient 2s ease infinite;
         }
+    }
+}
+
+.adv {
+    position: fixed;
+    right: 8px;
+    bottom: 8px;
+    transition: 0.5s;
+    height: 250px;
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    background-color: rgb(0 0 0 / 30%);
+    transform-origin: right bottom;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 8px;
+
+    @media screen and (max-width: 500px) {
+        width: calc(100vw - 16px);
+    }
+    @media screen and (min-width: 501px) {
+        width: 500px;
     }
 }

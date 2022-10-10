@@ -15,6 +15,7 @@ import { PersonalInfo } from './components/PersonalInfo';
 import { Info } from './components/Info';
 const ThemeChanger = React.lazy(() => import('./components/ThemeChanger'));
 const ConfigDialog = React.lazy(() => import('./components/ConfigDialog'));
+const WxQrCode = React.lazy(() => import('./components/WxQrCode'));
 
 // 读取缓存关卡得分
 const initLevel = Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1');
@@ -74,7 +75,10 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
                 initTime={initTime}
             />
             <PersonalInfo />
-            <div className={'flex-spacer'} />
+            <div className={'flex-spacer'} style={{ minHeight: 52 }} />
+            <Suspense fallback={<span>Loading</span>}>
+                {!__DIY__ && <WxQrCode />}
+            </Suspense>
             {!__DIY__ && (
                 <p
                     style={{

@@ -1,0 +1,63 @@
+.wxQrCode {
+    &Container {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid currentcolor;
+    }
+
+    &Title {
+        opacity: 0.8;
+        width: 100%;
+    }
+
+    &Item {
+        display: flex;
+        flex: 1 1 0;
+        gap: 12px;
+        flex-direction: column;
+        align-items: center;
+        transition: 0.3s;
+
+        &Title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        &Image {
+            width: 100%;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1;
+            transform-origin: bottom;
+
+            &:hover {
+                z-index: 10;
+                transform: scale(1.1);
+                box-shadow: 0 19px 38px rgb(0 0 0 / 30%),
+                    0 15px 12px rgb(0 0 0 / 22%);
+            }
+        }
+
+        &.fullScreen .wxQrCodeItemImage {
+            z-index: 10;
+            transform: scale(3);
+            box-shadow: 0 19px 38px rgb(0 0 0 / 30%),
+                0 15px 12px rgb(0 0 0 / 22%);
+        }
+
+        &:nth-child(2).fullScreen .wxQrCodeItemImage {
+            transform-origin: left bottom;
+        }
+
+        &:nth-child(3).fullScreen .wxQrCodeItemImage {
+            transform-origin: center bottom;
+        }
+
+        &:nth-child(4).fullScreen .wxQrCodeItemImage {
+            transform-origin: right bottom;
+        }
+    }
+}
