@@ -261,3 +261,21 @@
         animation: gradient 1s ease infinite;
     }
 }
+
+@keyframes rotate {
+    0% {
+        transform: scale(0.7) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(0.7) rotate(360deg);
+    }
+}
+
+.qrCode {
+    transition: 0.5s;
+
+    &.uploading {
+        animation: rotate 0.5s infinite linear;
+    }
+}

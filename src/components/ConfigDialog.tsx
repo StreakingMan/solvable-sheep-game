@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import style from './ConfigDialog.module.scss';
 import classNames from 'classnames';
 import { Icon, Sound, Theme } from '../themes/interface';
@@ -7,13 +7,14 @@ import Bmob from 'hydrogen-js-sdk';
 import {
     captureElement,
     CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY,
-    CUSTOM_THEME_ID_STORAGE_KEY,
+    LAST_CUSTOM_THEME_ID_STORAGE_KEY,
     CUSTOM_THEME_STORAGE_KEY,
     deleteThemeUnusedSounds,
     getFileBase64String,
     linkReg,
     randomString,
     wrapThemeDefaultSounds,
+    LAST_UPLOAD_TIME_STORAGE_KEY,
 } from '../utils';
 import { copy } from 'clipboard';
 import { CloseIcon } from './CloseIcon';
@@ -51,8 +52,6 @@ interface CustomTheme extends Theme<any> {
     icons: CustomIcon[];
 }
 
-const id = localStorage.getItem(CUSTOM_THEME_ID_STORAGE_KEY);
-
 const ConfigDialog: FC<{
     closeMethod: () => void;
     previewMethod: (theme: Theme<string>) => void;
@@ -60,9 +59,7 @@ const ConfigDialog: FC<{
     // 错误提示
     const [configError, setConfigError] = useState<string>('');
     // 生成链接
-    const [genLink, setGenLink] = useState<string>(
-        id ? `${location.origin}?customTheme=${id}` : ''
-    );
+    const [genLink, setGenLink] = useState<string>('');
 
     // 主题大对象
     const [customTheme, setCustomTheme] = useState<CustomTheme>({
@@ -246,6 +243,8 @@ const ConfigDialog: FC<{
 
     // 初始化
     useEffect(() => {
+        const lastId = localStorage.getItem(LAST_CUSTOM_THEME_ID_STORAGE_KEY);
+        lastId && setGenLink(`${location.origin}?customTheme=${lastId}`);
         try {
             const configString = localStorage.getItem(CUSTOM_THEME_STORAGE_KEY);
             if (configString) {
@@ -301,6 +300,20 @@ const ConfigDialog: FC<{
         if (uploading) return;
         if (!enableFileSizeValidate)
             return setConfigError('请先开启文件大小校验');
+        let passTime = Number.MAX_SAFE_INTEGER;
+        const lastUploadTime = localStorage.getItem(
+            LAST_UPLOAD_TIME_STORAGE_KEY
+        );
+        if (lastUploadTime) {
+            passTime = Date.now() - Number(lastUploadTime);
+        }
+        if (passTime < 1000 * 60 * 15) {
+            return setConfigError(
+                `为节省请求数，15分钟内只能生成一次二维码，还剩大约${
+                    15 - Math.round(passTime / 1000 / 60)
+                }分钟，先本地预览调整下吧～`
+            );
+        }
         setUploading(true);
         setConfigError('');
         validateTheme()
@@ -310,19 +323,19 @@ const ConfigDialog: FC<{
                 const stringify = JSON.stringify(cloneTheme);
                 localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, stringify);
                 const query = Bmob.Query('config');
-                if (id) query.set('id', id);
-                // Bmob上限 384563
                 query.set('content', stringify);
                 query
                     .save()
                     .then((res) => {
-                        if (!id) {
-                            localStorage.setItem(
-                                CUSTOM_THEME_ID_STORAGE_KEY,
-                                //@ts-ignore
-                                res.objectId
-                            );
-                        }
+                        localStorage.setItem(
+                            LAST_CUSTOM_THEME_ID_STORAGE_KEY,
+                            //@ts-ignore
+                            res.objectId
+                        );
+                        localStorage.setItem(
+                            LAST_UPLOAD_TIME_STORAGE_KEY,
+                            Date.now().toString()
+                        );
                         setTimeout(() => {
                             setGenLink(
                                 `${location.origin}?customTheme=${
@@ -618,10 +631,23 @@ const ConfigDialog: FC<{
 
             {genLink && (
                 <div className={'flex-container flex-center flex-column'}>
-                    <QRCodeCanvas id="qrCode" value={genLink} size={300} />
+                    <QRCodeCanvas
+                        id="qrCode"
+                        value={genLink}
+                        size={300}
+                        className={classNames(
+                            style.qrCode,
+                            uploading && style.uploading
+                        )}
+                    />
                     <button
                         onClick={() =>
-                            captureElement('qrCode', customTheme.title)
+                            captureElement(
+                                'qrCode',
+                                `${customTheme.title}-${localStorage.getItem(
+                                    LAST_CUSTOM_THEME_ID_STORAGE_KEY
+                                )}`
+                            )
                         }
                         className="primary"
                     >
@@ -643,7 +669,7 @@ const ConfigDialog: FC<{
                         setEnableFileSizeValidate(!e.target.checked)
                     }
                 />
-                (谨慎操作，单文件不超过1M为宜，文件过大可能导致崩溃，介时请刷新浏览器，)
+                (谨慎操作，单文件不超过1M为宜，文件过大可能导致崩溃，介时请刷新浏览器)
             </div>
             {configError && <div className={style.errorTip}>{configError}</div>}
             <WxQrCode />
@@ -662,8 +688,7 @@ const ConfigDialog: FC<{
                     )}
                     onClick={onGenQrLinkClick}
                 >
-                    {genLink ? '更新数据' : '生成二维码&链接'}
-                    {uploading ? '...' : ''}
+                    生成二维码&链接
                 </button>
             </div>
         </div>
