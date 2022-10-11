@@ -34,11 +34,7 @@
 
 开心就好 😄
 
-<img src="preview1.png" style="width: 250px" alt="预览">
-<img src="preview2.png" style="width: 250px" alt="预览">
-<img src="preview3.png" style="width: 250px" alt="预览">
-<img src="preview4.png" style="width: 250px" alt="预览">
-<img src="preview5.png" style="width: 250px" alt="预览">
+![previews.png](previews.png)
 
 ## Contribution
 
@@ -82,17 +78,4 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 由于各种白嫖的静态资源托管、后台服务的免费额度都已用完，目前自费升级了相关套餐。
 如果您喜欢这个项目，觉得本项目对你有帮助的话，可以扫描下方付款码请我喝杯咖啡 ☕️/分摊后台服务费用～ 😘
 
-<div style="display: flex;justify-content: space-between">
-    <div>
-        <p style="text-align: center">¥ 1</p>
-        <img src="public/wxQrcode1.jpg" style="width: 200px" alt="收款码">
-    </div>
-    <div>
-        <p style="text-align: center">¥ 5</p>
-        <img src="public/wxQrcode5.jpg" style="width: 200px" alt="收款码">
-    </div>
-    <div>
-        <p style="text-align: center">¥ 8</p>
-        <img src="public/wxQrcode8.jpg" style="width: 200px" alt="收款码">
-    </div>
-</div>
+![wxQrCodes.png](wxQrCodes.png)
