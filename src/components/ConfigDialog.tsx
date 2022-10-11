@@ -6,8 +6,12 @@ import { QRCodeCanvas } from 'qrcode.react';
 import Bmob from 'hydrogen-js-sdk';
 import {
     captureElement,
+    CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY,
+    CUSTOM_THEME_ID_STORAGE_KEY,
     CUSTOM_THEME_STORAGE_KEY,
-    LAST_UPLOAD_TIME_STORAGE_KEY,
+    deleteThemeUnusedSounds,
+    getFileBase64String,
+    linkReg,
     randomString,
     wrapThemeDefaultSounds,
 } from '../utils';
@@ -18,7 +22,7 @@ import WxQrCode from './WxQrCode';
 const InputContainer: FC<{
     label: string;
     required?: boolean;
-    children: ReactNode;
+    children?: ReactNode;
 }> = ({ label, children, required }) => {
     return (
         <>
@@ -39,6 +43,16 @@ const InputContainer: FC<{
     );
 };
 
+interface CustomIcon extends Icon {
+    content: string;
+}
+
+interface CustomTheme extends Theme<any> {
+    icons: CustomIcon[];
+}
+
+const id = localStorage.getItem(CUSTOM_THEME_ID_STORAGE_KEY);
+
 const ConfigDialog: FC<{
     closeMethod: () => void;
     previewMethod: (theme: Theme<string>) => void;
@@ -46,8 +60,12 @@ const ConfigDialog: FC<{
     // 错误提示
     const [configError, setConfigError] = useState<string>('');
     // 生成链接
-    const [genLink, setGenLink] = useState<string>('');
-    const [customTheme, setCustomTheme] = useState<Theme<any>>({
+    const [genLink, setGenLink] = useState<string>(
+        id ? `${location.origin}?customTheme=${id}` : ''
+    );
+
+    // 主题大对象
+    const [customTheme, setCustomTheme] = useState<CustomTheme>({
         title: '',
         sounds: [],
         icons: new Array(10).fill(0).map(() => ({
@@ -57,9 +75,174 @@ const ConfigDialog: FC<{
             tripleSound: '',
         })),
     });
+    function updateCustomTheme(key: keyof CustomTheme, value: any) {
+        if (['sounds', 'icons'].includes(key)) {
+            if (Array.isArray(value)) {
+                setCustomTheme({
+                    ...customTheme,
+                    [key]: [...value],
+                });
+            } else {
+                setCustomTheme({
+                    ...customTheme,
+                    [key]: [...customTheme[key as 'sounds' | 'icons'], value],
+                });
+            }
+        } else {
+            setCustomTheme({
+                ...customTheme,
+                [key]: value,
+            });
+        }
+    }
+    useEffect(() => {
+        console.log(customTheme);
+    }, [customTheme]);
 
-    // 编辑中音效
-    const [editSound, setEditSound] = useState<Sound>({ name: '', src: '' });
+    // 音效
+    const [newSound, setNewSound] = useState<Sound>({ name: '', src: '' });
+    const [soundError, setSoundError] = useState<string>('');
+    const onNewSoundChange = (key: keyof Sound, value: string) => {
+        setNewSound({
+            ...newSound,
+            [key]: value,
+        });
+    };
+    const onAddNewSoundClick = () => {
+        setSoundError('');
+        let error = '';
+        if (!linkReg.test(newSound.src)) error = '请输入https链接';
+        if (!newSound.name) error = '请输入音效名称';
+        if (customTheme.sounds.find((s) => s.name === newSound.name))
+            error = '名称已存在';
+        if (error) {
+            setSoundError(error);
+        } else {
+            updateCustomTheme('sounds', newSound);
+            setNewSound({ name: '', src: '' });
+        }
+    };
+    const onDeleteSoundClick = (idx: number) => {
+        const deleteSoundName = customTheme.sounds[idx].name;
+        const findIconUseIdx = customTheme.icons.findIndex(
+            ({ clickSound, tripleSound }) =>
+                [clickSound, tripleSound].includes(deleteSoundName)
+        );
+        if (findIconUseIdx !== -1) {
+            return setSoundError(
+                `第${findIconUseIdx + 1}项图标有使用该音效，请取消后再删除`
+            );
+        }
+
+        const newSounds = customTheme.sounds.slice();
+        newSounds.splice(idx, 1);
+        updateCustomTheme('sounds', newSounds);
+    };
+
+    // 本地文件选择
+    const [bgmError, setBgmError] = useState<string>('');
+    const [backgroundError, setBackgroundError] = useState<string>('');
+    const [iconErrors, setIconErrors] = useState<string[]>(
+        new Array(10).fill('')
+    );
+    // 文件体积校验开关
+    const [enableFileSizeValidate, setEnableFileSizeValidate] =
+        useState<boolean>(
+            localStorage.getItem(CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY) !==
+                'false'
+        );
+    useEffect(() => {
+        localStorage.setItem(
+            CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY,
+            enableFileSizeValidate + ''
+        );
+    }, [enableFileSizeValidate]);
+    const makeIconErrors = (idx: number, error: string) =>
+        new Array(10)
+            .fill('')
+            .map((item, _idx) => (idx === _idx ? error : iconErrors[_idx]));
+    const onFileChange: (props: {
+        type: 'bgm' | 'background' | 'sound' | 'icon';
+        file?: File;
+        idx?: number;
+    }) => void = ({ type, file, idx }) => {
+        if (!file) return;
+        switch (type) {
+            case 'bgm':
+                setBgmError('');
+                if (enableFileSizeValidate && file.size > 80 * 1024) {
+                    return setBgmError('请选择80k以内全损音质的文件');
+                }
+                getFileBase64String(file)
+                    .then((res) => {
+                        updateCustomTheme('bgm', res);
+                    })
+                    .catch((e) => {
+                        setBgmError(e);
+                    });
+                break;
+            case 'background':
+                setBackgroundError('');
+                if (enableFileSizeValidate && file.size > 80 * 1024) {
+                    return setBackgroundError('请选择80k以内全损画质的图片');
+                }
+                getFileBase64String(file)
+                    .then((res) => {
+                        updateCustomTheme('background', res);
+                    })
+                    .catch((e) => {
+                        setBackgroundError(e);
+                    });
+                break;
+            case 'sound':
+                setSoundError('');
+                if (enableFileSizeValidate && file.size > 10 * 1024) {
+                    return setSoundError('请选择10k以内的音频文件');
+                }
+                getFileBase64String(file)
+                    .then((res) => {
+                        onNewSoundChange('src', res);
+                    })
+                    .catch((e) => {
+                        setSoundError(e);
+                    });
+                break;
+            case 'icon':
+                if (idx == null) return;
+                setIconErrors(makeIconErrors(idx, ''));
+                if (enableFileSizeValidate && file.size > 5 * 1024) {
+                    return setIconErrors(
+                        makeIconErrors(idx, '请选择5k以内的图片文件')
+                    );
+                }
+                getFileBase64String(file)
+                    .then((res) => {
+                        updateCustomTheme(
+                            'icons',
+                            customTheme.icons.map((icon, _idx) =>
+                                _idx === idx ? { ...icon, content: res } : icon
+                            )
+                        );
+                    })
+                    .catch((e) => {
+                        setIconErrors(makeIconErrors(idx, e));
+                    });
+                break;
+        }
+    };
+
+    // 图标更新
+    const updateIcons = (key: keyof CustomIcon, value: string, idx: number) => {
+        const newIcons = customTheme.icons.map((icon, _idx) =>
+            _idx === idx
+                ? {
+                      ...icon,
+                      [key]: value,
+                  }
+                : icon
+        );
+        updateCustomTheme('icons', newIcons);
+    };
 
     // 初始化
     useEffect(() => {
@@ -76,23 +259,34 @@ const ConfigDialog: FC<{
         }
     }, []);
 
-    // 生成主题
-    const generateTheme: () => Promise<Theme<any>> = async () => {
-        // TODO 校验
-        const cloneTheme = JSON.parse(JSON.stringify(customTheme));
-        wrapThemeDefaultSounds(cloneTheme);
-        return Promise.resolve(cloneTheme);
+    // 校验主题
+    const validateTheme: () => Promise<string> = async () => {
+        // 校验
+        if (!customTheme.title) return Promise.reject('请输入标题');
+        if (customTheme.bgm && !linkReg.test(customTheme.bgm))
+            return Promise.reject('bgm请输入https链接');
+        if (customTheme.background && !linkReg.test(customTheme.background))
+            return Promise.reject('背景图请输入https链接');
+        if (!customTheme.maxLevel || customTheme.maxLevel < 5)
+            return Promise.reject('请输入大于5的关卡数');
+        const findIconError = iconErrors.find((i) => !!i);
+        if (findIconError)
+            return Promise.reject(`图标素材有错误：${findIconError}`);
+
+        return Promise.resolve('');
     };
 
     // 预览
     const onPreviewClick = () => {
         setConfigError('');
-        generateTheme()
-            .then((theme) => {
-                previewMethod(theme);
+        validateTheme()
+            .then(() => {
+                const cloneTheme = JSON.parse(JSON.stringify(customTheme));
+                wrapThemeDefaultSounds(cloneTheme);
+                previewMethod(cloneTheme);
                 localStorage.setItem(
                     CUSTOM_THEME_STORAGE_KEY,
-                    JSON.stringify(theme)
+                    JSON.stringify(customTheme)
                 );
                 closeMethod();
             })
@@ -101,62 +295,66 @@ const ConfigDialog: FC<{
             });
     };
 
-    const [uploading, setUploading] = useState<boolean>(false);
     // 生成二维码和链接
+    const [uploading, setUploading] = useState<boolean>(false);
     const onGenQrLinkClick = () => {
         if (uploading) return;
+        if (!enableFileSizeValidate)
+            return setConfigError('请先开启文件大小校验');
         setUploading(true);
         setConfigError('');
-        generateTheme()
-            .then((theme) => {
-                // 五分钟能只能上传一次
-                const lastUploadTime = localStorage.getItem(
-                    LAST_UPLOAD_TIME_STORAGE_KEY
-                );
-                if (
-                    lastUploadTime &&
-                    new Date().getTime() - Number(lastUploadTime) <
-                        1000 * 60 * 5
-                ) {
-                    setConfigError(
-                        '五分钟内只能上传一次（用的人有点多十分抱歉😭），先保存预览看看效果把~'
-                    );
-                    setUploading(false);
-                    return;
-                }
-
-                const stringify = JSON.stringify(theme);
+        validateTheme()
+            .then(() => {
+                const cloneTheme = JSON.parse(JSON.stringify(customTheme));
+                deleteThemeUnusedSounds(cloneTheme);
+                const stringify = JSON.stringify(cloneTheme);
                 localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, stringify);
                 const query = Bmob.Query('config');
+                if (id) query.set('id', id);
+                // Bmob上限 384563
                 query.set('content', stringify);
                 query
                     .save()
                     .then((res) => {
-                        //@ts-ignore
-                        const link = `${location.origin}?customTheme=${res.objectId}`;
-                        setGenLink(link);
-                        localStorage.setItem(
-                            LAST_UPLOAD_TIME_STORAGE_KEY,
-                            new Date().getTime().toString()
-                        );
+                        if (!id) {
+                            localStorage.setItem(
+                                CUSTOM_THEME_ID_STORAGE_KEY,
+                                //@ts-ignore
+                                res.objectId
+                            );
+                        }
+                        setTimeout(() => {
+                            setGenLink(
+                                `${location.origin}?customTheme=${
+                                    /*@ts-ignore*/
+                                    res.objectId || id
+                                }`
+                            );
+                        }, 3000);
                     })
-                    .catch(({ error }) => {
-                        setConfigError(error);
-                        setGenLink('');
+                    .catch(({ error, code }) => {
+                        setTimeout(() => {
+                            setConfigError(
+                                code === 10007
+                                    ? '上传数据长度已超过bmob的限制'
+                                    : error
+                            );
+                        }, 3000);
                     })
                     .finally(() => {
-                        setUploading(false);
+                        setTimeout(() => {
+                            setUploading(false);
+                        }, 3000);
                     });
             })
             .catch((e) => {
-                setConfigError(e);
-                setGenLink('');
-                setUploading(false);
+                setTimeout(() => {
+                    setConfigError(e);
+                    setUploading(false);
+                }, 3000);
             });
     };
 
-    // TODO HTML有点臭长了，待优化
-    // @ts-ignore
     return (
         <div className={classNames(style.dialog)}>
             <div className={style.closeBtn} onClick={closeMethod}>
@@ -165,39 +363,120 @@ const ConfigDialog: FC<{
             <h2>自定义主题</h2>
 
             <InputContainer label={'标题'} required>
-                <input placeholder={'请输入标题'} />
+                <input
+                    placeholder={'请输入标题'}
+                    value={customTheme.title}
+                    onChange={(e) => updateCustomTheme('title', e.target.value)}
+                />
             </InputContainer>
             <InputContainer label={'描述'}>
-                <input placeholder={'请输入描述'} />
+                <input
+                    placeholder={'请输入描述'}
+                    value={customTheme.desc || ''}
+                    onChange={(e) => updateCustomTheme('desc', e.target.value)}
+                />
             </InputContainer>
             <InputContainer label={'BGM'}>
-                <input type={'file'} />
-                <input placeholder={'或者输入https外链'} />
+                <div className={style.tip}>
+                    接口上传体积有限制，上传文件请全力压缩到80k以下
+                </div>
+                <input
+                    type={'file'}
+                    accept={'.mp3'}
+                    onChange={(e) =>
+                        onFileChange({
+                            type: 'bgm',
+                            file: e.target.files?.[0],
+                        })
+                    }
+                />
+                {bgmError && <div className={style.errorTip}>{bgmError}</div>}
+                <input
+                    placeholder={'或者输入https外链'}
+                    value={customTheme.bgm || ''}
+                    onChange={(e) => updateCustomTheme('bgm', e.target.value)}
+                />
+                {customTheme.bgm && <audio src={customTheme.bgm} controls />}
             </InputContainer>
             <InputContainer label={'背景图'}>
-                <input type={'file'} />
-                <input placeholder={'或者输入https外链'} />
+                <div className={style.tip}>
+                    接口上传体积有限制，上传文件请全力压缩到80k以下
+                </div>
+                <input
+                    type={'file'}
+                    accept={'.jpg,.png,.gif'}
+                    onChange={(e) =>
+                        onFileChange({
+                            type: 'background',
+                            file: e.target.files?.[0],
+                        })
+                    }
+                />
+                {backgroundError && (
+                    <div className={style.errorTip}>{backgroundError}</div>
+                )}
+                <div className={'flex-container flex-center'}>
+                    <input
+                        placeholder={'或者输入https外链'}
+                        value={customTheme.background || ''}
+                        onChange={(e) =>
+                            updateCustomTheme('background', e.target.value)
+                        }
+                    />
+                    {customTheme.background && (
+                        <img
+                            alt="加载失败"
+                            src={customTheme.background}
+                            className={style.imgPreview}
+                        />
+                    )}
+                </div>
                 <div className={'flex-container flex-center flex-no-wrap'}>
                     <span>毛玻璃</span>
-                    <input type={'checkbox'} />
+                    <input
+                        type={'checkbox'}
+                        checked={!!customTheme.backgroundBlur}
+                        onChange={(e) =>
+                            updateCustomTheme(
+                                'backgroundBlur',
+                                e.target.checked
+                            )
+                        }
+                    />
                     <div className={'flex-spacer'} />
                     <span>深色</span>
-                    <input type={'checkbox'} />
+                    <input
+                        type={'checkbox'}
+                        checked={!!customTheme.dark}
+                        onChange={(e) =>
+                            updateCustomTheme('dark', e.target.checked)
+                        }
+                    />
                     <div className={'flex-spacer'} />
                     <span>纯色</span>
-                    <input type={'color'} value="#fff" />
+                    <input
+                        type={'color'}
+                        value={customTheme.backgroundColor || '#ffffff'}
+                        onChange={(e) =>
+                            updateCustomTheme('backgroundColor', e.target.value)
+                        }
+                    />
                 </div>
                 <div className={style.tip}>
                     使用图片或者纯色作为背景，图片可开启毛玻璃效果。如果你使用了深色的图片和颜色，请开启深色模式，此时标题等文字将变为亮色
                 </div>
             </InputContainer>
-            <InputContainer label={'关卡数'}>
+            <InputContainer label={'关卡数'} required>
                 <input
                     type={'number'}
-                    placeholder={'最低5关，最高...理论上无限，默认为50'}
+                    placeholder={'最低5关，最高...理论上无限'}
+                    value={customTheme.maxLevel || ''}
+                    onChange={(e) =>
+                        updateCustomTheme('maxLevel', Number(e.target.value))
+                    }
                 />
             </InputContainer>
-            <InputContainer label={'音效素材'} required>
+            <InputContainer label={'音效素材'}>
                 <div className={'flex-container flex-left-center'}>
                     {customTheme.sounds.map((sound, idx) => {
                         return (
@@ -205,7 +484,10 @@ const ConfigDialog: FC<{
                                 <audio src={sound.src} controls />
                                 <div className={style.inner}>
                                     <span>{sound.name}</span>
-                                    <CloseIcon fill={'#fff'} />
+                                    <CloseIcon
+                                        fill={'#fff'}
+                                        onClick={() => onDeleteSoundClick(idx)}
+                                    />
                                 </div>
                             </div>
                         );
@@ -213,43 +495,177 @@ const ConfigDialog: FC<{
                 </div>
                 <input
                     placeholder={'输入音效名称'}
-                    onChange={(event) =>
-                        setEditSound({
-                            name: event.target.value,
-                            src: editSound.src,
+                    value={newSound.name}
+                    onChange={(e) => onNewSoundChange('name', e.target.value)}
+                />
+                <div className={style.tip}>
+                    接口上传体积有限制，上传文件请全力压缩到10k以下
+                </div>
+                <input
+                    type={'file'}
+                    accept={'.mp3'}
+                    onChange={(e) =>
+                        onFileChange({
+                            type: 'sound',
+                            file: e.target.files?.[0],
                         })
                     }
                 />
-                <input type={'file'} />
                 <input
                     placeholder={'或者输入https外链'}
-                    onChange={(event) =>
-                        setEditSound({
-                            src: event.target.value,
-                            name: editSound.name,
-                        })
-                    }
+                    value={newSound.src}
+                    onChange={(e) => onNewSoundChange('src', e.target.value)}
                 />
-                <button
-                    onClick={() =>
-                        setCustomTheme({
-                            ...customTheme,
-                            sounds: [...customTheme.sounds, editSound],
-                        })
-                    }
-                >
-                    添加音效
-                </button>
+                {soundError && (
+                    <div className={style.errorTip}>{soundError}</div>
+                )}
+                <button onClick={onAddNewSoundClick}>添加音效</button>
             </InputContainer>
             <InputContainer label={'图标素材'} required>
-                <div className={'flex-container flex-left-center'}>
-                    {customTheme.icons.map((icon, idx) => {
-                        return <div key={icon.name}>{icon.name}</div>;
-                    })}
+                <div className={style.tip}>
+                    接口上传体积有限制，上传文件请全力压缩到5k以下，推荐尺寸56*56
                 </div>
             </InputContainer>
-            <InputContainer label={'操作音效'}>？？</InputContainer>
+            {customTheme.icons.map((icon, idx) => (
+                <div key={icon.name} className={style.iconInputGroup}>
+                    <img
+                        alt=""
+                        className={style.iconPreview}
+                        src={icon.content}
+                    />
+                    <div className={style.iconInput}>
+                        <input
+                            type={'file'}
+                            accept={'.jpg,.png,.gif'}
+                            onChange={(e) =>
+                                onFileChange({
+                                    type: 'icon',
+                                    file: e.target.files?.[0],
+                                    idx,
+                                })
+                            }
+                        />
+                        <div
+                            className={
+                                'flex-container flex-center flex-no-wrap'
+                            }
+                            style={{ wordBreak: 'keep-all' }}
+                        >
+                            <input
+                                placeholder={'或者输入https外链'}
+                                value={customTheme.icons[idx].content}
+                                onBlur={(e) => {
+                                    if (!linkReg.test(e.target.value))
+                                        setIconErrors(
+                                            makeIconErrors(
+                                                idx,
+                                                '请输入https外链'
+                                            )
+                                        );
+                                }}
+                                onChange={(e) =>
+                                    updateIcons('content', e.target.value, idx)
+                                }
+                            />
+                            {iconErrors[idx] && (
+                                <div className={style.errorTip}>
+                                    {iconErrors[idx]}
+                                </div>
+                            )}
+                        </div>
+                        <div className={'flex-container'}>
+                            <select
+                                className={'flex-grow'}
+                                value={customTheme.icons[idx].clickSound}
+                                onChange={(e) =>
+                                    updateIcons(
+                                        'clickSound',
+                                        e.target.value,
+                                        idx
+                                    )
+                                }
+                            >
+                                <option value="">默认点击音效</option>
+                                {customTheme.sounds.map((sound) => (
+                                    <option key={sound.name} value={sound.name}>
+                                        {sound.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <select
+                                className={'flex-grow'}
+                                value={customTheme.icons[idx].tripleSound}
+                                onChange={(e) =>
+                                    updateIcons(
+                                        'tripleSound',
+                                        e.target.value,
+                                        idx
+                                    )
+                                }
+                            >
+                                <option value="">默认三连音效</option>
+                                {customTheme.sounds.map((sound) => (
+                                    <option key={sound.name} value={sound.name}>
+                                        {sound.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            ))}
+            {/*<InputContainer label={'操作音效'}>？？</InputContainer>*/}
+
+            {genLink && (
+                <div className={'flex-container flex-center flex-column'}>
+                    <QRCodeCanvas id="qrCode" value={genLink} size={300} />
+                    <button
+                        onClick={() =>
+                            captureElement('qrCode', customTheme.title)
+                        }
+                        className="primary"
+                    >
+                        下载二维码
+                    </button>
+                    <div style={{ fontSize: 12 }}>{genLink}</div>
+                    <button onClick={() => copy(genLink)} className="primary">
+                        复制链接
+                    </button>
+                </div>
+            )}
+            <div className={style.tip}>
+                接口上传内容总体积有限制，上传文件失败请进一步压缩文件，或者使用外链（自行搜索【免费图床】【免费mp3外链】【对象存储服务】等关键词）。
+                本地整活，勾选右侧关闭文件大小校验👉
+                <input
+                    type={'checkbox'}
+                    checked={!enableFileSizeValidate}
+                    onChange={(e) =>
+                        setEnableFileSizeValidate(!e.target.checked)
+                    }
+                />
+                (谨慎操作，单文件不超过1M为宜，文件过大可能导致崩溃，介时请刷新浏览器，)
+            </div>
+            {configError && <div className={style.errorTip}>{configError}</div>}
             <WxQrCode />
+            <div className={'flex-container'}>
+                <button
+                    className={'primary flex-grow'}
+                    onClick={onPreviewClick}
+                >
+                    保存并预览
+                </button>
+                <button
+                    className={classNames(
+                        'primary flex-grow',
+                        style.uploadBtn,
+                        uploading && style.uploading
+                    )}
+                    onClick={onGenQrLinkClick}
+                >
+                    {genLink ? '更新数据' : '生成二维码&链接'}
+                    {uploading ? '...' : ''}
+                </button>
+            </div>
         </div>
     );
 };

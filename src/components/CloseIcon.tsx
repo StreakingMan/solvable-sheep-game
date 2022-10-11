@@ -1,6 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 
-export const CloseIcon: FC<{ fill: string }> = ({ fill }) => {
+export const CloseIcon: FC<{ fill: string; onClick?: MouseEventHandler }> = ({
+    fill,
+    onClick,
+}) => {
     return (
         <svg
             width="13"
@@ -8,6 +11,7 @@ export const CloseIcon: FC<{ fill: string }> = ({ fill }) => {
             viewBox="0 0 13 14"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={onClick}
         >
             <path
                 fillRule="evenodd"

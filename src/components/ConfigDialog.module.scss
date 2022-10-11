@@ -10,6 +10,65 @@
     }
 }
 
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    30% {
+        transform: translateX(30px);
+    }
+
+    80% {
+        transform: translateX(-30px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.soundItem {
+    height: 30px;
+    position: relative;
+
+    .inner {
+        height: 30px;
+        min-width: 48px;
+        margin-left: 42px;
+        background-color: #888;
+        line-height: 30px;
+        padding: 0 12px;
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px;
+        font-size: 14px;
+        color: white;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    svg {
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+            transform: rotate(180deg);
+        }
+    }
+
+    audio {
+        height: 30px;
+        width: 100px;
+        position: absolute;
+        left: 0;
+        z-index: 1;
+    }
+}
+
 .dialog {
     text-align: left;
     overflow-y: auto;
@@ -28,13 +87,14 @@
     display: flex;
     flex-flow: column nowrap !important;
     gap: 8px;
+    overflow-x: hidden;
 
     h2 {
         text-align: center;
         margin-top: -36px;
     }
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 768px) {
         margin: 36px 0;
         border-radius: 16px;
         box-shadow: 0 19px 38px rgb(0 0 0 / 30%), 0 15px 12px rgb(0 0 0 / 22%);
@@ -47,6 +107,7 @@
 
     .errorTip {
         color: crimson;
+        animation: shake 0.2s 2;
     }
 
     .closeBtn {
@@ -79,6 +140,10 @@
 .inputContainer {
     word-break: keep-all;
 
+    audio {
+        height: 30px;
+    }
+
     input,
     select {
         flex-grow: 1;
@@ -107,10 +172,11 @@
         font-weight: 600;
     }
 
-    .tip {
-        font-size: 14px;
-        opacity: 0.6;
-        word-break: break-all;
+    .imgPreview {
+        height: 30px;
+        border: 1px dashed rgb(0 0 0 / 30%);
+        min-width: 30px;
+        object-fit: contain;
     }
 
     &.required .label {
@@ -121,40 +187,76 @@
     }
 }
 
+.tip {
+    font-size: 12px;
+    opacity: 0.6;
+    word-break: break-all;
+}
+
+.iconInput {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+
+    &Group {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 8px;
+
+        input {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type='file'] {
+            padding: 3px 12px;
+        }
+
+        .iconPreview {
+            height: 109px;
+            width: 109px;
+            border: 1px dashed rgb(0 0 0 / 30%);
+            object-fit: cover;
+            flex-basis: 109px;
+        }
+    }
+}
+
 .divider {
     width: 100%;
     height: 0;
     border-bottom: 1px solid rgb(0 0 0 / 8%);
 }
 
-.soundItem {
-    height: 30px;
-    position: relative;
-
-    .inner {
-        height: 30px;
-        min-width: 48px;
-        margin-left: 42px;
-        background-color: #888;
-        line-height: 30px;
-        padding: 0 12px;
-        border-bottom-right-radius: 15px;
-        border-top-right-radius: 15px;
-        font-size: 14px;
-        color: white;
-        position: relative;
-        z-index: 2;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        justify-content: space-between;
+@keyframes gradient {
+    0% {
+        background-position: 100% 50%;
     }
 
-    audio {
-        height: 30px;
-        width: 100px;
-        position: absolute;
-        left: 0;
-        z-index: 1;
+    50% {
+        background-position: 0 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.uploadBtn {
+    background-image: linear-gradient(
+        -45deg,
+        #ee7752,
+        #e73c7e,
+        #23a6d5,
+        #23d5ab
+    );
+    background-size: 400% 400%;
+    background-position: 100% 50%;
+
+    &.uploading {
+        animation: gradient 1s ease infinite;
     }
 }

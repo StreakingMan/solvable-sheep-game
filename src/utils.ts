@@ -4,11 +4,14 @@ import { getDefaultTheme } from './themes/default';
 export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
 export const LAST_SCORE_STORAGE_KEY = 'lastScore';
 export const LAST_TIME_STORAGE_KEY = 'lastTime';
-export const LAST_UPLOAD_TIME_STORAGE_KEY = 'lastUploadTime';
+export const CUSTOM_THEME_ID_STORAGE_KEY = 'customThemeId';
 export const CUSTOM_THEME_STORAGE_KEY = 'customTheme';
+export const CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY = 'customThemeFileValidate';
 export const DEFAULT_BGM_STORAGE_KEY = 'defaultBgm';
 export const DEFAULT_TRIPLE_SOUND_STORAGE_KEY = 'defaultTripleSound';
 export const DEFAULT_CLICK_SOUND_STORAGE_KEY = 'defaultClickSound';
+
+export const linkReg = /^(https|data):+/;
 
 export const randomString: (len: number) => string = (len) => {
     const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -106,7 +109,35 @@ export const wrapThemeDefaultSounds: (theme: Theme<any>) => void = (theme) => {
     }
 };
 
+export const deleteThemeUnusedSounds = (theme: Theme<any>) => {
+    const usedSounds = new Set();
+    for (const icon of theme.icons) {
+        usedSounds.add(icon.clickSound);
+        usedSounds.add(icon.tripleSound);
+    }
+    theme.sounds = theme.sounds.filter((s) => usedSounds.has(s.name));
+};
+
 export const domRelatedOptForTheme = (theme: Theme<any>) => {
     document.body.style.backgroundColor = theme.backgroundColor || 'white';
     document.body.style.color = theme.dark ? 'white' : 'rgb(0 0 0 / 60%)';
+};
+
+export const getFileBase64String: (file: File) => Promise<string> = (
+    file: File
+) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = (e) => {
+            if (e.target?.result) {
+                resolve(e.target.result.toString());
+            } else {
+                reject('读取文件内容为空');
+            }
+        };
+        reader.onerror = () => {
+            reject('读取文件失败');
+        };
+    });
 };

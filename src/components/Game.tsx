@@ -10,6 +10,7 @@ import {
     LAST_LEVEL_STORAGE_KEY,
     LAST_SCORE_STORAGE_KEY,
     LAST_TIME_STORAGE_KEY,
+    linkReg,
     randomString,
     waitTimeout,
 } from '../utils';
@@ -132,8 +133,7 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
                 style={{ opacity: isCover ? 0.4 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
-                    icon.content.startsWith('http') ||
-                    icon.content.startsWith('/') ? (
+                    linkReg.test(icon.content) ? (
                         /*图片地址*/
                         <img src={icon.content} alt="" />
                     ) : (
