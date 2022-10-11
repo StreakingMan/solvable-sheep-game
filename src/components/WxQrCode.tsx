@@ -41,7 +41,7 @@ const WxQrCode: FC<{ title?: string }> = ({
                     <span className={style.wxQrCodeItemTitle}>￥ {num}</span>
                     <img
                         alt={''}
-                        src={`/wxQrCode${num}.jpg`}
+                        src={`/wxQrcode${num}.jpg`}
                         className={style.wxQrCodeItemImage}
                         onClick={() => onImageClick(idx)}
                     />
