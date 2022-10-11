@@ -19,7 +19,7 @@
 **声明：本项目仅供交流，禁止商用！否则后果自负。基于此项目的二创都是欢迎的，但非二创请不要删除原仓库地址
 （啥都不改唯独删除来源我真的会谢 🙄️，请尊重他人劳动成果）**
 
-![qrcode.png](qrcode.png)
+<img src="qrcode.png" style="width: 250px;" alt="体验地址二维码">
 
 ## Feature
 
@@ -34,21 +34,22 @@
 
 开心就好 😄
 
-![preview.png](preview.png)
-![preview2.png](preview2.png)
+<img src="preview1.png" style="width: 250px" alt="预览">
+<img src="preview2.png" style="width: 250px" alt="预览">
+<img src="preview3.png" style="width: 250px" alt="预览">
+<img src="preview4.png" style="width: 250px" alt="预览">
+<img src="preview5.png" style="width: 250px" alt="预览">
 
 ## Contribution
 
 vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地址）
-
-切换主题参考 `src/themes` 下的代码，欢迎整活
 
 ## Related Repo
 
 <a href="https://github.com/opendilab" target="_blank">opendilab</a> 的 AI 整活！移步
 <a href="https://github.com/opendilab/DI-sheep" target="_blank">DI-sheep：深度强化学习 + 羊了个羊</a>
 
-<img style="width:360px" src="https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif" alt="" />
+<img style="width:250px" src="https://github.com/opendilab/DI-sheep/raw/master/ui/public/demo.gif" alt="" />
 
 ## Todo List
 
@@ -69,9 +70,29 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 
 ## 二次开发
 
-项目的自定义主题功能设计到后台存储（Bmob 懒人数据库），如果您只是简单的整活，可能并不需要相关的逻辑。
-详细的二次开发说面移步这里[DIY 指南](/diy/README.md)
+项目的自定义主题功能涉及到后台存储（Bmob 懒人数据库），如果您只是简单的整活，可能并不需要相关的逻辑。
+详细的二次开发说明请移步这里[DIY 指南](/diy/README.md)
 
 ## License
 
 [GNU GENERAL PUBLIC LICENSE Version 3](LICENSE.md)
+
+## 资助
+
+由于各种白嫖的静态资源托管、后台服务的免费额度都已用完，目前自费升级了相关套餐。
+如果您喜欢这个项目，觉得本项目对你有帮助的话，可以扫描下方付款码请我喝杯咖啡 ☕️/分摊后台服务费用～ 😘
+
+<div style="display: flex;justify-content: space-between">
+    <div>
+        <p style="text-align: center">¥ 1</p>
+        <img src="public/wxQrcode1.jpg" style="width: 200px" alt="收款码">
+    </div>
+    <div>
+        <p style="text-align: center">¥ 5</p>
+        <img src="public/wxQrcode5.jpg" style="width: 200px" alt="收款码">
+    </div>
+    <div>
+        <p style="text-align: center">¥ 8</p>
+        <img src="public/wxQrcode8.jpg" style="width: 200px" alt="收款码">
+    </div>
+</div>
