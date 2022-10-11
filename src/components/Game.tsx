@@ -133,7 +133,8 @@ const Symbol: FC<SymbolProps> = ({ x, y, icon, isCover, status, onClick }) => {
                 style={{ opacity: isCover ? 0.4 : 1 }}
             >
                 {typeof icon.content === 'string' ? (
-                    linkReg.test(icon.content) ? (
+                    linkReg.test(icon.content) ||
+                    icon.content.startsWith('/') ? (
                         /*图片地址*/
                         <img src={icon.content} alt="" />
                     ) : (
