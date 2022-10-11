@@ -271,6 +271,15 @@ const ConfigDialog: FC<{
         const findIconError = iconErrors.find((i) => !!i);
         if (findIconError)
             return Promise.reject(`图标素材有错误：${findIconError}`);
+        const findUnfinishedIconIdx = customTheme.icons.findIndex(
+            (icon) => !icon.content
+        );
+        if (findUnfinishedIconIdx !== -1) {
+            setIconErrors(makeIconErrors(findUnfinishedIconIdx, '请填写链接'));
+            return Promise.reject(
+                `第${findUnfinishedIconIdx + 1}图标素材未完成`
+            );
+        }
 
         return Promise.resolve('');
     };
@@ -361,10 +370,8 @@ const ConfigDialog: FC<{
                     });
             })
             .catch((e) => {
-                setTimeout(() => {
-                    setConfigError(e);
-                    setUploading(false);
-                }, 3000);
+                setConfigError(e);
+                setUploading(false);
             });
     };
 
@@ -568,13 +575,14 @@ const ConfigDialog: FC<{
                                 placeholder={'或者输入https外链'}
                                 value={customTheme.icons[idx].content}
                                 onBlur={(e) => {
-                                    if (!linkReg.test(e.target.value))
-                                        setIconErrors(
-                                            makeIconErrors(
-                                                idx,
-                                                '请输入https外链'
-                                            )
-                                        );
+                                    setIconErrors(
+                                        makeIconErrors(
+                                            idx,
+                                            linkReg.test(e.target.value)
+                                                ? ''
+                                                : '请输入https外链'
+                                        )
+                                    );
                                 }}
                                 onChange={(e) =>
                                     updateIcons('content', e.target.value, idx)
