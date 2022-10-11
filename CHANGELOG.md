@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.9...v0.0.10) (2022-10-11)
+
+
+### Features
+
+* diy模式区分入口 ([34e89fe](https://github.com/StreakingMan/solvable-sheep-game/commit/34e89fe2328637fea5dc8b1f7f388defe720ebc9))
+* 暂时关闭二维码生成功能 ([eaa56b0](https://github.com/StreakingMan/solvable-sheep-game/commit/eaa56b00700c4f50efe0e2a4536240dffc73f33f))
+* 本地文件配置存储 ([2d7de33](https://github.com/StreakingMan/solvable-sheep-game/commit/2d7de338faafc76c55cf9f90b84f2b6672460255))
+* 计时、最大关卡配置 ([b7482fa](https://github.com/StreakingMan/solvable-sheep-game/commit/b7482fa209db447a92772644579aca75dfc6de79))
+* 配置上传时间间隔限制 ([c9cc911](https://github.com/StreakingMan/solvable-sheep-game/commit/c9cc9114c32a5f1bd9e66aa089d9309a07588d54))
+
+
+### Bug Fixes
+
+* diy按钮位置调整 ([657422e](https://github.com/StreakingMan/solvable-sheep-game/commit/657422eb4fce3d169e594578e890cb15dbdc2e4c))
+* diy模式的图片路径 ([0f00725](https://github.com/StreakingMan/solvable-sheep-game/commit/0f0072585b9af704c92fcef3e1ef5faef477f2e6))
+* 交互优化 ([89eab21](https://github.com/StreakingMan/solvable-sheep-game/commit/89eab211e49652198e1a54f288aeb378728e3a87))
+
 ### [0.0.9](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.8...v0.0.9) (2022-10-04)
 
 
