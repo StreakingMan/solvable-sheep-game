@@ -1,5 +1,5 @@
 module.exports = {
     scripts: {
-        postbump: 'yarn build && git add dist/*',
+        // postbump: 'yarn build && git add dist/*',
     },
 };
