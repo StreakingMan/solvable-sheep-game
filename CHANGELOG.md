@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.10...v1.0.0) (2022-10-12)
+
+
+### Features
+
+* 排行榜 ([9682d31](https://github.com/StreakingMan/solvable-sheep-game/commit/9682d31c495d8c7229003e68b79a15430a4ecb68))
+
+
+### Bug Fixes
+
+* wxQrcode路径 ([cc06bb1](https://github.com/StreakingMan/solvable-sheep-game/commit/cc06bb14e3a89411478dc32e880a49ef692b2e3c))
+* 主题ID恢复为一次性，交互优化 ([d070c67](https://github.com/StreakingMan/solvable-sheep-game/commit/d070c67d3f49d8dbf89d420b72d02896a2d49508))
+* 分数缓存逻辑调整 ([a8a6312](https://github.com/StreakingMan/solvable-sheep-game/commit/a8a6312e2a5d67639f50e185407915d554d28127))
+* 图标路径判断问题 ([fc7a880](https://github.com/StreakingMan/solvable-sheep-game/commit/fc7a8806078cf0c1c343830cb3c0a3ba3aa7cbf0))
+* 排行榜样式调整 ([639b1a3](https://github.com/StreakingMan/solvable-sheep-game/commit/639b1a3db11d3f21d88e39e8408fadab7dfa4121))
+* 自定义主题icons完成度校验 ([01d8561](https://github.com/StreakingMan/solvable-sheep-game/commit/01d85610ebb2f3dcc7da7b2fa038c168414fc49a))
+
 ### [0.0.10](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.9...v0.0.10) (2022-10-11)
 
 
