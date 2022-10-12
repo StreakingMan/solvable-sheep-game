@@ -8,6 +8,7 @@ import {
     DEFAULT_BGM_STORAGE_KEY,
     domRelatedOptForTheme,
     parsePathCustomThemeId,
+    PLAYING_THEME_ID_STORAGE_KEY,
     wrapThemeDefaultSounds,
 } from './utils';
 import { getDefaultTheme } from './themes/default';
@@ -33,6 +34,11 @@ const errorTip = (tip: string) => {
 
 // 加载成功后数据转换（runtime）以及转场
 const successTrans = (theme: Theme<any>) => {
+    sessionStorage.setItem(
+        PLAYING_THEME_ID_STORAGE_KEY,
+        customThemeIdFromPath || theme.title
+    );
+
     wrapThemeDefaultSounds(theme);
 
     setTimeout(() => {
@@ -72,7 +78,7 @@ const loadTheme = () => {
             Bmob.Query('config')
                 .get(customThemeIdFromPath)
                 .then((res) => {
-                    const { content } = res as any;
+                    const { content, increment } = res as any;
                     localStorage.setItem(customThemeIdFromPath, content);
                     try {
                         const customTheme = JSON.parse(content);
@@ -80,6 +86,10 @@ const loadTheme = () => {
                     } catch (e) {
                         errorTip('主题配置解析失败');
                     }
+                    // 统计访问次数
+                    increment('visitNum');
+                    // @ts-ignore
+                    res.save();
                 })
                 .catch(({ error }) => {
                     errorTip(error);

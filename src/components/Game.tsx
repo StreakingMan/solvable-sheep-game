@@ -4,6 +4,7 @@ import React, {
     useEffect,
     useRef,
     useState,
+    Suspense,
 } from 'react';
 import './Game.scss';
 import {
@@ -11,9 +12,11 @@ import {
     LAST_SCORE_STORAGE_KEY,
     LAST_TIME_STORAGE_KEY,
     randomString,
+    timestampToUsedTimeString,
     waitTimeout,
 } from '../utils';
 import { Icon, Theme } from '../themes/interface';
+import Score from './Score';
 
 interface MySymbol {
     id: string;
@@ -488,17 +491,20 @@ const Game: FC<{
                 <br />
                 得分{score}
                 <br />
-                用时{(usedTime / 1000).toFixed(3)}秒
+                用时{timestampToUsedTimeString(usedTime)}
             </div>
-            {/*提示弹窗*/}
-            {finished && (
-                <div className="modal">
-                    <h1>{tipText}</h1>
-                    <h1>得分{score}</h1>
-                    <h1>用时{(usedTime / 1000).toFixed(3)}秒</h1>
-                    <button onClick={restart}>再来一次</button>
-                </div>
-            )}
+            {/*积分、排行榜*/}
+            <Suspense fallback={<span>rank list</span>}>
+                {finished && (
+                    <Score
+                        level={level}
+                        time={usedTime}
+                        score={score}
+                        success={level === maxLevel}
+                        restartMethod={restart}
+                    />
+                )}
+            </Suspense>
             {/*bgm*/}
             {theme.bgm && (
                 <button className="bgm-button" onClick={() => setBgmOn(!bgmOn)}>

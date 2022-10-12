@@ -1,0 +1,85 @@
+.modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(6px);
+    background-color: rgb(0 0 0 / 20%);
+    top: 0;
+    left: 0;
+    z-index: 10 !important;
+    overflow-y: auto;
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100%;
+        width: 100%;
+        padding: 12px;
+        max-width: 450px;
+        box-sizing: border-box;
+        margin: 0 auto;
+        gap: 8px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        margin: 0;
+    }
+}
+
+.nameInput {
+    background-color: rgb(0 0 0 / 20%);
+    color: currentcolor;
+    border: 1px currentcolor dashed;
+
+    &::placeholder {
+        color: currentcolor;
+        opacity: 0.6;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.rankContainer {
+    border: 1px solid currentcolor;
+    padding: 12px;
+    border-radius: 8px;
+    min-height: 200px;
+    background-color: rgb(0 0 0 / 20%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .title {
+        font-weight: 900;
+        margin: 0;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        max-height: 30vh;
+        overflow-y: auto;
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: gray;
+        }
+    }
+}
+
+.tip {
+    font-size: 18px;
+    text-align: center;
+    opacity: 0.8;
+
+    &.error {
+        color: crimson;
+    }
+}

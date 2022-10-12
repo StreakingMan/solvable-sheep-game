@@ -5,6 +5,7 @@ import {
     LAST_LEVEL_STORAGE_KEY,
     LAST_SCORE_STORAGE_KEY,
     LAST_TIME_STORAGE_KEY,
+    PLAYING_THEME_ID_STORAGE_KEY,
     wrapThemeDefaultSounds,
 } from './utils';
 import { Theme } from './themes/interface';
@@ -30,6 +31,7 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
     const [diyDialogShow, setDiyDialogShow] = useState<boolean>(false);
 
     const changeTheme = (theme: Theme<any>) => {
+        sessionStorage.setItem(PLAYING_THEME_ID_STORAGE_KEY, theme.title);
         wrapThemeDefaultSounds(theme);
         domRelatedOptForTheme(theme);
         setTheme({ ...theme });

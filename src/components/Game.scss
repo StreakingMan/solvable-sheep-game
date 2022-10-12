@@ -74,21 +74,6 @@
     }
 }
 
-.modal {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    background-color: rgb(0 0 0 / 10%);
-    top: 0;
-    left: 0;
-    z-index: 10 !important;
-}
-
 .bgm-button {
     position: fixed;
     left: 8px;

@@ -1,6 +1,7 @@
 import { Theme } from './themes/interface';
 import { getDefaultTheme } from './themes/default';
 
+// local
 export const LAST_LEVEL_STORAGE_KEY = 'lastLevel';
 export const LAST_SCORE_STORAGE_KEY = 'lastScore';
 export const LAST_TIME_STORAGE_KEY = 'lastTime';
@@ -11,6 +12,10 @@ export const CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY = 'customThemeFileValidate';
 export const DEFAULT_BGM_STORAGE_KEY = 'defaultBgm';
 export const DEFAULT_TRIPLE_SOUND_STORAGE_KEY = 'defaultTripleSound';
 export const DEFAULT_CLICK_SOUND_STORAGE_KEY = 'defaultClickSound';
+export const USER_NAME_STORAGE_KEY = 'username';
+export const USER_ID_STORAGE_KEY = 'userId';
+// session
+export const PLAYING_THEME_ID_STORAGE_KEY = 'playingThemeId';
 
 export const linkReg = /^(https|data):+/;
 
@@ -141,4 +146,26 @@ export const getFileBase64String: (file: File) => Promise<string> = (
             reject('读取文件失败');
         };
     });
+};
+
+export const timestampToUsedTimeString: (time: number) => string = (time) => {
+    try {
+        const hours = Math.floor(time / (1000 * 60 * 60));
+        const minutes = Math.floor(
+            (time - 1000 * 60 * 60 * hours) / (1000 * 60)
+        );
+        const seconds = (
+            (time - 1000 * 60 * 60 * hours - 1000 * 60 * minutes) /
+            1000
+        ).toFixed(3);
+        if (hours) {
+            return `${hours}小时${minutes}分${seconds}秒`;
+        } else if (minutes) {
+            return `${minutes}分${seconds}秒`;
+        } else {
+            return `${seconds}秒`;
+        }
+    } catch (e) {
+        return '时间转换出错';
+    }
 };
