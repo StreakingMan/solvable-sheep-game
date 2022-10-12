@@ -14,10 +14,15 @@ export const DEFAULT_TRIPLE_SOUND_STORAGE_KEY = 'defaultTripleSound';
 export const DEFAULT_CLICK_SOUND_STORAGE_KEY = 'defaultClickSound';
 export const USER_NAME_STORAGE_KEY = 'username';
 export const USER_ID_STORAGE_KEY = 'userId';
-// session
 export const PLAYING_THEME_ID_STORAGE_KEY = 'playingThemeId';
 
 export const linkReg = /^(https|data):+/;
+
+export const resetScoreStorage = () => {
+    localStorage.setItem(LAST_LEVEL_STORAGE_KEY, '1');
+    localStorage.setItem(LAST_SCORE_STORAGE_KEY, '0');
+    localStorage.setItem(LAST_TIME_STORAGE_KEY, '0');
+};
 
 export const randomString: (len: number) => string = (len) => {
     const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

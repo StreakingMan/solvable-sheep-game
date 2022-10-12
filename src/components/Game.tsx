@@ -12,6 +12,7 @@ import {
     LAST_SCORE_STORAGE_KEY,
     LAST_TIME_STORAGE_KEY,
     randomString,
+    resetScoreStorage,
     timestampToUsedTimeString,
     waitTimeout,
 } from '../utils';
@@ -170,7 +171,6 @@ const Game: FC<{
         Record<MySymbol['id'], number>
     >({});
     const [finished, setFinished] = useState<boolean>(false);
-    const [tipText, setTipText] = useState<string>('');
     const [animating, setAnimating] = useState<boolean>(false);
 
     // 音效
@@ -394,14 +394,12 @@ const Game: FC<{
 
         // 输了
         if (updateQueue.length === 7) {
-            setTipText('失败了');
             setFinished(true);
         }
 
         if (!updateScene.find((s) => s.status !== 2)) {
             // 胜利
             if (level === maxLevel) {
-                setTipText('完成挑战');
                 setFinished(true);
                 return;
             }
@@ -428,9 +426,7 @@ const Game: FC<{
     useEffect(() => {
         if (finished) {
             intervalRef.current && clearInterval(intervalRef.current);
-            localStorage.setItem(LAST_LEVEL_STORAGE_KEY, '1');
-            localStorage.setItem(LAST_SCORE_STORAGE_KEY, '0');
-            localStorage.setItem(LAST_TIME_STORAGE_KEY, '0');
+            resetScoreStorage();
         }
     }, [finished]);
     // 更新使用时间

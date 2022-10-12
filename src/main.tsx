@@ -7,8 +7,12 @@ import Bmob from 'hydrogen-js-sdk';
 import {
     DEFAULT_BGM_STORAGE_KEY,
     domRelatedOptForTheme,
+    LAST_LEVEL_STORAGE_KEY,
+    LAST_SCORE_STORAGE_KEY,
+    LAST_TIME_STORAGE_KEY,
     parsePathCustomThemeId,
     PLAYING_THEME_ID_STORAGE_KEY,
+    resetScoreStorage,
     wrapThemeDefaultSounds,
 } from './utils';
 import { getDefaultTheme } from './themes/default';
@@ -34,7 +38,17 @@ const errorTip = (tip: string) => {
 
 // 加载成功后数据转换（runtime）以及转场
 const successTrans = (theme: Theme<any>) => {
-    sessionStorage.setItem(
+    // 如果上次玩的不是这个主题，清除缓存分数
+    const lastPlayTheme = localStorage.getItem(PLAYING_THEME_ID_STORAGE_KEY);
+    if (
+        !lastPlayTheme ||
+        ![customThemeIdFromPath, theme.title].includes(lastPlayTheme)
+    ) {
+        resetScoreStorage();
+    }
+
+    // 缓存当前主题id
+    localStorage.setItem(
         PLAYING_THEME_ID_STORAGE_KEY,
         customThemeIdFromPath || theme.title
     );

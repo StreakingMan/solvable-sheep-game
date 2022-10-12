@@ -6,6 +6,7 @@ import {
     LAST_SCORE_STORAGE_KEY,
     LAST_TIME_STORAGE_KEY,
     PLAYING_THEME_ID_STORAGE_KEY,
+    resetScoreStorage,
     wrapThemeDefaultSounds,
 } from './utils';
 import { Theme } from './themes/interface';
@@ -18,11 +19,6 @@ const ThemeChanger = React.lazy(() => import('./components/ThemeChanger'));
 const ConfigDialog = React.lazy(() => import('./components/ConfigDialog'));
 const WxQrCode = React.lazy(() => import('./components/WxQrCode'));
 
-// 读取缓存关卡得分
-const initLevel = Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1');
-const initScore = Number(localStorage.getItem(LAST_SCORE_STORAGE_KEY) || '0');
-const initTime = Number(localStorage.getItem(LAST_TIME_STORAGE_KEY) || '0');
-
 const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
     console.log('initTheme', initTheme);
     // console.log(JSON.stringify(theme));
@@ -30,8 +26,23 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
     const [theme, setTheme] = useState<Theme<any>>(initTheme);
     const [diyDialogShow, setDiyDialogShow] = useState<boolean>(false);
 
+    // 读取缓存关卡得分
+    const [initLevel, setInitLevel] = useState<number>(
+        Number(localStorage.getItem(LAST_LEVEL_STORAGE_KEY) || '1')
+    );
+    const [initScore, setInitScore] = useState<number>(
+        Number(localStorage.getItem(LAST_SCORE_STORAGE_KEY) || '0')
+    );
+    const [initTime, setInitTime] = useState<number>(
+        Number(localStorage.getItem(LAST_TIME_STORAGE_KEY) || '0')
+    );
+
     const changeTheme = (theme: Theme<any>) => {
-        sessionStorage.setItem(PLAYING_THEME_ID_STORAGE_KEY, theme.title);
+        localStorage.setItem(PLAYING_THEME_ID_STORAGE_KEY, theme.title);
+        setInitLevel(1);
+        setInitScore(0);
+        setInitTime(0);
+        resetScoreStorage();
         wrapThemeDefaultSounds(theme);
         domRelatedOptForTheme(theme);
         setTheme({ ...theme });

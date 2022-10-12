@@ -52,7 +52,7 @@ const Score: FC<{
     // 综合评分
     const rating = Math.max(0, score) * 100 - Math.round(time / 1000);
     // 分主题排行
-    const themeId = sessionStorage.getItem(PLAYING_THEME_ID_STORAGE_KEY);
+    const themeId = localStorage.getItem(PLAYING_THEME_ID_STORAGE_KEY);
 
     const uploadRankInfo = (id?: string) => {
         const _userId = localStorage.getItem(USER_ID_STORAGE_KEY);
@@ -93,6 +93,13 @@ const Score: FC<{
             .then((res) => {
                 setRankList(res as any);
                 cb && cb(res as any);
+                const _userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+                if (_userId) {
+                    setTimeout(() => {
+                        const rankEl = document.getElementById(_userId + 'el');
+                        rankEl?.scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
             })
             .catch((e) => {
                 console.log(e);
@@ -219,7 +226,7 @@ const Score: FC<{
                                         <tr>
                                             <th>名次</th>
                                             <th>名称</th>
-                                            {/*<th>通关数</th>*/}
+                                            <th>通关数</th>
                                             {/*<th>用时</th>*/}
                                             {/*<th>得分</th>*/}
                                             <th>综合评分</th>
@@ -227,14 +234,23 @@ const Score: FC<{
                                     </thead>
                                     <tbody>
                                         {rankList.map((rank, idx) => (
-                                            <tr key={idx}>
+                                            <tr
+                                                key={idx}
+                                                id={rank.userId}
+                                                style={{
+                                                    background:
+                                                        rank.userId === userId
+                                                            ? 'rgb(0 0 0 / 20%)'
+                                                            : '',
+                                                }}
+                                            >
                                                 <td>{idx + 1}</td>
                                                 <td>
                                                     {rank.username}
                                                     {rank.userId === userId &&
                                                         '(你)'}
                                                 </td>
-                                                {/*<td>{rank.level}</td>*/}
+                                                <td>{rank.level}</td>
                                                 {/*<td>*/}
                                                 {/*    {timestampToUsedTimeString(*/}
                                                 {/*        rank.time*/}
