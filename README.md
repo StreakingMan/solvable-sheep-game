@@ -26,11 +26,12 @@
 -   弹出：弹出队列左侧第一个，无限次数
 -   撤销：撤销上一次操作，无限次数
 -   洗牌：哗啦哗啦，无限次数
--   关卡：50 关玩到爽，可直接跳
+-   关卡：20 关玩到爽，可直接跳
 -   内置主题：金轮<img style="width:36px" src="src/themes/jinlun/images/肌肉金轮1.png" />、
     骚猪<img style="width:36px" src="src/themes/pdd/images/1.png" />、
     ikun<img style="width:36px" src="src/themes/ikun/images/kun.png" />（露出黑脚）等
 -   自定义主题：自定义图片和音效，快速整活
+-   排行榜：皇城 pk
 
 开心就好 😄
 
@@ -54,7 +55,7 @@ vite+react 实现，欢迎 star、issue、pr、fork（尽量标注原仓库地�
 -   [x] UI/UX 优化
 -   [x] 多主题
 -   [x] 计时、得分、保存进度机制
--   [ ] 排行榜
+-   [x] 排行榜
 -   [ ] 性能优化
 -   [x] BGM/音效
 -   [ ] ~~点击时的缓冲队列，优化交互动画效果~~
