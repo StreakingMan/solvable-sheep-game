@@ -97,4 +97,7 @@ ps: 如果您的项目托管在公共仓库中，请注意保护密钥，本地�
 `file` 表则是为了节省 vercel 流量，将一些默认文件转为 base64 字符串存到了数据库中，需要添加三列
 ![img.png](database-file.png)
 
+`rank` 表，储存排名信息
+![img.png](datebase-rank.png)
+
 最后，开发和打包命令分别使用 `yarn dev` 和 `yarn build` 即可
