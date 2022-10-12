@@ -25,7 +25,7 @@ export const getDefaultTheme: () => Theme<DefaultSoundNames> = () => {
         title: '有解的羊了个羊',
         desc: '真的可以通关~',
         dark: true,
-        maxLevel: 10,
+        maxLevel: 20,
         backgroundColor: '#8dac85',
         icons: icons.map((icon) => ({
             name: icon,

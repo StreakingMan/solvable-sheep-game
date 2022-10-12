@@ -98,7 +98,7 @@ const Score: FC<{
                     setTimeout(() => {
                         const rankEl = document.getElementById(_userId + 'el');
                         rankEl?.scrollIntoView({ behavior: 'smooth' });
-                    });
+                    }, 1000);
                 }
             })
             .catch((e) => {
@@ -107,7 +107,7 @@ const Score: FC<{
     };
 
     const onConfirmNameClick = () => {
-        const inputUsername = usernameInputRef.current?.value;
+        const inputUsername = usernameInputRef.current?.value.trim();
         if (!inputUsername) return;
         const newUserId = randomString(8);
         setUsername(inputUsername);
@@ -174,7 +174,11 @@ const Score: FC<{
 
     return (
         <div className={style.modal}>
-            <Suspense fallback={<span>fireworks</span>}>
+            <Suspense
+                fallback={
+                    <span style={{ position: 'absolute' }}>🎆fireworks🎆</span>
+                }
+            >
                 {success && <Fireworks />}
             </Suspense>
             <div className={style.inner}>
@@ -203,6 +207,7 @@ const Score: FC<{
                         <input
                             className={style.nameInput}
                             ref={usernameInputRef}
+                            maxLength={12}
                             placeholder={'留下大名进行排行榜pk!'}
                         />
                         <button
@@ -236,7 +241,7 @@ const Score: FC<{
                                         {rankList.map((rank, idx) => (
                                             <tr
                                                 key={idx}
-                                                id={rank.userId}
+                                                id={rank.userId + 'el'}
                                                 style={{
                                                     background:
                                                         rank.userId === userId
@@ -245,7 +250,7 @@ const Score: FC<{
                                                 }}
                                             >
                                                 <td>{idx + 1}</td>
-                                                <td>
+                                                <td className={style.username}>
                                                     {rank.username}
                                                     {rank.userId === userId &&
                                                         '(你)'}

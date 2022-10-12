@@ -71,6 +71,10 @@
             top: 0;
             background-color: gray;
         }
+
+        td.username {
+            word-break: break-all;
+        }
     }
 }
 
