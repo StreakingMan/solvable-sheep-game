@@ -461,36 +461,43 @@ const ConfigDialog: FC<{
                         />
                     )}
                 </div>
-                <div className={'flex-container flex-center flex-no-wrap'}>
-                    <span>毛玻璃</span>
-                    <input
-                        type={'checkbox'}
-                        checked={!!customTheme.backgroundBlur}
-                        onChange={(e) =>
-                            updateCustomTheme(
-                                'backgroundBlur',
-                                e.target.checked
-                            )
-                        }
-                    />
-                    <div className={'flex-spacer'} />
-                    <span>深色</span>
-                    <input
-                        type={'checkbox'}
-                        checked={!!customTheme.dark}
-                        onChange={(e) =>
-                            updateCustomTheme('dark', e.target.checked)
-                        }
-                    />
-                    <div className={'flex-spacer'} />
-                    <span>纯色</span>
-                    <input
-                        type={'color'}
-                        value={customTheme.backgroundColor || '#ffffff'}
-                        onChange={(e) =>
-                            updateCustomTheme('backgroundColor', e.target.value)
-                        }
-                    />
+                <div className={'flex-container flex-center flex-wrap'}>
+                    <div className={'flex-spacer flex-container flex-center'}>
+                        <span>毛玻璃</span>
+                        <input
+                            type={'checkbox'}
+                            checked={!!customTheme.backgroundBlur}
+                            onChange={(e) =>
+                                updateCustomTheme(
+                                    'backgroundBlur',
+                                    e.target.checked
+                                )
+                            }
+                        />
+                    </div>
+                    <div className={'flex-spacer flex-container flex-center'}>
+                        <span>深色</span>
+                        <input
+                            type={'checkbox'}
+                            checked={!!customTheme.dark}
+                            onChange={(e) =>
+                                updateCustomTheme('dark', e.target.checked)
+                            }
+                        />
+                    </div>
+                    <div className={'flex-spacer flex-container flex-center'}>
+                        <span>纯色</span>
+                        <input
+                            type={'color'}
+                            value={customTheme.backgroundColor || '#ffffff'}
+                            onChange={(e) =>
+                                updateCustomTheme(
+                                    'backgroundColor',
+                                    e.target.value
+                                )
+                            }
+                        />
+                    </div>
                 </div>
                 <div className={style.tip}>
                     使用图片或者纯色作为背景，图片可开启毛玻璃效果。如果你使用了深色的图片和颜色，请开启深色模式，此时标题等文字将变为亮色
