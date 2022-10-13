@@ -97,7 +97,10 @@ const Score: FC<{
                 if (_userId) {
                     setTimeout(() => {
                         const rankEl = document.getElementById(_userId + 'el');
-                        rankEl?.scrollIntoView({ behavior: 'smooth' });
+                        rankEl?.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                        });
                     }, 1000);
                 }
             })
