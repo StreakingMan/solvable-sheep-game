@@ -90,7 +90,7 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
             <PersonalInfo />
             <div className={'flex-spacer'} style={{ minHeight: 52 }} />
             <Suspense fallback={<span>Loading</span>}>
-                {!__DIY__ && <WxQrCode />}
+                {!__DIY__ && !theme.pure && <WxQrCode />}
             </Suspense>
             {!__DIY__ && (
                 <p

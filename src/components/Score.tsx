@@ -37,8 +37,9 @@ const Score: FC<{
     score: number;
     time: number;
     success: boolean;
+    pure?: boolean;
     restartMethod: () => void;
-}> = ({ level, score, time, success, restartMethod }) => {
+}> = ({ level, score, time, success, restartMethod, pure = false }) => {
     const [rankList, setRankList] = useState<RankInfo[]>([]);
     const [username, setUsername] = useState<string>(
         localStorage.getItem(USER_NAME_STORAGE_KEY) || ''
@@ -281,7 +282,7 @@ const Score: FC<{
                         </button>
                     </div>
                 )}
-                <WxQrCode />
+                {!pure && <WxQrCode />}
             </div>
         </div>
     );

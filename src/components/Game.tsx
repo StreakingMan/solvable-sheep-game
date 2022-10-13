@@ -497,6 +497,7 @@ const Game: FC<{
                         time={usedTime}
                         score={score}
                         success={level === maxLevel}
+                        pure={theme.pure}
                         restartMethod={restart}
                     />
                 )}
