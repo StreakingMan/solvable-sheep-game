@@ -69,6 +69,56 @@
     }
 }
 
+.inputContainer {
+    word-break: keep-all;
+
+    audio {
+        height: 30px;
+    }
+
+    input,
+    select {
+        flex-grow: 1;
+    }
+
+    input[type='file'] {
+        padding: 4px 12px;
+    }
+
+    input[type='checkbox'] {
+        flex-grow: 0;
+        width: 24px;
+        height: 24px;
+    }
+
+    input[type='color'] {
+        padding: 0 2px;
+        flex-grow: 0;
+        width: 30px;
+        height: 30px;
+    }
+
+    .label {
+        min-width: 74px;
+        opacity: 0.7;
+        font-weight: 600;
+    }
+
+    .imgPreview {
+        height: 30px;
+        border: 1px dashed rgb(0 0 0 / 30%);
+        min-width: 30px;
+        object-fit: contain;
+    }
+
+    &.required .label {
+        &::after {
+            content: '*';
+            color: red;
+        }
+    }
+}
+
 .dialog {
     text-align: left;
     overflow-y: auto;
@@ -135,55 +185,18 @@
             }
         }
     }
-}
 
-.inputContainer {
-    word-break: keep-all;
+    input {
+        &:not([type='checkbox']) {
+            width: 100%;
+        }
 
-    audio {
-        height: 30px;
-    }
-
-    input,
-    select {
-        flex-grow: 1;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     input[type='file'] {
-        padding: 4px 12px;
-    }
-
-    input[type='checkbox'] {
-        flex-grow: 0;
-        width: 24px;
-        height: 24px;
-    }
-
-    input[type='color'] {
-        padding: 0 2px;
-        flex-grow: 0;
-        width: 30px;
-        height: 30px;
-    }
-
-    .label {
-        min-width: 74px;
-        opacity: 0.7;
-        font-weight: 600;
-    }
-
-    .imgPreview {
-        height: 30px;
-        border: 1px dashed rgb(0 0 0 / 30%);
-        min-width: 30px;
-        object-fit: contain;
-    }
-
-    &.required .label {
-        &::after {
-            content: '*';
-            color: red;
-        }
+        padding: 3px 12px;
     }
 }
 
@@ -204,16 +217,6 @@
         flex-wrap: nowrap;
         align-items: center;
         gap: 8px;
-
-        input {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type='file'] {
-            padding: 3px 12px;
-        }
 
         .iconPreview {
             height: 109px;

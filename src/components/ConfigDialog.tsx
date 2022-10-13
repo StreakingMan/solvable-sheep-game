@@ -65,6 +65,7 @@ const ConfigDialog: FC<{
     const [customTheme, setCustomTheme] = useState<CustomTheme>({
         title: '',
         sounds: [],
+        pure: false,
         icons: new Array(10).fill(0).map(() => ({
             name: randomString(4),
             content: '',
@@ -375,6 +376,15 @@ const ConfigDialog: FC<{
             });
     };
 
+    // 彩蛋
+    const [pureClickTime, setPureClickTime] = useState<number>(0);
+    useEffect(() => {
+        updateCustomTheme(
+            'pure',
+            pureClickTime % 5 === 0 && pureClickTime !== 0
+        );
+    }, [pureClickTime]);
+
     return (
         <div className={classNames(style.dialog)}>
             <div className={style.closeBtn} onClick={closeMethod}>
@@ -680,7 +690,12 @@ const ConfigDialog: FC<{
                 (谨慎操作，单文件不超过1M为宜，文件过大可能导致崩溃，介时请刷新浏览器)
             </div>
             {configError && <div className={style.errorTip}>{configError}</div>}
-            <WxQrCode />
+            {customTheme.pure && (
+                <div className={style.tip}>
+                    🎉🎉🎉恭喜发现彩蛋，生成的主题将开启纯净模式～
+                </div>
+            )}
+            <WxQrCode onClick={() => setPureClickTime(pureClickTime + 1)} />
             <div className={'flex-container'}>
                 <button
                     className={'primary flex-grow'}

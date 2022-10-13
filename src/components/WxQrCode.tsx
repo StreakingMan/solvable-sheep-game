@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, MouseEventHandler, useState } from 'react';
 import style from './WxQrCode.module.scss';
 import classNames from 'classnames';
-const WxQrCode: FC<{ title?: string }> = ({
+const WxQrCode: FC<{ title?: string; onClick?: MouseEventHandler }> = ({
     title = '【广告位招租中】同时如果您喜欢这个项目的话，可以点击扫描下方收款码分摊后台相关费用，感谢~😘',
+    onClick,
 }) => {
     const [fullScreen, setFullScreen] = useState<Record<number, boolean>>({
         0: false,
@@ -28,7 +29,7 @@ const WxQrCode: FC<{ title?: string }> = ({
         });
     };
     return (
-        <div className={style.wxQrCodeContainer}>
+        <div className={style.wxQrCodeContainer} onClick={onClick}>
             <div className={style.wxQrCodeTitle}>{title}</div>
             {[1, 5, 8].map((num, idx) => (
                 <div
