@@ -223,7 +223,13 @@ const Score: FC<{
                     </div>
                 )}
 
-                <div>{tip}</div>
+                {tip && <div>{tip}</div>}
+
+                {__DIY__ && (
+                    <button className={'primary'} onClick={restartMethod}>
+                        再来一次
+                    </button>
+                )}
 
                 {!__DIY__ && (
                     <div className={style.rankContainer}>
