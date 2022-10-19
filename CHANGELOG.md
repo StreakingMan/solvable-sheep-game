@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/StreakingMan/solvable-sheep-game/compare/v1.0.0...v1.0.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* diy模式得分页再来一次按钮显示 ([c667103](https://github.com/StreakingMan/solvable-sheep-game/commit/c6671038a831fd069b930303aa3bc841b5317571))
+* 主题配置表单样式优化 ([5579d5a](https://github.com/StreakingMan/solvable-sheep-game/commit/5579d5a32e87a37c50d33621551dd39f7a0c74e5))
+* 主题配置表单样式优化 ([8dec5b6](https://github.com/StreakingMan/solvable-sheep-game/commit/8dec5b6420b256ee6d87689d6790d4da81171913))
+* 排行榜滚动定位 ([5353a40](https://github.com/StreakingMan/solvable-sheep-game/commit/5353a4041615589ac57d0cd8ce1ebca49372211c))
+* 纯净模式隐藏二维码 ([3913982](https://github.com/StreakingMan/solvable-sheep-game/commit/3913982716d570d11afbeacdad8dd5d6d522eb37))
+* 通关成功状态判断，完成游戏后无法点击问题 ([331b96c](https://github.com/StreakingMan/solvable-sheep-game/commit/331b96c8f0717bbb7912984b38cfde8622ea9bc6))
+
 ## [1.0.0](https://github.com/StreakingMan/solvable-sheep-game/compare/v0.0.10...v1.0.0) (2022-10-12)
 
 
