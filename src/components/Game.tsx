@@ -171,6 +171,7 @@ const Game: FC<{
         Record<MySymbol['id'], number>
     >({});
     const [finished, setFinished] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
     const [animating, setAnimating] = useState<boolean>(false);
 
     // 音效
@@ -326,6 +327,7 @@ const Game: FC<{
     // 重开
     const restart = () => {
         setFinished(false);
+        setSuccess(false);
         setScore(0);
         setLevel(1);
         setQueue([]);
@@ -395,21 +397,25 @@ const Game: FC<{
         // 输了
         if (updateQueue.length === 7) {
             setFinished(true);
+            setSuccess(false);
         }
 
         if (!updateScene.find((s) => s.status !== 2)) {
-            // 胜利
+            // 队列清空了
             if (level === maxLevel) {
+                // 胜利
                 setFinished(true);
-                return;
+                setSuccess(true);
+            } else {
+                // 升级
+                // 通关奖励关卡对应数值分数
+                setScore(score + level);
+                setLevel(level + 1);
+                setQueue([]);
+                checkCover(makeScene(level + 1, theme.icons));
             }
-            // 升级
-            // 通关奖励关卡对应数值分数
-            setScore(score + level);
-            setLevel(level + 1);
-            setQueue([]);
-            checkCover(makeScene(level + 1, theme.icons));
         } else {
+            // 更新队列
             setQueue(updateQueue);
             checkCover(updateScene);
         }
@@ -496,7 +502,7 @@ const Game: FC<{
                         level={level}
                         time={usedTime}
                         score={score}
-                        success={level === maxLevel}
+                        success={success}
                         pure={theme.pure}
                         restartMethod={restart}
                     />
