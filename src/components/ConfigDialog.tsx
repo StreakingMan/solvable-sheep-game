@@ -251,7 +251,9 @@ const ConfigDialog: FC<{
             if (configString) {
                 const parseRes = JSON.parse(configString);
                 if (typeof parseRes === 'object') {
-                    setCustomTheme(parseRes);
+                    setTimeout(() => {
+                        setCustomTheme(parseRes);
+                    }, 300);
                 }
             }
         } catch (e) {
