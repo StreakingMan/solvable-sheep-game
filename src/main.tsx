@@ -5,11 +5,7 @@ import './styles/global.scss';
 import './styles/utils.scss';
 import Bmob from 'hydrogen-js-sdk';
 import {
-    DEFAULT_BGM_STORAGE_KEY,
     domRelatedOptForTheme,
-    LAST_LEVEL_STORAGE_KEY,
-    LAST_SCORE_STORAGE_KEY,
-    LAST_TIME_STORAGE_KEY,
     parsePathCustomThemeId,
     PLAYING_THEME_ID_STORAGE_KEY,
     resetScoreStorage,
@@ -77,58 +73,37 @@ Bmob.initialize(
     import.meta.env.VITE_BMOB_SECCODE
 );
 
-const loadTheme = () => {
-    // 请求主题
-    if (customThemeIdFromPath) {
-        const storageTheme = localStorage.getItem(customThemeIdFromPath);
-        if (storageTheme) {
-            try {
-                const customTheme = JSON.parse(storageTheme);
-                successTrans(customTheme);
-            } catch (e) {
-                errorTip('主题配置解析失败');
-            }
-        } else {
-            Bmob.Query('config')
-                .get(customThemeIdFromPath)
-                .then((res) => {
-                    const { content, increment } = res as any;
-                    localStorage.setItem(customThemeIdFromPath, content);
-                    try {
-                        const customTheme = JSON.parse(content);
-                        successTrans(customTheme);
-                    } catch (e) {
-                        errorTip('主题配置解析失败');
-                    }
-                    // 统计访问次数
-                    increment('visitNum');
-                    // @ts-ignore
-                    res.save();
-                })
-                .catch(({ error }) => {
-                    errorTip(error);
-                });
+// 请求主题
+if (customThemeIdFromPath) {
+    const storageTheme = localStorage.getItem(customThemeIdFromPath);
+    if (storageTheme) {
+        try {
+            const customTheme = JSON.parse(storageTheme);
+            successTrans(customTheme);
+        } catch (e) {
+            errorTip('主题配置解析失败');
         }
     } else {
-        successTrans(getDefaultTheme());
+        Bmob.Query('config')
+            .get(customThemeIdFromPath)
+            .then((res) => {
+                const { content, increment } = res as any;
+                localStorage.setItem(customThemeIdFromPath, content);
+                try {
+                    const customTheme = JSON.parse(content);
+                    successTrans(customTheme);
+                } catch (e) {
+                    errorTip('主题配置解析失败');
+                }
+                // 统计访问次数
+                increment('visitNum');
+                // @ts-ignore
+                res.save();
+            })
+            .catch(({ error }) => {
+                errorTip(error);
+            });
     }
-};
-
-// 音效资源请求
-if (!localStorage.getItem(DEFAULT_BGM_STORAGE_KEY)) {
-    const query = Bmob.Query('file');
-    query.equalTo('type', '==', 'default');
-    query
-        .find()
-        .then((results) => {
-            for (const file of results as any) {
-                localStorage.setItem(file.name, file.base64);
-            }
-            loadTheme();
-        })
-        .catch(({ error }) => {
-            errorTip(error);
-        });
 } else {
-    loadTheme();
+    successTrans(getDefaultTheme());
 }

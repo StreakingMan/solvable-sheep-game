@@ -68,8 +68,8 @@ yarn dev:diy
 yarn build:diy
 ```
 
-会在 `diy/diy-dist` 下生成静态资源，直接将这些文件复制服务器上做代理即可。如果嫌麻烦，推荐使用 [vercel](https://vercel.com/) 
-一键部署（每月免费 100G 流量）， 将更改后的项目推到自己的 github（gitlab，bitbucket 同样支持）仓库， 
+会在 `diy/diy-dist` 下生成静态资源，直接将这些文件复制服务器上做代理即可。如果嫌麻烦，推荐使用 [vercel](https://vercel.com/)
+一键部署（每月免费 100G 流量）， 将更改后的项目推到自己的 github（gitlab，bitbucket 同样支持）仓库，
 使用 github 账号登录 vercel 后导入该项目，构建模版选择 vite，
 构建命令更改为 `yarn build:diy` 输出地址改为 `diy/diy-dist` 即可 。见下图：
 
@@ -79,7 +79,7 @@ yarn build:diy
 
 ## 其他
 
-如果您想体验项目的完整功能，则需要注册一个 [Bmob](https://www.bmobapp.com/) 账号， 
+如果您想体验项目的完整功能，则需要注册一个 [Bmob](https://www.bmobapp.com/) 账号，
 注册后新建应用（有一年的白嫖版，免费请求数虽然很客观，但并发数有限制，请根据自己的实际流量
 选择升级套餐，或者其他存储方案）
 
@@ -93,9 +93,6 @@ ps: 如果您的项目托管在公共仓库中，请注意保护密钥，本地�
 应用创建后，点击【云数据库】，创建两个表 `config` 和 `file`
 
 `config` 表用来存储自定义配置的 json 字符串，需要新增 `content` 列
-
-`file` 表则是为了节省 vercel 流量，将一些默认文件转为 base64 字符串存到了数据库中，需要添加三列
-![img.png](database-file.png)
 
 `rank` 表，储存排名信息
 ![img.png](datebase-rank.png)

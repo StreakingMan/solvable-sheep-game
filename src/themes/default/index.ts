@@ -1,9 +1,4 @@
 import { Theme } from '../interface';
-import {
-    DEFAULT_BGM_STORAGE_KEY,
-    DEFAULT_CLICK_SOUND_STORAGE_KEY,
-    DEFAULT_TRIPLE_SOUND_STORAGE_KEY,
-} from '../../utils';
 
 const icons = <const>[
     `🎨`,
@@ -36,16 +31,13 @@ export const getDefaultTheme: () => Theme<DefaultSoundNames> = () => {
         sounds: [
             {
                 name: 'button-click',
-                src:
-                    localStorage.getItem(DEFAULT_CLICK_SOUND_STORAGE_KEY) || '',
+                src: 'https://minio.streakingman.com/solvable-sheep-game/sound-button-click.mp3',
             },
             {
                 name: 'triple',
-                src:
-                    localStorage.getItem(DEFAULT_TRIPLE_SOUND_STORAGE_KEY) ||
-                    '',
+                src: 'https://minio.streakingman.com/solvable-sheep-game/sound-triple.mp3',
             },
         ],
-        bgm: localStorage.getItem(DEFAULT_BGM_STORAGE_KEY) || '',
+        bgm: 'https://minio.streakingman.com/solvable-sheep-game/sound-disco.mp3',
     };
 };
