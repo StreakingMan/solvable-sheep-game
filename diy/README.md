@@ -2,6 +2,9 @@
 
 游戏的核心逻辑已经封装到了 `src/components/Game.tsx` ，方便大家魔改， 主题配置的类型声明见 `src/themes/interface.ts`
 
+你可以先通过超酷的[stackblitz](https://stackblitz.com/edit/solvable-sheep-game?file=diy%2Fdiy.theme.json&terminal=dev:diy)
+在线体验一番（等待依赖安装完成后，编辑配置将实时更新）再回来看这里的指南。
+
 ## 准备工作
 
 ### 环境准备
