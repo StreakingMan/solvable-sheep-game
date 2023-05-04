@@ -15,6 +15,8 @@ import {
     randomString,
     wrapThemeDefaultSounds,
     LAST_UPLOAD_TIME_STORAGE_KEY,
+    canvasToFile,
+    createCanvasByImgSrc,
 } from '../utils';
 import { copy } from 'clipboard';
 import { CloseIcon } from './CloseIcon';
@@ -163,7 +165,7 @@ const ConfigDialog: FC<{
         type: 'bgm' | 'background' | 'sound' | 'icon';
         file?: File;
         idx?: number;
-    }) => void = ({ type, file, idx }) => {
+    }) => void = async ({ type, file, idx }) => {
         if (!file) return;
         switch (type) {
             case 'bgm':
@@ -181,16 +183,20 @@ const ConfigDialog: FC<{
                 break;
             case 'background':
                 setBackgroundError('');
-                if (enableFileSizeValidate && file.size > 80 * 1024) {
-                    return setBackgroundError('请选择80k以内全损画质的图片');
-                }
-                getFileBase64String(file)
-                    .then((res) => {
-                        updateCustomTheme('background', res);
-                    })
-                    .catch((e) => {
-                        setBackgroundError(e);
+                try {
+                    const compressFile = await canvasToFile({
+                        canvas: await createCanvasByImgSrc({
+                            imgSrc: await getFileBase64String(file),
+                        }),
+                        maxFileSize: 20 * 1024,
                     });
+                    const compressFileBase64 = await getFileBase64String(
+                        compressFile
+                    );
+                    updateCustomTheme('background', compressFileBase64);
+                } catch (e: any) {
+                    setBackgroundError(e);
+                }
                 break;
             case 'sound':
                 setSoundError('');
@@ -208,23 +214,27 @@ const ConfigDialog: FC<{
             case 'icon':
                 if (idx == null) return;
                 setIconErrors(makeIconErrors(idx, ''));
-                if (enableFileSizeValidate && file.size > 5 * 1024) {
-                    return setIconErrors(
-                        makeIconErrors(idx, '请选择5k以内的图片文件')
-                    );
-                }
-                getFileBase64String(file)
-                    .then((res) => {
-                        updateCustomTheme(
-                            'icons',
-                            customTheme.icons.map((icon, _idx) =>
-                                _idx === idx ? { ...icon, content: res } : icon
-                            )
-                        );
-                    })
-                    .catch((e) => {
-                        setIconErrors(makeIconErrors(idx, e));
+                try {
+                    const compressFile = await canvasToFile({
+                        canvas: await createCanvasByImgSrc({
+                            imgSrc: await getFileBase64String(file),
+                        }),
+                        maxFileSize: 4 * 1024,
                     });
+                    const compressFileBase64 = await getFileBase64String(
+                        compressFile
+                    );
+                    updateCustomTheme(
+                        'icons',
+                        customTheme.icons.map((icon, _idx) =>
+                            _idx === idx
+                                ? { ...icon, content: compressFileBase64 }
+                                : icon
+                        )
+                    );
+                } catch (e: any) {
+                    setIconErrors(makeIconErrors(idx, e));
+                }
                 break;
         }
     };
@@ -410,7 +420,7 @@ const ConfigDialog: FC<{
             </InputContainer>
             <InputContainer label={'BGM'}>
                 <div className={style.tip}>
-                    接口上传体积有限制，上传文件请全力压缩到80k以下
+                    接口上传体积有限制，上传文件请全力压缩到80k以下，推荐使用外链
                 </div>
                 <input
                     type={'file'}
@@ -432,7 +442,7 @@ const ConfigDialog: FC<{
             </InputContainer>
             <InputContainer label={'背景图'}>
                 <div className={style.tip}>
-                    接口上传体积有限制，上传文件请全力压缩到80k以下
+                    接口上传体积有限制，上传的图片将会被严重压缩，推荐使用外链
                 </div>
                 <input
                     type={'file'}
@@ -538,7 +548,7 @@ const ConfigDialog: FC<{
                     onChange={(e) => onNewSoundChange('name', e.target.value)}
                 />
                 <div className={style.tip}>
-                    接口上传体积有限制，上传文件请全力压缩到10k以下
+                    接口上传体积有限制，上传文件请全力压缩到10k以下，推荐使用外链
                 </div>
                 <input
                     type={'file'}
@@ -562,7 +572,7 @@ const ConfigDialog: FC<{
             </InputContainer>
             <InputContainer label={'图标素材'} required>
                 <div className={style.tip}>
-                    接口上传体积有限制，上传文件请全力压缩到5k以下，推荐尺寸56*56
+                    接口上传体积有限制，上传的图片将会被严重压缩，推荐使用外链
                 </div>
             </InputContainer>
             {customTheme.icons.map((icon, idx) => (
@@ -687,7 +697,7 @@ const ConfigDialog: FC<{
                 </div>
             )}
             <div className={style.tip}>
-                接口上传内容总体积有限制，上传文件失败请进一步压缩文件，或者使用外链（自行搜索【免费图床】【免费mp3外链】【对象存储服务】等关键词）。
+                接口上传内容总体积有限制，上传文件失败请尝试进一步压缩文件，推荐使用外链（自行搜索【免费图床】【免费mp3外链】【对象存储服务】等关键词）。
                 本地整活，勾选右侧关闭文件大小校验👉
                 <input
                     type={'checkbox'}

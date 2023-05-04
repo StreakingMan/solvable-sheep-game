@@ -171,3 +171,104 @@ export const timestampToUsedTimeString: (time: number) => string = (time) => {
         return '时间转换出错';
     }
 };
+
+export const dataURLToFile: (dataURL: string, filename?: string) => File = (
+    // #endregion dataURLToFile
+    dataURL,
+    filename
+) => {
+    const isDataURL = dataURL.startsWith('data:');
+    if (!isDataURL) throw new Error('Data URL 错误');
+    const _fileName = filename || new Date().getTime().toString();
+    const mimeType = dataURL.match(/^data:([^;]+);/)?.[1] || '';
+    // base64转二进制
+    const binaryString = atob(dataURL.split(',')[1]);
+    let binaryStringLength = binaryString.length;
+    const bytes = new Uint8Array(binaryStringLength);
+    while (binaryStringLength--) {
+        bytes[binaryStringLength] = binaryString.charCodeAt(binaryStringLength);
+    }
+    return new File([bytes], _fileName, { type: mimeType });
+};
+
+interface drawImgSrcInCanvasParams {
+    imgSrc: string;
+    canvas: HTMLCanvasElement;
+    scale?: number;
+}
+export const drawImgSrcInCanvas: (
+    params: drawImgSrcInCanvasParams
+) => Promise<void> = async ({ imgSrc, canvas, scale = 1 }) => {
+    if (scale < 0) throw new Error('scale不能小于0');
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx || !(ctx instanceof CanvasRenderingContext2D)) {
+        throw new Error('Failed to get 2D context');
+    }
+    const img = document.createElement('img');
+    img.setAttribute('src', imgSrc);
+
+    return new Promise((resolve, reject) => {
+        img.onload = () => {
+            const width = img.width * scale;
+            const height = img.height * scale;
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve();
+        };
+        img.onerror = () => {
+            reject(new Error('图片加载失败'));
+        };
+    });
+};
+
+interface createCanvasByImgSrcParams {
+    imgSrc: HTMLImageElement['src'];
+    scale?: number;
+}
+export const createCanvasByImgSrc: (
+    params: createCanvasByImgSrcParams
+) => Promise<HTMLCanvasElement> = async ({ imgSrc, scale = 1 }) => {
+    if (scale < 0) throw new Error('scale不能小于0');
+    const canvas = document.createElement('canvas');
+    await drawImgSrcInCanvas({
+        imgSrc,
+        canvas,
+        scale,
+    });
+    return canvas;
+};
+
+interface CanvasToFileParams {
+    canvas: HTMLCanvasElement;
+    fileName?: string;
+    maxFileSize?: number;
+}
+export const canvasToFile: (
+    params: CanvasToFileParams
+) => Promise<File> = async ({ canvas, fileName, maxFileSize }) => {
+    // #endregion canvasToFile
+    const MIME_TYPE = 'image/png';
+    const dataURL = canvas.toDataURL(MIME_TYPE);
+    const _fileName = fileName || new Date().getTime().toString();
+    const genFile = dataURLToFile(dataURL, _fileName);
+    // 判断是否需要压缩
+    if (maxFileSize && genFile.size > maxFileSize) {
+        let scale = Math.sqrt(maxFileSize / genFile.size);
+        if (scale > 0.9) scale = 0.9;
+        // TODO 暂时通过canvas绘制缩放图像进行递归压缩，后续考虑其他方式
+        // TODO 不断生成canvas, 调研内存是否会泄漏
+        const _canvas = await createCanvasByImgSrc({
+            imgSrc: dataURL,
+            scale,
+        });
+        return canvasToFile({
+            canvas: _canvas,
+            fileName: _fileName,
+            maxFileSize,
+        });
+    } else {
+        return genFile;
+    }
+};
