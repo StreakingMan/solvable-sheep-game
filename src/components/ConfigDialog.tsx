@@ -146,10 +146,14 @@ const ConfigDialog: FC<{
         new Array(10).fill('')
     );
     // 文件体积校验开关
+    const initEnableFileSizeValidate = localStorage.getItem(
+        CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY
+    );
     const [enableFileSizeValidate, setEnableFileSizeValidate] =
         useState<boolean>(
-            localStorage.getItem(CUSTOM_THEME_FILE_VALIDATE_STORAGE_KEY) !==
-                'false'
+            initEnableFileSizeValidate === null
+                ? true
+                : initEnableFileSizeValidate === 'true'
         );
     useEffect(() => {
         localStorage.setItem(
@@ -184,16 +188,16 @@ const ConfigDialog: FC<{
             case 'background':
                 setBackgroundError('');
                 try {
-                    const compressFile = await canvasToFile({
-                        canvas: await createCanvasByImgSrc({
-                            imgSrc: await getFileBase64String(file),
-                        }),
-                        maxFileSize: 20 * 1024,
-                    });
-                    const compressFileBase64 = await getFileBase64String(
-                        compressFile
-                    );
-                    updateCustomTheme('background', compressFileBase64);
+                    const _file = enableFileSizeValidate
+                        ? await canvasToFile({
+                              canvas: await createCanvasByImgSrc({
+                                  imgSrc: await getFileBase64String(file),
+                              }),
+                              maxFileSize: 20 * 1024,
+                          })
+                        : file;
+                    const fileBase64 = await getFileBase64String(_file);
+                    updateCustomTheme('background', fileBase64);
                 } catch (e: any) {
                     setBackgroundError(e);
                 }
@@ -215,20 +219,20 @@ const ConfigDialog: FC<{
                 if (idx == null) return;
                 setIconErrors(makeIconErrors(idx, ''));
                 try {
-                    const compressFile = await canvasToFile({
-                        canvas: await createCanvasByImgSrc({
-                            imgSrc: await getFileBase64String(file),
-                        }),
-                        maxFileSize: 4 * 1024,
-                    });
-                    const compressFileBase64 = await getFileBase64String(
-                        compressFile
-                    );
+                    const _file = enableFileSizeValidate
+                        ? await canvasToFile({
+                              canvas: await createCanvasByImgSrc({
+                                  imgSrc: await getFileBase64String(file),
+                              }),
+                              maxFileSize: 4 * 1024,
+                          })
+                        : file;
+                    const fileBase64 = await getFileBase64String(_file);
                     updateCustomTheme(
                         'icons',
                         customTheme.icons.map((icon, _idx) =>
                             _idx === idx
-                                ? { ...icon, content: compressFileBase64 }
+                                ? { ...icon, content: fileBase64 }
                                 : icon
                         )
                     );
