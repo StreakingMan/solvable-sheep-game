@@ -2,7 +2,7 @@ import React, { FC, MouseEventHandler, useState } from 'react';
 import style from './WxQrCode.module.scss';
 import classNames from 'classnames';
 const WxQrCode: FC<{ title?: string; onClick?: MouseEventHandler }> = ({
-    title = '如果您喜欢这个项目的话，可以点击扫描下方收款码分担后台相关费用（或请我喝杯咖啡），感谢~😘',
+    title = '如果您喜欢这个项目的话，点击扫描下方收款码请我喝杯咖啡，感谢~😘',
     onClick,
 }) => {
     const [fullScreen, setFullScreen] = useState<Record<number, boolean>>({

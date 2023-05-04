@@ -369,11 +369,7 @@ const ConfigDialog: FC<{
                     })
                     .catch(({ error, code }) => {
                         setTimeout(() => {
-                            setConfigError(
-                                code === 10007
-                                    ? '上传数据长度已超过bmob的限制'
-                                    : error
-                            );
+                            setConfigError(error);
                         }, 3000);
                     })
                     .finally(() => {
