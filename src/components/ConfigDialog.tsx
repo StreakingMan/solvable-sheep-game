@@ -403,6 +403,17 @@ const ConfigDialog: FC<{
                 <CloseIcon fill={'#fff'} />
             </div>
             <h2>自定义主题</h2>
+            <p style={{ color: 'red' }}>
+                后台服务到期，分享链接功能已停用，有需要的同学参考
+                <a
+                    href="https://github.com/StreakingMan/solvable-sheep-game/blob/master/diy/README.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    👉这里👈
+                </a>
+                自行部署，感谢支持！🙏
+            </p>
 
             <InputContainer label={'标题'} required>
                 <input
@@ -722,16 +733,17 @@ const ConfigDialog: FC<{
                 >
                     保存并预览
                 </button>
-                <button
-                    className={classNames(
-                        'primary flex-grow',
-                        style.uploadBtn,
-                        uploading && style.uploading
-                    )}
-                    onClick={onGenQrLinkClick}
-                >
-                    生成二维码&链接
-                </button>
+                {/*<button*/}
+                {/*    className={classNames(*/}
+                {/*        'primary flex-grow',*/}
+                {/*        style.uploadBtn,*/}
+                {/*        uploading && style.uploading*/}
+                {/*    )}*/}
+                {/*    onClick={onGenQrLinkClick}*/}
+                {/*    disabled*/}
+                {/*>*/}
+                {/*    生成二维码&链接*/}
+                {/*</button>*/}
             </div>
         </div>
     );
