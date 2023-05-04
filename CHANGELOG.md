@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/StreakingMan/solvable-sheep-game/compare/v1.0.1...v1.1.0) (2023-05-04)
+
+
+### Features
+
+* 本地图片文件压缩 ([ffbb384](https://github.com/StreakingMan/solvable-sheep-game/commit/ffbb38495f2c8c124f6039496f613e6c416d9db4))
+
+
+### Bug Fixes
+
+* 图片文件大小校验逻辑 ([be0faff](https://github.com/StreakingMan/solvable-sheep-game/commit/be0faff9fdf4aea6a2659325520d68b2f348c656))
+* 自定义主题编辑回显 ([ffabf68](https://github.com/StreakingMan/solvable-sheep-game/commit/ffabf6805f81dd03bd070dd09a32e51a51d1138f))
+* 音频文件切换为minio外链 ([680811c](https://github.com/StreakingMan/solvable-sheep-game/commit/680811c50cbef3fec80b73407daddcf48847f3bd))
+
 ### [1.0.1](https://github.com/StreakingMan/solvable-sheep-game/compare/v1.0.0...v1.0.1) (2022-10-19)
 
 
