@@ -11,7 +11,6 @@ import {
 } from './utils';
 import { Theme } from './themes/interface';
 import Game from './components/Game';
-import { BeiAn } from './components/BeiAn';
 import { Title } from './components/Title';
 import { PersonalInfo } from './components/PersonalInfo';
 import { Info } from './components/Info';
@@ -104,8 +103,6 @@ const App: FC<{ theme: Theme<any> }> = ({ theme: initTheme }) => {
                         累计访问：
                         <span id="busuanzi_value_site_pv" />次
                     </span>
-                    <br />
-                    <BeiAn />
                 </p>
             )}
             {!__DIY__ && !theme.pure && (
